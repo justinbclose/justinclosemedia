@@ -126,8 +126,8 @@ PAGES = [
           <p class="muted" style="color:var(--muted)">I work in hotel marketing, so I know which shots your team needs: images that work on Instagram, your website and booking sites.</p>
         </div>
         <ol class="steps">
-          <li><span class="meta num">01</span><b>Tell me about your property</b><p>Send a quick note or book a short call.</p></li>
-          <li><span class="meta num">02</span><b>Get a shot list</b><p>We plan the rooms, amenities and moments that sell your stay.</p></li>
+          <li><span class="meta num">01</span><b>Tell me about your property</b><p>What you need (photos, video, drone) and where you’ll use it: website, Instagram, ads.</p></li>
+          <li><span class="meta num">02</span><b>Send a shot list or the vibe</b><p>If you have one, send a shot list or a few examples of the look you want. No list? We’ll plan it together.</p></li>
           <li><span class="meta num">03</span><b>Shoot day</b><p>Photos, video and drone in one visit, with little disruption to guests.</p></li>
           <li><span class="meta num">04</span><b>Delivery</b><p>Edited files sized for your website, social media and booking sites.</p></li>
         </ol>
@@ -200,8 +200,8 @@ PAGES = [
 
         <h2 class="h2">How booking works</h2>
         <ul class="list">
-          <li><b class="num">01</b>Email me or book a short call</li>
-          <li><b class="num">02</b>I send a shot list and a prep list</li>
+          <li><b class="num">01</b>Tell me about your property and what you need</li>
+          <li><b class="num">02</b>Send a shot list or the vibe you want, if you have one</li>
           <li><b class="num">03</b>Shoot day</li>
           <li><b class="num">04</b>Your edited photos and video are delivered</li>
         </ul>
