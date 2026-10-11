@@ -73,7 +73,7 @@ window.VIDEOS = [
   { file: 'beachside-lunch-clip', title: 'Lunch with a view', tag: 'Dining', w: 9, h: 16 },
   { file: 'restaurant-ocean-view', title: 'Dining room walkthrough', tag: 'Interior', w: 9, h: 16 },
   { file: 'resort-grounds-aerial', title: 'Resort grounds', tag: 'Drone', w: 9, h: 16 },
-  { file: 'surf-break-aerial', title: 'Surf break', tag: 'Drone', w: 9, h: 16 },
+  { file: 'surf-break-aerial', title: 'Surf break', tag: 'Drone', w: 9, h: 16, focus: '50% 12%' },
   { file: 'kayaks-sea-cliffs', title: 'Kayaks by the sea cliffs', tag: 'Drone', w: 9, h: 16 },
   { file: 'dolphin-pod-aerial', title: 'Dolphin pod', tag: 'Drone', w: 9, h: 16 },
   { file: 'beach-town-aerial', title: 'Beach town', tag: 'Drone', w: 9, h: 16 },
@@ -86,7 +86,7 @@ window.VIDEOS = [
 // Drone page (grid): hotel and coast first, landscapes last
 window.DRONE = [
   { type: 'video', file: 'resort-grounds-aerial', w: 9, h: 16, title: 'Resort grounds', text: 'Gardens, the lagoon and the coast, in one slow pass.' },
-  { type: 'video', file: 'surf-break-aerial', w: 9, h: 16, title: 'Surf break', text: 'Surfers on a turquoise wave, seen from above.' },
+  { type: 'video', file: 'surf-break-aerial', w: 9, h: 16, focus: '50% 12%', title: 'Surf break', text: 'Surfers on a turquoise wave, seen from above.' },
   { type: 'photo', file: 'coastline-resort-aerial', w: 16, h: 9, title: 'The resort and the coast', text: 'Shows guests exactly where you are: steps from the sand.' },
   { type: 'photo', file: 'event-tables-overhead', w: 16, h: 9, title: 'Event from above', text: 'A garden dinner on the property, straight down from the drone.' },
   { type: 'photo', file: 'lawn-event-sunset', w: 16, h: 9, title: 'Lawn party at sunset', text: 'The event, the lagoon, the palms and the ocean in one frame.' },

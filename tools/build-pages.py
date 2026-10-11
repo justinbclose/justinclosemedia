@@ -190,14 +190,14 @@ PAGES = [
 """),
   dict(file='about.html', page='about',
        title='About | Justin Close Media',
-       desc='Justin Close has worked in hotel marketing and started Justin Close Media to give hotels great photos and video at a fair price, with full usage rights.',
+       desc='Justin Close has worked in hotel marketing and started Justin Close Media to give hotels great photos and video, with full usage rights.',
        body="""    <section class="wrap about">
       <div class="about__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close standing on a mountain trail"></div>
       <div class="about__text">
         <h1 class="display">I’ve worked in hotel marketing.</h1>
         <p class="lead">And I kept seeing the same gap: hotels never have enough good photos.</p>
         <p>Hotels need fresh, high-quality images for their website, for Instagram and for ads. Most of the time the photos on hand are outdated, too few, or come with usage limits that make them hard to use. I started Justin Close Media to fix that.</p>
-        <p>I shoot interiors, lifestyle, property, drone and video, at a fair price, with a process that's easy for your team.</p>
+        <p>I shoot interiors, lifestyle, property, drone and video, with a process that's easy for your team.</p>
         <p><strong style="font-weight:400">You own the rights to every photo.</strong> Use them on your website, on Instagram, in ads, anywhere. No ifs, ands or buts.</p>
 
         <h2 class="h2">What hotels get</h2>

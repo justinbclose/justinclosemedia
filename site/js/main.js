@@ -22,6 +22,7 @@
   const vid = (v) => `video/${v.file}.mp4`;
   const poster = (v) => `video/${v.file}.jpg`;
   const pad = (n) => String(n).padStart(2, '0');
+  const focus = (x) => (x.focus ? ` style="object-position:${x.focus}"` : '');
   const ratio = (p) => `width="1000" height="${Math.round((1000 * p.h) / p.w)}"`;
 
   $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
@@ -237,17 +238,17 @@
     const card = (v, i, cls = '') => `
       <button class="clip rise ${cls}" style="--i:${i}" data-file="${v.file}" aria-label="Play ${v.title}">
         <div class="clip__media">
-          <img src="${poster(v)}" alt="" loading="lazy">
-          <video src="${vid(v)}" muted loop playsinline preload="none" aria-hidden="true"></video>
+          <img src="${poster(v)}" alt="" loading="lazy"${focus(v)}>
+          <video src="${vid(v)}" muted loop playsinline preload="none" aria-hidden="true"${focus(v)}></video>
           <span class="clip__play" aria-hidden="true">▶</span><span class="clip__bar"></span>
         </div>
         <div class="clip__cap"><span>${v.title}</span><span>${v.tag || ''}</span></div>
       </button>`;
-    videos.innerHTML =
-      (wide[0] ? `<div class="feature">${card(wide[0], 0, 'clip--wide')}</div>` : '') +
-      `<div class="vgrid">${[...tall, ...wide.slice(1)].map((v, i) => card(v, i + 1, v.w > v.h ? 'clip--wide' : '')).join('')}</div>`;
+    // Vertical clips first, wide clips last (each wide clip spans two columns)
+    const ordered = [...tall, ...wide];
+    videos.innerHTML = `<div class="vgrid">${ordered.map((v, i) => card(v, i, v.w > v.h ? 'clip--wide' : '')).join('')}</div>`;
     $$('.clip', videos).forEach(hoverPlay);
-    const list = VIDEOS.map((v) => ({ ...v, type: 'video' }));
+    const list = ordered.map((v) => ({ ...v, type: 'video' }));
     videos.addEventListener('click', (e) => {
       const c = e.target.closest('.clip');
       if (c) { $$('.clip video', videos).forEach((v) => v.pause()); openViewer(list, list.findIndex((v) => v.file === c.dataset.file), c); }
@@ -262,8 +263,8 @@
     droneGrid.innerHTML = list.map((d, i) => d.type === 'video' ? `
         <button class="photo clip rise" style="--i:${i}" data-i="${i}" aria-label="Play ${d.title}">
           <div class="photo__img clip__media">
-            <img src="${poster(d)}" alt="" loading="lazy">
-            <video src="${vid(d)}" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <img src="${poster(d)}" alt="" loading="lazy"${focus(d)}>
+            <video src="${vid(d)}" muted loop playsinline preload="none" aria-hidden="true"${focus(d)}></video>
             <span class="clip__play" aria-hidden="true">▶</span><span class="clip__bar"></span>
           </div>
           <div class="photo__cap"><span>${d.title}</span><span>Video</span></div>
