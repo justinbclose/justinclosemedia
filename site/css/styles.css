@@ -102,12 +102,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   overflow: hidden;
 }
 .loader__name span { display: inline-block; }
-.loader__bar {
-  position: absolute; left: 50%; bottom: 18%;
-  width: 120px; height: 1px; margin-left: -60px;
-  background: var(--line-dark); overflow: hidden;
+.loader__count {
+  position: absolute; right: var(--gutter); bottom: var(--gutter);
+  font-family: var(--serif); font-weight: 300; font-size: clamp(64px, 12vw, 180px); line-height: 0.8;
+  color: var(--champagne); font-variant-numeric: tabular-nums;
 }
-.loader__bar i { position: absolute; inset: 0; background: var(--champagne); transform-origin: left; transform: scaleX(0); }
 html:not(.js) .loader, html.reduced .loader { display: none; }
 
 /* Page-to-page wipe */
@@ -308,30 +307,12 @@ html.reduced .hscroll__viewport { overflow-x: auto; }
 }
 @media (hover: none) { .service-preview { display: none; } }
 
-/* ---------- Full-bleed statement image ---------- */
-
-.statement { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--bone); }
-.statement__media { position: absolute; inset: 0; clip-path: inset(12% 14% 12% 14%); }
-.statement__media img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.25); }
-.statement__media::after { content: ''; position: absolute; inset: 0; background: rgba(15, 14, 12, 0.38); }
-.statement__text {
-  position: absolute; inset: 0; z-index: 2;
-  display: grid; place-items: center; text-align: center;
-  color: #fff; padding: var(--gutter);
-  text-shadow: 0 2px 40px rgba(0,0,0,0.35);
-}
-html:not(.js) .statement__media, html.reduced .statement__media { clip-path: none; }
-html.reduced .statement__media img { transform: none; }
-
 /* ---------- Drone & video ---------- */
 
 .drone__hero { position: relative; height: 100vh; height: 100svh; overflow: hidden; }
 .drone__hero img { width: 100%; height: 100%; object-fit: cover; }
 .drone__hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23,22,20,0.15), rgba(23,22,20,0.7)); }
 .drone__title { position: absolute; left: var(--gutter); right: var(--gutter); bottom: clamp(32px, 6vw, 72px); z-index: 2; }
-.drone__grid {
-  display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: center;
-}
 .video-frame { position: relative; overflow: hidden; aspect-ratio: 9 / 14; max-height: 82vh; background: var(--charcoal); }
 .video-frame video { width: 100%; height: 100%; object-fit: cover; }
 .video-frame__tag {
@@ -339,31 +320,7 @@ html.reduced .statement__media img { transform: none; }
   padding: 6px 10px; border: 1px solid rgba(255,255,255,0.4); border-radius: 99px;
   font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #fff;
 }
-.drone__copy p { max-width: 460px; }
-.drone__copy .h2 { margin-bottom: 28px; }
-@media (max-width: 760px) { .drone__grid { grid-template-columns: 1fr; } }
 
-/* ---------- Parallax mosaic ---------- */
-
-.mosaic { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.5vw, 36px); align-items: start; }
-.mosaic__col { display: flex; flex-direction: column; gap: clamp(16px, 2.5vw, 36px); }
-.mosaic__col:nth-child(2) { margin-top: 18vh; }
-.mosaic__col:nth-child(3) { margin-top: 6vh; }
-.tile { display: block; overflow: hidden; position: relative; background: var(--paper); }
-.tile img { width: 100%; height: auto; transition: transform 1.2s var(--ease); }
-.tile:hover img { transform: scale(1.04); }
-.tile__label {
-  position: absolute; left: 14px; bottom: 12px; color: #fff;
-  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-  opacity: 0; transform: translateY(8px); transition: all 0.5s var(--ease);
-  text-shadow: 0 1px 12px rgba(0,0,0,0.5);
-}
-.tile:hover .tile__label { opacity: 1; transform: none; }
-@media (max-width: 760px) {
-  .mosaic { grid-template-columns: 1fr 1fr; }
-  .mosaic__col:nth-child(2) { margin-top: 10vh; }
-  .mosaic__col:nth-child(3) { display: none; }
-}
 
 /* ---------- About ---------- */
 
@@ -509,3 +466,83 @@ html.js:not(.reduced) .line > span { transform: translateY(105%); }
 :focus-visible { outline: 2px solid var(--champagne); outline-offset: 3px; }
 .skip { position: absolute; left: -999px; top: 8px; z-index: 200; background: var(--ink); color: var(--ivory); padding: 10px 16px; }
 .skip:focus { left: 8px; }
+
+/* ==========================================================================
+   Experience layer
+   ========================================================================== */
+
+/* WebGL images: the canvas sits on top of the <img>, which stays for layout and fallback */
+.gl-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.gl-on > img { opacity: 0; }
+.card__media, .tile__media { position: relative; }
+.hero__content, .drone__title { z-index: 3; }
+.hero::after, .drone__hero::after { z-index: 2; }
+
+/* Loader wipes up */
+.loader { clip-path: inset(0% 0% 0% 0%); }
+
+/* A guest's day */
+.story { position: relative; overflow: hidden; }
+.story__inner { display: grid; grid-template-columns: 1fr 1.35fr; gap: clamp(32px, 6vw, 96px); align-items: center; }
+.story__copy { position: relative; }
+.story__steps { position: relative; margin-top: 28px; min-height: 260px; }
+.step { position: absolute; inset: 0 0 auto 0; }
+.step__time { display: block; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--champagne); margin-bottom: 18px; }
+.step__title { display: block; font-family: var(--serif); font-weight: 300; font-size: clamp(40px, 5vw, 80px); line-height: 0.98; margin: 0 0 22px; }
+.step__title em { font-style: italic; }
+.step p { max-width: 380px; margin: 0; }
+.story__progress { position: absolute; left: calc(-1 * clamp(14px, 2vw, 28px)); top: 0; bottom: 0; width: 1px; background: var(--line-dark); }
+.story__progress i { position: absolute; inset: 0; background: var(--champagne); transform-origin: top; transform: scaleY(0); }
+.story__media { position: relative; height: 78vh; }
+.scene { position: absolute; inset: 0; margin: 0; overflow: hidden; }
+.scene__img { position: absolute; inset: 0; overflow: hidden; }
+.scene__img img { width: 100%; height: 100%; object-fit: cover; }
+.scene__caption { display: none; }
+
+@media (min-width: 900px) {
+  html.js:not(.reduced) .story { height: 100vh; display: flex; align-items: center; }
+  html.js:not(.reduced) .story__inner { width: 100%; }
+}
+/* Mobile / reduced motion: a simple vertical story */
+@media (max-width: 899px) {
+  .story { padding: 96px 0; }
+  .story__inner { grid-template-columns: 1fr; }
+  .story__steps, .story__progress { display: none; }
+  .story__media { height: auto; display: grid; gap: 48px; }
+  .scene { position: relative; }
+  .scene__img { position: relative; aspect-ratio: 4 / 5; }
+  .scene__caption { display: grid; gap: 8px; padding-top: 18px; }
+  .scene__caption .step__title { font-size: 40px; margin: 0; }
+}
+html.reduced .story__steps, html:not(.js) .story__steps, html.reduced .story__progress { display: none; }
+html.reduced .story__media, html:not(.js) .story__media { height: auto; display: grid; gap: 48px; }
+html.reduced .scene, html:not(.js) .scene { position: relative; }
+html.reduced .scene__img, html:not(.js) .scene__img { position: relative; aspect-ratio: 4 / 5; }
+html.reduced .scene__caption, html:not(.js) .scene__caption { display: grid; gap: 8px; padding-top: 18px; }
+
+/* Motion (video) */
+.motion__grid { display: grid; grid-template-columns: 0.8fr 1fr; gap: clamp(40px, 8vw, 140px); align-items: center; }
+.motion__grid .video-frame { max-height: 86vh; }
+@media (max-width: 760px) { .motion__grid { grid-template-columns: 1fr; } }
+
+/* Drone strip sits under the drone hero */
+#drone .hscroll__head { align-items: flex-end; }
+.btn--light:hover { background: var(--ivory); color: var(--ink); }
+
+/* Work grid tiles */
+.tile__media { display: block; overflow: hidden; }
+.tile__media img { width: 100%; height: auto; }
+
+/* Lightbox: photo flies in from its tile */
+.fly { position: fixed; z-index: 85; object-fit: cover; pointer-events: none; }
+.lightbox.is-backdrop { opacity: 1; visibility: visible; }
+.lightbox.is-backdrop > * { opacity: 0; }
+
+/* Contact email */
+.contact__email {
+  display: inline-block; margin-top: 32px;
+  font-family: var(--serif); font-size: clamp(24px, 2.6vw, 38px); font-weight: 300;
+  border-bottom: 1px solid var(--line-dark); padding-bottom: 6px;
+  transition: color 0.4s, border-color 0.4s;
+}
+.contact__email:hover { color: var(--champagne); border-color: var(--champagne); }

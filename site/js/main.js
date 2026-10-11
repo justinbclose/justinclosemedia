@@ -1,8 +1,8 @@
 /* ==========================================================================
    Justin Close Media: site behavior
    1. Build galleries from js/photos.js
-   2. UI (menu, header, cursor, lightbox, forms, video)
-   3. Scroll animations (GSAP + ScrollTrigger + Lenis)
+   2. UI (menu, header, cursor, magnetic buttons, lightbox, forms, video)
+   3. Scroll experience (GSAP + ScrollTrigger + Lenis + WebGL images)
    ========================================================================== */
 (function () {
   const html = document.documentElement;
@@ -12,11 +12,13 @@
   const hasGsap = !!(window.gsap && window.ScrollTrigger);
   if (!hasGsap) html.classList.remove('js'); // show everything if the libraries fail to load
   const motion = hasGsap && !html.classList.contains('reduced');
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   const photos = window.PHOTOS || [];
+  const story = window.STORY || [];
   const cats = window.CATEGORIES || [];
-  const page = document.body.dataset.page;
-  const src = (p, small) => `images/portfolio/${p.file}${small ? '-sm' : ''}.jpg`;
+  const src = (file, small) => `images/portfolio/${file}${small ? '-sm' : ''}.jpg`;
+  const byFile = (file) => photos.find((p) => p.file === file) || { file, alt: '', w: 3, h: 4 };
   const catName = (id) => (cats.find((c) => c.id === id) || {}).name || id;
   const imgAttrs = (p) => `width="1000" height="${Math.round((1000 * p.h) / p.w)}"`;
 
@@ -31,39 +33,50 @@
      1. Build galleries
      ------------------------------------------------------------------ */
 
-  const track = $('#featured-track');
-  if (track) {
-    const featured = photos.filter((p) => p.featured);
-    track.innerHTML =
-      featured.map((p, i) => `
-        <a class="card ${p.w > p.h ? 'card--wide' : 'card--tall'}" href="work.html?c=${p.category}" data-cursor>
-          <div class="card__media"><img src="${src(p)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}></div>
+  // A guest's day
+  const storySteps = $('#story-steps');
+  const storyMedia = $('#story-media');
+  if (storySteps && storyMedia) {
+    storySteps.innerHTML = story.map((s, i) => `
+      <div class="step" data-step="${i}">
+        <span class="step__time">${String(i + 1).padStart(2, '0')} · ${s.time}</span>
+        <h3 class="step__title">${s.title}</h3>
+        <p class="muted">${s.text}</p>
+      </div>`).join('');
+    storyMedia.innerHTML = story.map((s, i) => {
+      const p = byFile(s.file);
+      return `
+      <figure class="scene" data-scene="${i}">
+        <div class="scene__img"><img src="${src(p.file)}" alt="${p.alt}" loading="lazy"></div>
+        <figcaption class="scene__caption">
+          <span class="step__time">${String(i + 1).padStart(2, '0')} · ${s.time}</span>
+          <span class="step__title">${s.title}</span>
+          <span class="muted">${s.text}</span>
+        </figcaption>
+      </figure>`;
+    }).join('');
+  }
+
+  // Drone strip
+  const droneTrack = $('#drone-track');
+  if (droneTrack) {
+    const drone = photos.filter((p) => p.category === 'drone');
+    droneTrack.innerHTML =
+      drone.map((p, i) => `
+        <a class="card ${p.w > p.h ? 'card--wide' : 'card--tall'}" href="work.html?c=drone" data-cursor>
+          <div class="card__media" data-gl-card><img src="${src(p.file)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}></div>
           <div class="card__caption">
             <span class="card__title">${p.title}</span>
-            <span class="muted">${String(i + 1).padStart(2, '0')} / ${catName(p.category)}</span>
+            <span class="muted">${String(i + 1).padStart(2, '0')}</span>
           </div>
         </a>`).join('') +
-      `<a class="card card--end" href="work.html">
-        <span class="eyebrow">${photos.length} photos</span>
-        <span class="h2">All <em>work</em> →</span>
+      `<a class="card card--end" href="work.html?c=drone" data-cursor>
+        <span class="eyebrow">${drone.length} aerials</span>
+        <span class="h2">All <em>drone</em> →</span>
       </a>`;
   }
 
-  const mosaic = $('#mosaic');
-  if (mosaic) {
-    // Show the non-featured photos first so the home page doesn't repeat itself.
-    const ordered = [...photos.filter((p) => !p.featured), ...photos.filter((p) => p.featured)];
-    const cols = [[], [], []];
-    ordered.forEach((p, i) => cols[i % 3].push(p));
-    mosaic.innerHTML = cols.map((col) => `
-      <div class="mosaic__col">${col.map((p) => `
-        <a class="tile" href="work.html?c=${p.category}" data-cursor>
-          <img src="${src(p, true)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}>
-          <span class="tile__label">${catName(p.category)}</span>
-        </a>`).join('')}
-      </div>`).join('');
-  }
-
+  // Work page grid
   const grid = $('#grid');
   const filters = $('#filters');
   let visible = photos.map((_, i) => i);
@@ -71,14 +84,14 @@
   if (grid && filters) {
     grid.innerHTML = photos.map((p, i) => `
       <button class="tile" data-index="${i}" data-cat="${p.category}" data-cursor aria-label="Open ${p.title}">
-        <img src="${src(p, true)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}>
+        <span class="tile__media" data-gl-card><img src="${src(p.file, true)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}></span>
         <span class="tile__label">${catName(p.category)}</span>
       </button>`).join('');
 
     const count = (id) => photos.filter((p) => p.category === id).length;
     filters.innerHTML =
-      `<button class="filter" data-filter="all">All<sup>${photos.length}</sup></button>` +
-      cats.filter((c) => count(c.id)).map((c) => `<button class="filter" data-filter="${c.id}">${c.name}<sup>${count(c.id)}</sup></button>`).join('');
+      `<button class="filter" data-filter="all" data-magnetic>All<sup>${photos.length}</sup></button>` +
+      cats.filter((c) => count(c.id)).map((c) => `<button class="filter" data-filter="${c.id}" data-magnetic>${c.name}<sup>${count(c.id)}</sup></button>`).join('');
 
     const applyFilter = (id, animate) => {
       $$('.filter', filters).forEach((b) => {
@@ -90,7 +103,7 @@
       tiles.forEach((t) => (t.hidden = !(id === 'all' || t.dataset.cat === id)));
       visible = tiles.filter((t) => !t.hidden).map((t) => +t.dataset.index);
       if (animate && motion) {
-        gsap.fromTo(tiles.filter((t) => !t.hidden), { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.05, ease: 'power3.out' });
+        gsap.fromTo(tiles.filter((t) => !t.hidden), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.06, ease: 'power3.out' });
       }
       if (hasGsap) ScrollTrigger.refresh();
     };
@@ -124,8 +137,7 @@
     if (lenis) lenis.start();
   };
   menuBtn.addEventListener('click', () => {
-    const open = !header.classList.contains('menu-open');
-    if (!open) return closeMenu();
+    if (header.classList.contains('menu-open')) return closeMenu();
     header.classList.add('menu-open');
     menuBtn.setAttribute('aria-expanded', 'true');
     menuBtn.textContent = 'Close';
@@ -141,14 +153,28 @@
   };
   if (!motion) addEventListener('scroll', () => onScroll(scrollY), { passive: true });
 
-  // Custom cursor (mouse only)
+  // Custom cursor
   const cursor = $('.cursor');
-  if (cursor && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  if (cursor && finePointer) {
     const moveX = hasGsap ? gsap.quickTo(cursor, 'x', { duration: 0.35, ease: 'power3' }) : (v) => (cursor.style.left = v + 'px');
     const moveY = hasGsap ? gsap.quickTo(cursor, 'y', { duration: 0.35, ease: 'power3' }) : (v) => (cursor.style.top = v + 'px');
     addEventListener('mousemove', (e) => { cursor.style.opacity = 1; moveX(e.clientX); moveY(e.clientY); });
     document.addEventListener('mouseleave', () => (cursor.style.opacity = 0));
     document.addEventListener('mouseover', (e) => cursor.classList.toggle('is-view', !!e.target.closest('[data-cursor]')));
+  }
+
+  // Magnetic buttons: pull toward the cursor
+  if (motion && finePointer) {
+    $$('[data-magnetic]').forEach((el) => {
+      const xTo = gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power3' });
+      const yTo = gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power3' });
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        xTo((e.clientX - r.left - r.width / 2) * 0.3);
+        yTo((e.clientY - r.top - r.height / 2) * 0.4);
+      });
+      el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
+    });
   }
 
   // Service rows: image preview follows the mouse
@@ -158,21 +184,26 @@
       const p = photos.find((x) => x.category === c.id);
       if (!p) return;
       const img = new Image();
-      img.src = src(p, true);
+      img.src = src(p.file, true);
       img.alt = '';
       img.dataset.cat = c.id;
       preview.appendChild(img);
     });
     const px = hasGsap ? gsap.quickTo(preview, 'x', { duration: 0.6, ease: 'power3' }) : null;
     const py = hasGsap ? gsap.quickTo(preview, 'y', { duration: 0.6, ease: 'power3' }) : null;
+    const rot = hasGsap ? gsap.quickTo(preview, 'rotation', { duration: 0.8, ease: 'power3' }) : null;
+    let lastX = 0;
     $$('.service').forEach((row) => {
       row.addEventListener('mouseenter', () => {
         $$('img', preview).forEach((i) => i.classList.toggle('is-on', i.dataset.cat === row.dataset.preview));
         preview.classList.add('is-on');
       });
-      row.addEventListener('mouseleave', () => preview.classList.remove('is-on'));
+      row.addEventListener('mouseleave', () => { preview.classList.remove('is-on'); if (rot) rot(0); });
       row.addEventListener('mousemove', (e) => {
-        if (px) { px(e.clientX + 30); py(e.clientY - 200); }
+        if (!px) return;
+        px(e.clientX + 30); py(e.clientY - 200);
+        rot(Math.max(-8, Math.min(8, (e.clientX - lastX) * 0.6)));
+        lastX = e.clientX;
       });
     });
   }
@@ -185,35 +216,63 @@
     }, { threshold: 0.25 }).observe(v);
   });
 
-  // Lightbox (work page)
+  // Lightbox (work page): the photo grows from its tile to full screen
   const lb = $('#lightbox');
   if (lb && grid) {
     let pos = 0;
     let lastFocus = null;
+    const lbImg = $('#lb-img');
     const show = () => {
       const p = photos[visible[pos]];
-      $('#lb-img').src = src(p);
-      $('#lb-img').alt = p.alt;
+      lbImg.src = src(p.file);
+      lbImg.alt = p.alt;
       $('#lb-title').textContent = p.title;
       $('#lb-count').textContent = `${pos + 1} / ${visible.length} · ${catName(p.category)}`;
     };
-    const open = (index) => {
-      lastFocus = document.activeElement;
-      pos = Math.max(0, visible.indexOf(index));
-      show();
+    const finishOpen = () => {
       lb.classList.add('is-open');
       if (lenis) lenis.stop();
       $('#lb-close').focus();
+    };
+    const open = (index, tile) => {
+      lastFocus = document.activeElement;
+      pos = Math.max(0, visible.indexOf(index));
+      show();
+      const from = tile && $('img', tile);
+      if (!motion || !from) return finishOpen();
+
+      // Fly a copy of the photo from the tile to the center of the screen
+      const p = photos[index];
+      const r = from.getBoundingClientRect();
+      const maxW = innerWidth - 64;
+      const maxH = innerHeight - 150;
+      const scale = Math.min(maxW / p.w, maxH / p.h);
+      const w = p.w * scale, h = p.h * scale;
+      const fly = new Image();
+      fly.src = from.currentSrc || from.src;
+      fly.className = 'fly';
+      Object.assign(fly.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+      document.body.appendChild(fly);
+      lb.classList.add('is-backdrop');
+      gsap.to(fly, {
+        left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h,
+        duration: 0.85, ease: 'expo.inOut',
+        onComplete: () => { finishOpen(); lb.classList.remove('is-backdrop'); gsap.to(fly, { opacity: 0, duration: 0.3, delay: 0.15, onComplete: () => fly.remove() }); },
+      });
     };
     const close = () => {
       lb.classList.remove('is-open');
       if (lenis) lenis.start();
       if (lastFocus) lastFocus.focus();
     };
-    const step = (d) => { pos = (pos + d + visible.length) % visible.length; show(); };
+    const step = (d) => {
+      pos = (pos + d + visible.length) % visible.length;
+      if (motion) gsap.fromTo(lbImg, { opacity: 0, x: 40 * d }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' });
+      show();
+    };
     grid.addEventListener('click', (e) => {
       const t = e.target.closest('.tile');
-      if (t) open(+t.dataset.index);
+      if (t) open(+t.dataset.index, t);
     });
     $('#lb-close').addEventListener('click', close);
     $('#lb-prev').addEventListener('click', () => step(-1));
@@ -235,12 +294,12 @@
     contact.addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd = new FormData(contact);
-      if (!fd.get('name') || !$('#f-email').checkValidity() || !fd.get('email')) {
+      if (!fd.get('name') || !fd.get('email') || !$('#f-email').checkValidity()) {
         status.textContent = 'Please add your name and a valid email.';
         return;
       }
       if (!cfg.web3formsKey) {
-        status.textContent = 'The form isn’t connected yet. Add a Web3Forms key in js/config.js.';
+        status.textContent = 'The form isn’t connected yet. Please email justinclosemedia@gmail.com.';
         return;
       }
       status.textContent = 'Sending…';
@@ -250,7 +309,7 @@
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
             access_key: cfg.web3formsKey,
-            subject: 'New inquiry from justinclosemedia website',
+            subject: 'New inquiry from justinclosemedia.com',
             from_name: 'Justin Close Media website',
             name: fd.get('name'),
             email: fd.get('email'),
@@ -264,7 +323,7 @@
         contact.reset();
         status.textContent = 'Thank you! I’ll be in touch soon.';
       } catch (err) {
-        status.textContent = 'Something went wrong. Please try again in a moment.';
+        status.textContent = 'Something went wrong. Please email justinclosemedia@gmail.com.';
       }
     });
   }
@@ -276,7 +335,7 @@
       e.preventDefault();
       const input = $('input', news);
       if (!input.value || !input.checkValidity()) { status.textContent = 'Please enter a valid email.'; return; }
-      if (!cfg.newsletterUrl) { status.textContent = 'Sign-up isn’t connected yet. Add your email tool’s form URL in js/config.js.'; return; }
+      if (!cfg.newsletterUrl) { status.textContent = 'Sign-up opens soon. Thanks for your interest!'; return; }
       try {
         await fetch(cfg.newsletterUrl, { method: 'POST', body: new FormData(news), mode: 'no-cors' });
         news.reset();
@@ -288,17 +347,34 @@
   }
 
   /* ------------------------------------------------------------------
-     3. Scroll animations
+     3. Scroll experience
      ------------------------------------------------------------------ */
 
   if (!motion) return;
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Smooth scrolling
+  // Living images
+  const gl = new Map();
+  if (window.GL && GL.supported) {
+    $$('[data-gl]').forEach((el) => {
+      const fx = GL.attach(el, { zoom: parseFloat(el.dataset.glZoom) || 1 });
+      if (fx) gl.set(el, fx);
+    });
+    $$('[data-gl-card]').forEach((el) => {
+      const fx = GL.attach(el, { zoom: 1.08 });
+      if (fx) gl.set(el, fx);
+    });
+  }
+
+  // Smooth scrolling (also feeds scroll speed to the WebGL images)
   if (window.Lenis) {
-    lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
-    lenis.on('scroll', (l) => { ScrollTrigger.update(); onScroll(l.scroll); });
+    lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
+    lenis.on('scroll', (l) => {
+      ScrollTrigger.update();
+      onScroll(l.scroll);
+      if (window.GL) GL.setVelocity(l.velocity);
+    });
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
   } else {
@@ -312,28 +388,27 @@
     const target = a.getAttribute('href') === '#main' ? 0 : $(a.getAttribute('href'));
     if (target === null) return;
     e.preventDefault();
-    lenis.scrollTo(target, { duration: 1.6 });
+    lenis.scrollTo(target, { duration: 1.8 });
   });
 
   // Page wipe between pages
   const wipe = $('.wipe');
+  gsap.set(wipe, { y: 0, yPercent: 100 });
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href]');
     if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
     const url = new URL(a.href, location);
-    if (url.origin !== location.origin || url.pathname === location.pathname) return;
+    if (url.origin !== location.origin || url.pathname === location.pathname || url.protocol === 'mailto:') return;
     e.preventDefault();
     store.set('wipe', '1');
-    gsap.fromTo(wipe, { y: 0, yPercent: 100 }, { y: 0, yPercent: 0, duration: 0.7, ease: 'power3.inOut', onComplete: () => (location.href = a.href) });
+    gsap.to(wipe, { yPercent: 0, duration: 0.75, ease: 'expo.inOut', onComplete: () => (location.href = a.href) });
   });
-  gsap.set(wipe, { y: 0, yPercent: 100 });
-  // Undo the wipe if the user comes back with the browser's Back button
   addEventListener('pageshow', (e) => { if (e.persisted) gsap.set(wipe, { yPercent: 100 }); });
   const enteringFromWipe = store.get('wipe') === '1';
   store.set('wipe', '');
   if (enteringFromWipe) {
     gsap.set(wipe, { yPercent: 0 });
-    gsap.to(wipe, { yPercent: -100, duration: 0.9, ease: 'power3.inOut', delay: 0.05 });
+    gsap.to(wipe, { yPercent: -100, duration: 1, ease: 'expo.inOut', delay: 0.05 });
   }
 
   // Words light up one by one as you scroll
@@ -346,10 +421,9 @@
   });
 
   // Headings: lines slide up from a mask
-  const lineGroups = $$('h1, h2, h3').filter((h) => $('.line', h) && !h.closest('.hero, .statement'));
-  lineGroups.forEach((h) => {
+  $$('h1, h2, h3').filter((h) => $('.line', h) && !h.closest('.hero')).forEach((h) => {
     gsap.to($$('.line > span', h), {
-      y: 0, duration: 1.2, stagger: 0.1, ease: 'power4.out',
+      y: 0, duration: 1.3, stagger: 0.1, ease: 'expo.out',
       scrollTrigger: { trigger: h, start: 'top 88%' },
     });
   });
@@ -357,39 +431,54 @@
   // Fade-up reveals
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 90%',
-    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: 0.1, ease: 'power3.out', overwrite: true }),
+    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: 'expo.out', overwrite: true }),
   });
 
-  // Work page tiles
+  // Work page tiles rise in
   if (grid) {
-    gsap.set($$('.tile', grid), { opacity: 0, y: 40 });
+    gsap.set($$('.tile', grid), { opacity: 0, y: 60 });
     ScrollTrigger.batch($$('.tile', grid), {
       start: 'top 95%',
-      onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1, stagger: 0.08, ease: 'power3.out' }),
+      onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out' }),
     });
   }
 
-  // Hero: intro after the loader, then parallax on scroll
+  // Hero: zooms in on load, then pushes back as you scroll
   const hero = $('.hero');
+  const heroMedia = $('.hero__media');
+  const heroFx = heroMedia && gl.get(heroMedia);
+  const zoomTarget = (el, fx) => (fx ? fx : $('img', el));
+  const zoomProp = (fx) => (fx ? 'zoom' : 'scale');
+
   const heroIn = () => {
     if (!hero) return;
     const tl = gsap.timeline();
-    tl.fromTo('.hero__media img', { scale: 1.25 }, { scale: 1, duration: 2.2, ease: 'power3.out' })
-      .to($$('.hero .line > span'), { y: 0, duration: 1.3, stagger: 0.12, ease: 'power4.out' }, 0.3)
-      .from('[data-hero-fade]', { opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: 'power3.out' }, 0.9);
+    if (heroFx) {
+      heroFx.reveal = 0;
+      tl.to(heroFx, { reveal: 1, duration: 1.8, ease: 'power3.inOut' }, 0)
+        .fromTo(heroFx, { zoom: 1.5 }, { zoom: 1.25, duration: 2.4, ease: 'expo.out' }, 0);
+    } else {
+      tl.fromTo('.hero__media img', { scale: 1.3 }, { scale: 1, duration: 2.2, ease: 'expo.out' }, 0);
+    }
+    tl.to($$('.hero .line > span'), { y: 0, duration: 1.4, stagger: 0.12, ease: 'expo.out' }, 0.5)
+      .from('[data-hero-fade]', { opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: 'power3.out' }, 1);
   };
   if (hero) {
+    gsap.to(zoomTarget(heroMedia, heroFx), {
+      [zoomProp(heroFx)]: heroFx ? 1 : 1.15, ease: 'none',
+      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
+    });
     gsap.to('.hero__media', {
-      yPercent: 18, ease: 'none',
+      yPercent: 20, ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
     });
     gsap.to('.hero__content', {
-      y: -80, opacity: 0, ease: 'none',
+      y: -100, opacity: 0, ease: 'none',
       scrollTrigger: { trigger: hero, start: 'top top', end: '60% top', scrub: true },
     });
   }
 
-  // Loader (home page, once per visit)
+  // Loader: counts to 100 while images load (home page, once per visit)
   const loader = $('.loader');
   if (loader) {
     if (store.get('seenLoader') || enteringFromWipe) {
@@ -398,13 +487,20 @@
     } else {
       store.set('seenLoader', '1');
       if (lenis) lenis.stop();
-      gsap.timeline()
-        .from('.loader__name span', { yPercent: 110, duration: 1, ease: 'power4.out' })
-        .to('.loader__bar i', { scaleX: 1, duration: 1.1, ease: 'power2.inOut' }, 0.2)
-        .to('.loader__name span', { yPercent: -110, duration: 0.7, ease: 'power3.in' }, '+=0.15')
-        .to(loader, { yPercent: -100, duration: 1, ease: 'power4.inOut' }, '-=0.2')
-        .add(() => { heroIn(); if (lenis) lenis.start(); }, '-=0.6')
-        .add(() => loader.remove());
+      const counter = { v: 0 };
+      const num = $('.loader__count span');
+      const tick = () => (num.textContent = Math.round(counter.v));
+      const loaded = new Promise((res) => (document.readyState === 'complete' ? res() : addEventListener('load', res, { once: true })));
+      gsap.from('.loader__name span', { yPercent: 110, duration: 1.1, ease: 'expo.out' });
+      gsap.to(counter, { v: 85, duration: 1.4, ease: 'power2.out', onUpdate: tick });
+      Promise.race([loaded, new Promise((r) => setTimeout(r, 3500))]).then(() => {
+        gsap.timeline()
+          .to(counter, { v: 100, duration: 0.5, ease: 'power2.out', onUpdate: tick })
+          .to(['.loader__name span', '.loader__count'], { yPercent: -110, opacity: 0, duration: 0.6, ease: 'power3.in' })
+          .to(loader, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'expo.inOut' }, '-=0.15')
+          .add(() => { heroIn(); if (lenis) lenis.start(); }, '-=0.7')
+          .add(() => loader.remove());
+      });
     }
   } else {
     heroIn();
@@ -412,59 +508,55 @@
 
   const mm = gsap.matchMedia();
 
-  // Selected work: vertical scroll moves the strip sideways (desktop)
+  // A guest's day: pinned, each scene wipes up over the last (desktop)
   mm.add('(min-width: 900px)', () => {
-    const section = $('.hscroll');
-    if (!section || !track) return;
-    const distance = () => track.scrollWidth - innerWidth;
-    const slide = gsap.to(track, {
-      x: () => -distance(), ease: 'none',
-      scrollTrigger: {
-        trigger: section, start: 'top top', end: () => '+=' + distance(),
-        pin: true, scrub: 1, invalidateOnRefresh: true,
-      },
+    const section = $('.story');
+    if (!section) return;
+    const scenes = $$('.scene', section);
+    const steps = $$('.step', section);
+    gsap.set(scenes.slice(1), { clipPath: 'inset(100% 0% 0% 0%)' });
+    gsap.set(steps.slice(1), { autoAlpha: 0, y: 40 });
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + innerHeight * (scenes.length - 0.5), pin: true, scrub: 1 },
     });
-    $$('.card__media img', track).forEach((img) => {
-      gsap.fromTo(img, { xPercent: -5 }, {
-        xPercent: 5, ease: 'none',
-        scrollTrigger: { trigger: img.closest('.card'), containerAnimation: slide, start: 'left right', end: 'right left', scrub: true },
-      });
+    scenes.forEach((scene, i) => {
+      const img = $('img', scene);
+      tl.fromTo(img, { scale: 1.25 }, { scale: 1, ease: 'none', duration: 1 }, i);
+      if (i === 0) return;
+      tl.to(scene, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.inOut', duration: 0.6 }, i - 0.3)
+        .to(steps[i - 1], { autoAlpha: 0, y: -40, duration: 0.3 }, i - 0.3)
+        .to(steps[i], { autoAlpha: 1, y: 0, duration: 0.3 }, i - 0.05);
     });
+    tl.fromTo('.story__progress i', { scaleY: 0 }, { scaleY: 1, ease: 'none', duration: scenes.length }, 0);
   });
 
-  // Statement image grows to full screen while pinned
-  const statement = $('.statement');
-  if (statement) {
-    gsap.timeline({
-      scrollTrigger: { trigger: statement, start: 'top top', end: '+=100%', pin: true, scrub: 1 },
-    })
-      .to('.statement__media', { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none' }, 0)
-      .to('.statement__media img', { scale: 1, ease: 'none' }, 0)
-      .to($$('.statement .line > span'), { y: 0, stagger: 0.08, duration: 0.4, ease: 'power3.out' }, 0.45);
+  // Drone hero: pulls back from close-up as it scrolls past
+  const droneHero = $('.drone__hero');
+  if (droneHero) {
+    const fx = gl.get(droneHero);
+    gsap.fromTo(zoomTarget(droneHero, fx), { [zoomProp(fx)]: fx ? 1.3 : 1.3 }, {
+      [zoomProp(fx)]: 1, ease: 'none',
+      scrollTrigger: { trigger: droneHero, start: 'top bottom', end: 'bottom top', scrub: true },
+    });
   }
 
-  // Drone image slowly zooms out as it enters
-  $$('[data-zoom]').forEach((img) => {
-    gsap.fromTo(img, { scale: 1.3 }, {
-      scale: 1, ease: 'none',
-      scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+  // Drone strip: vertical scroll moves it sideways (desktop)
+  mm.add('(min-width: 900px)', () => {
+    const section = $('.hscroll');
+    if (!section || !droneTrack) return;
+    const distance = () => Math.max(0, droneTrack.scrollWidth - innerWidth);
+    gsap.to(droneTrack, {
+      x: () => -distance(), ease: 'none',
+      scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + distance(), pin: true, scrub: 1, invalidateOnRefresh: true },
     });
   });
 
-  // Mosaic columns move at different speeds (desktop)
-  mm.add('(min-width: 761px)', () => {
-    if (!mosaic) return;
-    [-40, -160, -90].forEach((y, i) => {
-      const col = $$('.mosaic__col', mosaic)[i];
-      if (col) gsap.to(col, { y, ease: 'none', scrollTrigger: { trigger: mosaic, start: 'top bottom', end: 'bottom top', scrub: true } });
-    });
-  });
-
-  // About photo wipes open
+  // Photos that wipe open as they enter
   $$('[data-clip]').forEach((el) => {
+    const img = $('img, video', el);
     gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 80%' } })
-      .fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power4.inOut' })
-      .fromTo($('img', el), { scale: 1.3 }, { scale: 1, duration: 1.8, ease: 'power3.out' }, 0);
+      .fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'expo.inOut' })
+      .fromTo(img, { scale: 1.35 }, { scale: 1, duration: 2, ease: 'expo.out' }, 0);
   });
 
   // Footer wordmark slides in
