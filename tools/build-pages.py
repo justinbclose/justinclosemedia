@@ -179,14 +179,15 @@ PAGES = [
 """),
   dict(file='about.html', page='about',
        title='About | Justin Close Media',
-       desc='Justin Close works in hotel marketing and started Justin Close Media to give hotels great photos and video at a fair price.',
+       desc='Justin Close works in hotel marketing and started Justin Close Media to give hotels great photos and video at a fair price, with full usage rights.',
        body="""    <section class="wrap about">
       <div class="about__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close standing on a mountain trail" loading="lazy"></div>
       <div>
         <h1 class="display">I work in hotel marketing.</h1>
-        <p class="lead">I started shooting because hotels kept running out of good photos to post.</p>
-        <p>Every day I see the same gap. Hotels need fresh, high-quality photos for Instagram, their website and booking sites, but budgets, scheduling and the hassle of hiring a photographer get in the way.</p>
-        <p>Justin Close Media fixes that. I shoot interiors, lifestyle, property, drone and video, at a fair price, with a process that's easy for your team.</p>
+        <p class="lead">And I kept seeing the same gap: hotels never have enough good photos.</p>
+        <p>Hotels need fresh, high-quality images for their website, for Instagram and for ads. Most of the time the photos on hand are outdated, too few, or come with usage limits that make them hard to use. I started Justin Close Media to fix that.</p>
+        <p>I shoot interiors, lifestyle, property, drone and video, at a fair price, with a process that's easy for your team.</p>
+        <p><strong style="font-weight:400">You own the rights to every photo.</strong> Use them on your website, on Instagram, in ads, anywhere. No ifs, ands or buts.</p>
 
         <h2 class="h2">What hotels get</h2>
         <ul class="list">
@@ -194,6 +195,7 @@ PAGES = [
           <li><b>·</b>Short vertical video for Reels and Stories</li>
           <li><b>·</b>Drone photos and video of the property and its location</li>
           <li><b>·</b>Files sized for your website, social media and booking sites</li>
+          <li><b>·</b>Full rights to use every photo anywhere, including ads</li>
         </ul>
 
         <h2 class="h2">How booking works</h2>
