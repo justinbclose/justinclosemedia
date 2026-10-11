@@ -89,5 +89,4 @@ window.HOME_TILES = [
   { label: 'Video', href: 'video.html', video: { file: 'oceanfront-dining-clip' } },
   { label: 'Drone', href: 'drone.html', file: 'coastline-resort-aerial', alt: 'Resort and coastline from above' },
   { label: 'Lifestyle', href: 'photos.html?c=lifestyle', file: 'beach-chairs-umbrella', alt: 'Beach chairs under an umbrella' },
-  { label: 'Spa', href: 'photos.html?c=spa', file: 'cedar-sauna', alt: 'Cedar sauna' },
 ];
