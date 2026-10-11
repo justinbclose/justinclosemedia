@@ -38,10 +38,10 @@ window.GL = (function () {
       // ripple around the mouse
       vec2 d = (uv - mouse) * vec2(rs, 1.0);
       float dist = length(d);
-      float wave = sin(dist * 26.0 - time * 3.2) * 0.010 * hover * smoothstep(0.55, 0.0, dist);
+      float wave = sin(dist * 26.0 - time * 3.2) * 0.006 * hover * smoothstep(0.55, 0.0, dist);
       c += normalize(d + 1e-4) * wave / vec2(rs, 1.0);
       // slight color split while moving
-      float shift = abs(vel) * 0.006 + hover * 0.0015;
+      float shift = abs(vel) * 0.004 + hover * 0.0008;
       vec4 col = texture2D(tex, c);
       col.r = texture2D(tex, c + vec2(shift, 0.0)).r;
       col.b = texture2D(tex, c - vec2(shift, 0.0)).b;

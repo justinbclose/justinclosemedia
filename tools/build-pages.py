@@ -1,0 +1,273 @@
+"""Builds the site's HTML pages from one shared header and footer.
+
+Run after editing this file:  python3 -I tools/build-pages.py
+Each page's main content lives in the PAGES list below.
+"""
+from pathlib import Path
+
+SITE = Path(__file__).resolve().parent.parent / 'site'
+EMAIL = 'justinclosemedia@gmail.com'
+
+HEAD = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content="{desc}">
+  <meta property="og:title" content="{title}">
+  <meta property="og:description" content="{desc}">
+  <meta property="og:image" content="images/portfolio/oceanfront-hotel-pool-dusk.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="{page}">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="bar">
+    <div class="wrap">
+      <a class="logo" href="index.html">Justin Close Media</a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="photos.html" data-nav="photos">Photos</a>
+        <a href="video.html" data-nav="video">Video</a>
+        <a href="drone.html" data-nav="drone">Drone</a>
+        <a href="about.html" data-nav="about">About</a>
+        <a class="btn btn--sm" href="contact.html">Check availability</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+"""
+
+CTA = """  <section class="dark">
+    <div class="wrap cta">
+      <h2 class="h2">Booking a shoot for your property?</h2>
+      <div class="cta__right">
+        <a class="link" href="mailto:{email}">{email}</a>
+        <a class="btn" href="contact.html">Check availability</a>
+      </div>
+    </div>
+"""
+
+FOOT = """    <footer class="footer">
+      <div class="wrap">
+        <span>© <span data-year></span> Justin Close Media · Hotel photography, video and drone</span>
+        <a href="mailto:{email}">{email}</a>
+      </div>
+    </footer>
+  </section>
+  {extra}
+  <script src="js/config.js"></script>
+  <script src="js/photos.js"></script>
+  {scripts}<script src="js/main.js"></script>
+</body>
+</html>
+"""
+
+VIEWER = """<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Viewer">
+    <div class="viewer__top"><span class="num" id="v-count"></span><button id="v-close">Close ✕</button></div>
+    <div class="viewer__stage" id="v-stage"></div>
+    <div class="viewer__bottom">
+      <span id="v-title"></span>
+      <div class="thumbs" id="v-thumbs"></div>
+      <span><button id="v-prev">← Prev</button>&nbsp;&nbsp;&nbsp;<button id="v-next">Next →</button></span>
+    </div>
+  </div>"""
+
+PAGES = [
+  dict(file='index.html', page='home',
+       title='Justin Close Media | Hotel Photography, Video and Drone',
+       desc='Hotel photos and video your marketing team will actually use. Interiors, lifestyle and drone, shot by someone who works in hotel marketing.',
+       scripts='<script src="js/gl.js"></script>\n  ',
+       body="""    <section class="wrap hero">
+      <div class="hero__top">
+        <div>
+          <h1 class="display">Hotel photos and video your marketing team will actually use.</h1>
+          <p class="lead">Interiors, lifestyle and drone, shot by someone who works in hotel marketing.</p>
+        </div>
+        <div class="hero__actions">
+          <a class="btn" href="contact.html">Check availability</a>
+          <a class="btn btn--ghost" href="photos.html">See the work</a>
+        </div>
+      </div>
+      <div class="hero__frame" data-gl>
+        <img src="images/portfolio/oceanfront-hotel-pool-dusk.jpg" alt="Aerial view of an oceanfront hotel at dusk with a lit pool, palm trees and the beach" fetchpriority="high">
+      </div>
+      <div class="caption"><span>Oceanfront hotel · Blue hour · Drone</span><span class="num">Justin Close Media</span></div>
+    </section>
+
+    <section class="wrap section">
+      <div class="page-head" style="padding-top:0">
+        <h2 class="h2">See the work</h2>
+        <span class="meta">Photos · Video · Drone</span>
+      </div>
+      <div class="tiles" id="home-tiles"></div>
+    </section>
+
+    <section class="wrap section" style="padding-top:0">
+      <div class="how">
+        <div>
+          <p class="meta">How it works</p>
+          <h2 class="h2" style="margin:10px 0 14px">Easy to book. Made for marketing.</h2>
+          <p class="muted" style="color:var(--muted)">I work in hotel marketing, so I know which shots your team needs: images that work on Instagram, your website and booking sites.</p>
+        </div>
+        <ol class="steps">
+          <li><span class="meta num">01</span><b>Tell me about your property</b><p>Send a quick note or book a short call.</p></li>
+          <li><span class="meta num">02</span><b>Get a shot list</b><p>We plan the rooms, amenities and moments that sell your stay.</p></li>
+          <li><span class="meta num">03</span><b>Shoot day</b><p>Photos, video and drone in one visit, with little disruption to guests.</p></li>
+          <li><span class="meta num">04</span><b>Delivery</b><p>Edited files sized for your website, social media and booking sites.</p></li>
+        </ol>
+      </div>
+    </section>
+"""),
+  dict(file='photos.html', page='photos',
+       title='Photos | Justin Close Media',
+       desc='Hotel photography: pools, dining, rooms, lifestyle and property. Shot for your website, booking sites and Instagram.',
+       extra=VIEWER,
+       body="""    <section class="wrap">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Photos</h1>
+          <p class="lead">Pools, dining, rooms and the people who use them. Shot for your website, booking sites and Instagram.</p>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Filter photos"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+"""),
+  dict(file='video.html', page='video',
+       title='Video | Justin Close Media',
+       desc='Short hotel video clips made for Reels, Stories and your website. Vertical and wide, ready to post.',
+       extra=VIEWER,
+       body="""    <section class="wrap">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Video</h1>
+          <p class="lead">Short clips made for Reels, Stories and your website. Vertical and wide, ready to post. Hover or tap to play.</p>
+        </div>
+      </div>
+      <div id="videos"></div>
+    </section>
+"""),
+  dict(file='drone.html', page='drone',
+       title='Drone | Justin Close Media',
+       desc='Hotel drone photography and video. Aerial views that show your location, the pool and the view.',
+       body="""    <section class="wrap">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Drone</h1>
+          <p class="lead">Your property from above. Aerial photos and video that show the location, the pool and the view.</p>
+        </div>
+        <span class="meta">Drag the strip or use ← → keys</span>
+      </div>
+      <div class="stage">
+        <div class="stage__frame" id="stage"></div>
+        <div class="stage__info">
+          <span class="meta num" id="stage-count"></span>
+          <h2 class="h2" id="stage-title"></h2>
+          <p id="stage-text"></p>
+        </div>
+      </div>
+      <div class="strip" id="strip" aria-label="Drone photos and videos"></div>
+    </section>
+"""),
+  dict(file='about.html', page='about',
+       title='About | Justin Close Media',
+       desc='Justin Close works in hotel marketing and started Justin Close Media to give hotels great photos and video at a fair price.',
+       body="""    <section class="wrap about">
+      <div class="about__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close standing on a mountain trail" loading="lazy"></div>
+      <div>
+        <h1 class="display">I work in hotel marketing.</h1>
+        <p class="lead">I started shooting because hotels kept running out of good photos to post.</p>
+        <p>Every day I see the same gap. Hotels need fresh, high-quality photos for Instagram, their website and booking sites, but budgets, scheduling and the hassle of hiring a photographer get in the way.</p>
+        <p>Justin Close Media fixes that. I shoot interiors, lifestyle, property, drone and video, at a fair price, with a process that's easy for your team.</p>
+
+        <h2 class="h2">What hotels get</h2>
+        <ul class="list">
+          <li><b>·</b>Edited photos of rooms, amenities, dining and the property</li>
+          <li><b>·</b>Short vertical video for Reels and Stories</li>
+          <li><b>·</b>Drone photos and video of the property and its location</li>
+          <li><b>·</b>Files sized for your website, social media and booking sites</li>
+        </ul>
+
+        <h2 class="h2">How booking works</h2>
+        <ul class="list">
+          <li><b class="num">01</b>Email me or book a short call</li>
+          <li><b class="num">02</b>I send a shot list and a prep list</li>
+          <li><b class="num">03</b>Shoot day</li>
+          <li><b class="num">04</b>Your edited photos and video are delivered</li>
+        </ul>
+        <p style="margin-top:32px"><a class="btn" href="contact.html">Check availability</a></p>
+      </div>
+    </section>
+"""),
+  dict(file='contact.html', page='contact', cta=False,
+       title='Contact | Justin Close Media',
+       desc='Check availability for a hotel photo, video or drone shoot with Justin Close Media.',
+       body="""    <section class="wrap contact">
+      <div>
+        <h1 class="display">Check availability</h1>
+        <p class="lead">Tell me about your property and what you need. I'll reply with ideas, timing and pricing.</p>
+        <a class="contact__email" href="mailto:{email}">{email}</a>
+
+        <div style="margin-top:56px">
+          <p class="meta">Email updates</p>
+          <p class="muted" style="color:var(--muted);margin:6px 0 0">New work and hotel marketing ideas, now and then. No spam.</p>
+          <form id="newsletter-form" novalidate>
+            <label class="sr-only" for="n-email">Email address</label>
+            <div class="news">
+              <input id="n-email" name="email_address" type="email" placeholder="Your email" autocomplete="email" required>
+              <button type="submit">Subscribe →</button>
+            </div>
+            <p class="status" role="status"></p>
+          </form>
+        </div>
+      </div>
+
+      <form class="form" id="contact-form" novalidate>
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-property">Hotel or property</label><input id="f-property" name="property" autocomplete="organization"></div>
+        <div class="field"><label for="f-city">City</label><input id="f-city" name="city" autocomplete="address-level2"></div>
+        <fieldset class="field field--full">
+          <legend>What do you need?</legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="need" value="Photos"><span>Photos</span></label>
+            <label class="chip"><input type="checkbox" name="need" value="Video"><span>Video</span></label>
+            <label class="chip"><input type="checkbox" name="need" value="Drone"><span>Drone</span></label>
+            <label class="chip"><input type="checkbox" name="need" value="Not sure"><span>Not sure</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="field field--full">
+          <legend>Timing</legend>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="timing" value="This month"><span>This month</span></label>
+            <label class="chip"><input type="radio" name="timing" value="1-3 months"><span>1–3 months</span></label>
+            <label class="chip"><input type="radio" name="timing" value="Just looking"><span>Just looking</span></label>
+          </div>
+        </fieldset>
+        <div class="field field--full"><label for="f-message">Message (optional)</label><textarea id="f-message" name="message" rows="3"></textarea></div>
+        <div class="field--full"><button class="btn" type="submit">Send →</button></div>
+        <p class="status" role="status"></p>
+      </form>
+    </section>
+"""),
+]
+
+for p in PAGES:
+    html = HEAD.format(**p)
+    html += p['body'].replace('{email}', EMAIL)
+    html += '  </main>\n'
+    if p.get('cta', True):
+        html += CTA.format(email=EMAIL)
+    else:
+        html += '  <section class="dark">\n'
+    html += FOOT.format(email=EMAIL, extra=p.get('extra', ''), scripts=p.get('scripts', ''))
+    (SITE / p['file']).write_text(html)
+    print('wrote', p['file'])
+
+# Old link /work.html now points to the photo gallery
+(SITE / 'work.html').write_text('<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=photos.html"><link rel="canonical" href="photos.html"><title>Photos</title><a href="photos.html">Photos</a>\n')
+print('wrote work.html (redirect)')

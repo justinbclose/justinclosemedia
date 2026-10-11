@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video | Justin Close Media</title>
+  <meta name="description" content="Short hotel video clips made for Reels, Stories and your website. Vertical and wide, ready to post.">
+  <meta property="og:title" content="Video | Justin Close Media">
+  <meta property="og:description" content="Short hotel video clips made for Reels, Stories and your website. Vertical and wide, ready to post.">
+  <meta property="og:image" content="images/portfolio/oceanfront-hotel-pool-dusk.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="video">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="bar">
+    <div class="wrap">
+      <a class="logo" href="index.html">Justin Close Media</a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+      <nav class="nav" id="nav" aria-label="Main">
+        <a href="photos.html" data-nav="photos">Photos</a>
+        <a href="video.html" data-nav="video">Video</a>
+        <a href="drone.html" data-nav="drone">Drone</a>
+        <a href="about.html" data-nav="about">About</a>
+        <a class="btn btn--sm" href="contact.html">Check availability</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="wrap">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Video</h1>
+          <p class="lead">Short clips made for Reels, Stories and your website. Vertical and wide, ready to post. Hover or tap to play.</p>
+        </div>
+      </div>
+      <div id="videos"></div>
+    </section>
+  </main>
+  <section class="dark">
+    <div class="wrap cta">
+      <h2 class="h2">Booking a shoot for your property?</h2>
+      <div class="cta__right">
+        <a class="link" href="mailto:justinclosemedia@gmail.com">justinclosemedia@gmail.com</a>
+        <a class="btn" href="contact.html">Check availability</a>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="wrap">
+        <span>© <span data-year></span> Justin Close Media · Hotel photography, video and drone</span>
+        <a href="mailto:justinclosemedia@gmail.com">justinclosemedia@gmail.com</a>
+      </div>
+    </footer>
+  </section>
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Viewer">
+    <div class="viewer__top"><span class="num" id="v-count"></span><button id="v-close">Close ✕</button></div>
+    <div class="viewer__stage" id="v-stage"></div>
+    <div class="viewer__bottom">
+      <span id="v-title"></span>
+      <div class="thumbs" id="v-thumbs"></div>
+      <span><button id="v-prev">← Prev</button>&nbsp;&nbsp;&nbsp;<button id="v-next">Next →</button></span>
+    </div>
+  </div>
+  <script src="js/config.js"></script>
+  <script src="js/photos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

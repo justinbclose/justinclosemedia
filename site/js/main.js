@@ -1,296 +1,295 @@
 /* ==========================================================================
-   Justin Close Media: site behavior
-   1. Build galleries from js/photos.js
-   2. UI (menu, header, cursor, magnetic buttons, lightbox, forms, video)
-   3. Scroll experience (GSAP + ScrollTrigger + Lenis + WebGL images)
+   Justin Close Media: site behavior (no libraries needed)
+   - Nav: current page, mobile menu
+   - Home: work tiles, subtle WebGL ripple on the hero
+   - Photos: filters + viewer that opens from the thumbnail
+   - Video: clips play on hover (desktop) or when centered (phone)
+   - Drone: stage + draggable strip
+   - Forms
    ========================================================================== */
 (function () {
-  const html = document.documentElement;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
+  const page = document.body.dataset.page;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canHover = matchMedia('(hover: hover)').matches;
 
-  const hasGsap = !!(window.gsap && window.ScrollTrigger);
-  if (!hasGsap) html.classList.remove('js'); // show everything if the libraries fail to load
-  const motion = hasGsap && !html.classList.contains('reduced');
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-  const photos = window.PHOTOS || [];
-  const story = window.STORY || [];
-  const cats = window.CATEGORIES || [];
-  const src = (file, small) => `images/portfolio/${file}${small ? '-sm' : ''}.jpg`;
-  const byFile = (file) => photos.find((p) => p.file === file) || { file, alt: '', w: 3, h: 4 };
-  const catName = (id) => (cats.find((c) => c.id === id) || {}).name || id;
-  const imgAttrs = (p) => `width="1000" height="${Math.round((1000 * p.h) / p.w)}"`;
-
-  const store = {
-    get(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } },
-    set(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} },
-  };
+  const PHOTOS = window.PHOTOS || [];
+  const VIDEOS = window.VIDEOS || [];
+  const DRONE = window.DRONE || [];
+  const GROUPS = window.GROUPS || [];
+  const img = (file, small) => `images/portfolio/${file}${small ? '-sm' : ''}.jpg`;
+  const vid = (v) => `video/${v.file}.mp4`;
+  const poster = (v) => `video/${v.file}.jpg`;
+  const pad = (n) => String(n).padStart(2, '0');
+  const ratio = (p) => `width="1000" height="${Math.round((1000 * p.h) / p.w)}"`;
 
   $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
 
-  /* ------------------------------------------------------------------
-     1. Build galleries
-     ------------------------------------------------------------------ */
+  /* ---------------- Nav ---------------- */
 
-  // A guest's day
-  const storySteps = $('#story-steps');
-  const storyMedia = $('#story-media');
-  if (storySteps && storyMedia) {
-    storySteps.innerHTML = story.map((s, i) => `
-      <div class="step" data-step="${i}">
-        <span class="step__time">${String(i + 1).padStart(2, '0')} · ${s.time}</span>
-        <h3 class="step__title">${s.title}</h3>
-        <p class="muted">${s.text}</p>
-      </div>`).join('');
-    storyMedia.innerHTML = story.map((s, i) => {
-      const p = byFile(s.file);
-      return `
-      <figure class="scene" data-scene="${i}">
-        <div class="scene__img"><img src="${src(p.file)}" alt="${p.alt}" loading="lazy"></div>
-        <figcaption class="scene__caption">
-          <span class="step__time">${String(i + 1).padStart(2, '0')} · ${s.time}</span>
-          <span class="step__title">${s.title}</span>
-          <span class="muted">${s.text}</span>
-        </figcaption>
-      </figure>`;
-    }).join('');
+  $$('[data-nav]').forEach((a) => { if (a.dataset.nav === page) a.setAttribute('aria-current', 'page'); });
+  const bar = $('.bar');
+  const menuBtn = $('.menu-btn');
+  menuBtn.addEventListener('click', () => {
+    const open = bar.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+    menuBtn.textContent = open ? 'Close' : 'Menu';
+  });
+
+  /* ---------------- Shared: hover-to-play video ---------------- */
+
+  function hoverPlay(card) {
+    const v = $('video', card);
+    if (!v || reduced) return;
+    const bar = $('.clip__bar', card);
+    const play = () => { card.classList.add('playing'); v.play().catch(() => {}); };
+    const stop = () => { card.classList.remove('playing'); v.pause(); };
+    if (bar) v.addEventListener('timeupdate', () => (bar.style.width = (v.currentTime / v.duration) * 100 + '%'));
+    if (canHover) {
+      card.addEventListener('mouseenter', play);
+      card.addEventListener('mouseleave', stop);
+      card.addEventListener('focus', play);
+      card.addEventListener('blur', stop);
+    } else {
+      // Phones: play the clip that's in the middle of the screen
+      new IntersectionObserver(([e]) => (e.isIntersecting ? play() : stop()), { rootMargin: '-40% 0px -40% 0px' }).observe(card);
+    }
   }
 
-  // Drone strip
-  const droneTrack = $('#drone-track');
-  if (droneTrack) {
-    const drone = photos.filter((p) => p.category === 'drone');
-    droneTrack.innerHTML =
-      drone.map((p, i) => `
-        <a class="card ${p.w > p.h ? 'card--wide' : 'card--tall'}" href="work.html?c=drone" data-cursor>
-          <div class="card__media" data-gl-card><img src="${src(p.file)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}></div>
-          <div class="card__caption">
-            <span class="card__title">${p.title}</span>
-            <span class="muted">${String(i + 1).padStart(2, '0')}</span>
-          </div>
-        </a>`).join('') +
-      `<a class="card card--end" href="work.html?c=drone" data-cursor>
-        <span class="eyebrow">${drone.length} aerials</span>
-        <span class="h2">All <em>drone</em> →</span>
+  /* ---------------- Home ---------------- */
+
+  const tiles = $('#home-tiles');
+  if (tiles) {
+    tiles.innerHTML = (window.HOME_TILES || []).map((t, i) => {
+      const media = t.video
+        ? `<img src="${poster(t.video)}" alt="" loading="lazy"><video src="${vid(t.video)}" muted loop playsinline preload="none" aria-hidden="true"></video>`
+        : `<img src="${img(t.file, true)}" alt="${t.alt || ''}" loading="lazy">`;
+      return `<a class="tile rise${t.video ? ' tile--video' : ''}" href="${t.href}" style="--i:${i}">
+        <div class="tile__media">${media}</div>
+        <div class="tile__label"><span>${t.label}</span><span>→</span></div>
       </a>`;
+    }).join('');
+    $$('.tile--video', tiles).forEach(hoverPlay);
   }
 
-  // Work page grid
-  const grid = $('#grid');
-  const filters = $('#filters');
-  let visible = photos.map((_, i) => i);
+  const heroFrame = $('[data-gl]');
+  if (heroFrame && window.GL && GL.supported && !reduced && canHover) GL.attach(heroFrame);
 
-  if (grid && filters) {
-    grid.innerHTML = photos.map((p, i) => `
-      <button class="tile" data-index="${i}" data-cat="${p.category}" data-cursor aria-label="Open ${p.title}">
-        <span class="tile__media" data-gl-card><img src="${src(p.file, true)}" alt="${p.alt}" loading="lazy" ${imgAttrs(p)}></span>
-        <span class="tile__label">${catName(p.category)}</span>
-      </button>`).join('');
+  /* ---------------- Viewer (Photos + Video pages) ---------------- */
 
-    const count = (id) => photos.filter((p) => p.category === id).length;
-    filters.innerHTML =
-      `<button class="filter" data-filter="all" data-magnetic>All<sup>${photos.length}</sup></button>` +
-      cats.filter((c) => count(c.id)).map((c) => `<button class="filter" data-filter="${c.id}" data-magnetic>${c.name}<sup>${count(c.id)}</sup></button>`).join('');
+  const viewer = $('#viewer');
+  let items = [];
+  let pos = 0;
+  let lastFocus = null;
 
-    const applyFilter = (id, animate) => {
-      $$('.filter', filters).forEach((b) => {
-        const on = b.dataset.filter === id;
-        b.classList.toggle('is-active', on);
-        b.setAttribute('aria-pressed', on);
-      });
-      const tiles = $$('.tile', grid);
-      tiles.forEach((t) => (t.hidden = !(id === 'all' || t.dataset.cat === id)));
-      visible = tiles.filter((t) => !t.hidden).map((t) => +t.dataset.index);
-      if (animate && motion) {
-        gsap.fromTo(tiles.filter((t) => !t.hidden), { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.06, ease: 'power3.out' });
-      }
-      if (hasGsap) ScrollTrigger.refresh();
+  function renderViewer() {
+    const it = items[pos];
+    const stage = $('#v-stage');
+    stage.innerHTML = it.type === 'video'
+      ? `<video src="${vid(it)}" poster="${poster(it)}" controls autoplay muted loop playsinline></video>`
+      : `<img src="${img(it.file)}" alt="${it.alt}">`;
+    $('#v-title').textContent = it.title;
+    $('#v-count').textContent = `${pad(pos + 1)} / ${pad(items.length)}`;
+    $$('#v-thumbs button').forEach((b, i) => b.setAttribute('aria-current', i === pos));
+    const cur = $(`#v-thumbs button[data-i="${pos}"]`);
+    if (cur) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }
+
+  function openViewer(list, index, fromEl) {
+    items = list;
+    pos = index;
+    lastFocus = document.activeElement;
+    $('#v-thumbs').innerHTML = items.map((it, i) =>
+      `<button data-i="${i}" aria-label="Show ${it.title}"><img src="${it.type === 'video' ? poster(it) : img(it.file, true)}" alt=""></button>`).join('');
+    renderViewer();
+
+    const show = () => { viewer.classList.add('open'); document.body.style.overflow = 'hidden'; $('#v-close').focus(); };
+    const thumb = fromEl && $('img', fromEl);
+    if (reduced || !thumb || items[index].type === 'video') return show();
+
+    // The photo grows from its thumbnail to the middle of the screen
+    const it = items[index];
+    const r = thumb.getBoundingClientRect();
+    const s = Math.min((innerWidth * 0.8) / it.w, (innerHeight - 190) / it.h);
+    const w = it.w * s, h = it.h * s;
+    const fly = new Image();
+    fly.src = thumb.currentSrc || thumb.src;
+    fly.className = 'fly';
+    document.body.appendChild(fly);
+    fly.animate([
+      { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' },
+      { left: (innerWidth - w) / 2 + 'px', top: (innerHeight - h) / 2 + 'px', width: w + 'px', height: h + 'px' },
+    ], { duration: 600, easing: 'cubic-bezier(0.22,1,0.36,1)', fill: 'forwards' }).onfinish = () => {
+      show();
+      setTimeout(() => fly.remove(), 250);
     };
+  }
 
+  function closeViewer() {
+    viewer.classList.remove('open');
+    document.body.style.overflow = '';
+    $('#v-stage').innerHTML = '';
+    if (lastFocus) lastFocus.focus();
+  }
+
+  if (viewer) {
+    const step = (d) => { pos = (pos + d + items.length) % items.length; renderViewer(); };
+    $('#v-close').addEventListener('click', closeViewer);
+    $('#v-prev').addEventListener('click', () => step(-1));
+    $('#v-next').addEventListener('click', () => step(1));
+    $('#v-thumbs').addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (b) { pos = +b.dataset.i; renderViewer(); }
+    });
+    viewer.addEventListener('click', (e) => { if (e.target.id === 'v-stage') closeViewer(); });
+    addEventListener('keydown', (e) => {
+      if (!viewer.classList.contains('open')) return;
+      if (e.key === 'Escape') closeViewer();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+    // Swipe on phones
+    let x0 = null;
+    viewer.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    viewer.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) step(dx < 0 ? 1 : -1);
+      x0 = null;
+    });
+  }
+
+  /* ---------------- Photos page ---------------- */
+
+  const grid = $('#grid');
+  if (grid) {
+    const filters = $('#filters');
+    const count = (g) => PHOTOS.filter((p) => p.group === g).length;
+    const groups = GROUPS.filter((g) => count(g.id));
+    filters.innerHTML =
+      `<button class="filter" data-f="all">All<sup class="num">${PHOTOS.length}</sup></button>` +
+      groups.map((g) => `<button class="filter" data-f="${g.id}">${g.name}<sup class="num">${count(g.id)}</sup></button>`).join('');
+
+    let visible = PHOTOS;
+    const render = (f) => {
+      visible = f === 'all' ? PHOTOS : PHOTOS.filter((p) => p.group === f);
+      grid.innerHTML = visible.map((p, i) => `
+        <button class="photo rise" style="--i:${Math.min(i, 16)}" data-i="${i}" aria-label="Open ${p.title}">
+          <div class="photo__img"><img src="${img(p.file, true)}" alt="${p.alt}" loading="lazy" ${ratio(p)}></div>
+          <div class="photo__cap"><span>${p.title}</span><span class="num">${pad(i + 1)}</span></div>
+        </button>`).join('');
+      $$('.filter', filters).forEach((b) => b.setAttribute('aria-pressed', b.dataset.f === f));
+    };
     const start = new URLSearchParams(location.search).get('c');
-    applyFilter(cats.some((c) => c.id === start) ? start : 'all', false);
+    render(groups.some((g) => g.id === start) ? start : 'all');
 
     filters.addEventListener('click', (e) => {
       const b = e.target.closest('.filter');
       if (!b) return;
-      applyFilter(b.dataset.filter, true);
+      grid.classList.add('fading');
+      setTimeout(() => { render(b.dataset.f); grid.classList.remove('fading'); }, reduced ? 0 : 200);
       const url = new URL(location);
-      if (b.dataset.filter === 'all') url.searchParams.delete('c'); else url.searchParams.set('c', b.dataset.filter);
+      if (b.dataset.f === 'all') url.searchParams.delete('c'); else url.searchParams.set('c', b.dataset.f);
       history.replaceState(null, '', url);
     });
-  }
-
-  /* ------------------------------------------------------------------
-     2. UI
-     ------------------------------------------------------------------ */
-
-  let lenis = null;
-
-  // Mobile menu
-  const header = $('.header');
-  const menuBtn = $('.menu-btn');
-  const closeMenu = () => {
-    header.classList.remove('menu-open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.textContent = 'Menu';
-    if (lenis) lenis.start();
-  };
-  menuBtn.addEventListener('click', () => {
-    if (header.classList.contains('menu-open')) return closeMenu();
-    header.classList.add('menu-open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    menuBtn.textContent = 'Close';
-    if (lenis) lenis.stop();
-  });
-  $$('.nav a').forEach((a) => a.addEventListener('click', closeMenu));
-
-  // Hide header when scrolling down, show when scrolling up
-  let lastY = 0;
-  const onScroll = (y) => {
-    if (!header.classList.contains('menu-open')) header.classList.toggle('is-hidden', y > 200 && y > lastY);
-    lastY = y;
-  };
-  if (!motion) addEventListener('scroll', () => onScroll(scrollY), { passive: true });
-
-  // Custom cursor
-  const cursor = $('.cursor');
-  if (cursor && finePointer) {
-    const moveX = hasGsap ? gsap.quickTo(cursor, 'x', { duration: 0.35, ease: 'power3' }) : (v) => (cursor.style.left = v + 'px');
-    const moveY = hasGsap ? gsap.quickTo(cursor, 'y', { duration: 0.35, ease: 'power3' }) : (v) => (cursor.style.top = v + 'px');
-    addEventListener('mousemove', (e) => { cursor.style.opacity = 1; moveX(e.clientX); moveY(e.clientY); });
-    document.addEventListener('mouseleave', () => (cursor.style.opacity = 0));
-    document.addEventListener('mouseover', (e) => cursor.classList.toggle('is-view', !!e.target.closest('[data-cursor]')));
-  }
-
-  // Magnetic buttons: pull toward the cursor
-  if (motion && finePointer) {
-    $$('[data-magnetic]').forEach((el) => {
-      const xTo = gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power3' });
-      const yTo = gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power3' });
-      el.addEventListener('mousemove', (e) => {
-        const r = el.getBoundingClientRect();
-        xTo((e.clientX - r.left - r.width / 2) * 0.3);
-        yTo((e.clientY - r.top - r.height / 2) * 0.4);
-      });
-      el.addEventListener('mouseleave', () => { xTo(0); yTo(0); });
-    });
-  }
-
-  // Service rows: image preview follows the mouse
-  const preview = $('.service-preview');
-  if (preview && matchMedia('(hover: hover)').matches) {
-    cats.forEach((c) => {
-      const p = photos.find((x) => x.category === c.id);
-      if (!p) return;
-      const img = new Image();
-      img.src = src(p.file, true);
-      img.alt = '';
-      img.dataset.cat = c.id;
-      preview.appendChild(img);
-    });
-    const px = hasGsap ? gsap.quickTo(preview, 'x', { duration: 0.6, ease: 'power3' }) : null;
-    const py = hasGsap ? gsap.quickTo(preview, 'y', { duration: 0.6, ease: 'power3' }) : null;
-    const rot = hasGsap ? gsap.quickTo(preview, 'rotation', { duration: 0.8, ease: 'power3' }) : null;
-    let lastX = 0;
-    $$('.service').forEach((row) => {
-      row.addEventListener('mouseenter', () => {
-        $$('img', preview).forEach((i) => i.classList.toggle('is-on', i.dataset.cat === row.dataset.preview));
-        preview.classList.add('is-on');
-      });
-      row.addEventListener('mouseleave', () => { preview.classList.remove('is-on'); if (rot) rot(0); });
-      row.addEventListener('mousemove', (e) => {
-        if (!px) return;
-        px(e.clientX + 30); py(e.clientY - 200);
-        rot(Math.max(-8, Math.min(8, (e.clientX - lastX) * 0.6)));
-        lastX = e.clientX;
-      });
-    });
-  }
-
-  // Video: play only while on screen (not with reduced motion)
-  $$('video').forEach((v) => {
-    if (!motion) { v.controls = true; return; }
-    new IntersectionObserver(([en]) => {
-      if (en.isIntersecting) { v.preload = 'auto'; v.play().catch(() => {}); } else v.pause();
-    }, { threshold: 0.25 }).observe(v);
-  });
-
-  // Lightbox (work page): the photo grows from its tile to full screen
-  const lb = $('#lightbox');
-  if (lb && grid) {
-    let pos = 0;
-    let lastFocus = null;
-    const lbImg = $('#lb-img');
-    const show = () => {
-      const p = photos[visible[pos]];
-      lbImg.src = src(p.file);
-      lbImg.alt = p.alt;
-      $('#lb-title').textContent = p.title;
-      $('#lb-count').textContent = `${pos + 1} / ${visible.length} · ${catName(p.category)}`;
-    };
-    const finishOpen = () => {
-      lb.classList.add('is-open');
-      if (lenis) lenis.stop();
-      $('#lb-close').focus();
-    };
-    const open = (index, tile) => {
-      lastFocus = document.activeElement;
-      pos = Math.max(0, visible.indexOf(index));
-      show();
-      const from = tile && $('img', tile);
-      if (!motion || !from) return finishOpen();
-
-      // Fly a copy of the photo from the tile to the center of the screen
-      const p = photos[index];
-      const r = from.getBoundingClientRect();
-      const maxW = innerWidth - 64;
-      const maxH = innerHeight - 150;
-      const scale = Math.min(maxW / p.w, maxH / p.h);
-      const w = p.w * scale, h = p.h * scale;
-      const fly = new Image();
-      fly.src = from.currentSrc || from.src;
-      fly.className = 'fly';
-      Object.assign(fly.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
-      document.body.appendChild(fly);
-      lb.classList.add('is-backdrop');
-      gsap.to(fly, {
-        left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h,
-        duration: 0.85, ease: 'expo.inOut',
-        onComplete: () => { finishOpen(); lb.classList.remove('is-backdrop'); gsap.to(fly, { opacity: 0, duration: 0.3, delay: 0.15, onComplete: () => fly.remove() }); },
-      });
-    };
-    const close = () => {
-      lb.classList.remove('is-open');
-      if (lenis) lenis.start();
-      if (lastFocus) lastFocus.focus();
-    };
-    const step = (d) => {
-      pos = (pos + d + visible.length) % visible.length;
-      if (motion) gsap.fromTo(lbImg, { opacity: 0, x: 40 * d }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' });
-      show();
-    };
     grid.addEventListener('click', (e) => {
-      const t = e.target.closest('.tile');
-      if (t) open(+t.dataset.index, t);
-    });
-    $('#lb-close').addEventListener('click', close);
-    $('#lb-prev').addEventListener('click', () => step(-1));
-    $('#lb-next').addEventListener('click', () => step(1));
-    lb.addEventListener('click', (e) => { if (e.target === lb || e.target.classList.contains('lightbox__stage')) close(); });
-    addEventListener('keydown', (e) => {
-      if (!lb.classList.contains('is-open')) return;
-      if (e.key === 'Escape') close();
-      if (e.key === 'ArrowLeft') step(-1);
-      if (e.key === 'ArrowRight') step(1);
+      const t = e.target.closest('.photo');
+      if (t) openViewer(visible.map((p) => ({ ...p, type: 'photo' })), +t.dataset.i, t);
     });
   }
 
-  // Forms
+  /* ---------------- Video page ---------------- */
+
+  const videos = $('#videos');
+  if (videos) {
+    const wide = VIDEOS.filter((v) => v.w > v.h);
+    const tall = VIDEOS.filter((v) => v.w <= v.h);
+    const card = (v, i, cls = '') => `
+      <button class="clip rise ${cls}" style="--i:${i}" data-file="${v.file}" aria-label="Play ${v.title}">
+        <div class="clip__media">
+          <img src="${poster(v)}" alt="" loading="lazy">
+          <video src="${vid(v)}" muted loop playsinline preload="none" aria-hidden="true"></video>
+          <span class="clip__play" aria-hidden="true">▶</span><span class="clip__bar"></span>
+        </div>
+        <div class="clip__cap"><span>${v.title}</span><span>${v.tag || ''}</span></div>
+      </button>`;
+    videos.innerHTML =
+      (wide[0] ? `<div class="feature">${card(wide[0], 0, 'clip--wide')}</div>` : '') +
+      `<div class="vgrid">${[...tall, ...wide.slice(1)].map((v, i) => card(v, i + 1, v.w > v.h ? 'clip--wide' : '')).join('')}</div>`;
+    $$('.clip', videos).forEach(hoverPlay);
+    const list = VIDEOS.map((v) => ({ ...v, type: 'video' }));
+    videos.addEventListener('click', (e) => {
+      const c = e.target.closest('.clip');
+      if (c) { $$('.clip video', videos).forEach((v) => v.pause()); openViewer(list, list.findIndex((v) => v.file === c.dataset.file), c); }
+    });
+  }
+
+  /* ---------------- Drone page ---------------- */
+
+  const strip = $('#strip');
+  if (strip) {
+    const stage = $('#stage');
+    let cur = 0;
+    strip.innerHTML = DRONE.map((d, i) => `
+      <button data-i="${i}" aria-label="Show ${d.title}">
+        <img src="${d.type === 'video' ? poster(d) : img(d.file, true)}" alt="" loading="lazy">
+        ${d.type === 'video' ? '<span class="play-mark">▶ Video</span>' : ''}
+      </button>`).join('');
+
+    const show = (i, instant) => {
+      cur = (i + DRONE.length) % DRONE.length;
+      const d = DRONE[cur];
+      const el = d.type === 'video'
+        ? Object.assign(document.createElement('video'), { src: vid(d), poster: poster(d), muted: true, loop: true, autoplay: !reduced, playsInline: true })
+        : Object.assign(document.createElement('img'), { src: img(d.file), alt: d.alt || d.title });
+      if (!instant && !reduced) { el.style.opacity = 0; }
+      stage.appendChild(el);
+      const done = () => { $$('img, video', stage).forEach((n) => n !== el && n.remove()); };
+      if (instant || reduced) done();
+      else requestAnimationFrame(() => { el.style.transition = 'opacity 350ms cubic-bezier(0.22,1,0.36,1)'; el.style.opacity = 1; setTimeout(done, 380); });
+      $('#stage-title').textContent = d.title;
+      $('#stage-text').textContent = d.text || '';
+      $('#stage-count').textContent = `${pad(cur + 1)} / ${pad(DRONE.length)}`;
+      $$('button', strip).forEach((b, k) => b.setAttribute('aria-current', k === cur));
+    };
+    show(0, true);
+
+    // Hover previews (desktop), click/tap selects
+    let dragged = false;
+    strip.addEventListener('click', (e) => {
+      const b = e.target.closest('button');
+      if (b && !dragged) show(+b.dataset.i);
+    });
+    if (canHover) {
+      let t;
+      strip.addEventListener('mouseover', (e) => {
+        const b = e.target.closest('button');
+        clearTimeout(t);
+        if (b && +b.dataset.i !== cur) t = setTimeout(() => show(+b.dataset.i), 180);
+      });
+    }
+    addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(cur + 1);
+      if (e.key === 'ArrowLeft') show(cur - 1);
+    });
+    // Drag to scroll the strip
+    let down = false, x0 = 0, s0 = 0;
+    strip.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = true; dragged = false; x0 = e.clientX; s0 = strip.scrollLeft; });
+    addEventListener('pointermove', (e) => {
+      if (!down) return;
+      if (Math.abs(e.clientX - x0) > 5) { dragged = true; strip.classList.add('dragging'); }
+      strip.scrollLeft = s0 - (e.clientX - x0);
+    });
+    addEventListener('pointerup', () => { down = false; strip.classList.remove('dragging'); setTimeout(() => (dragged = false), 0); });
+  }
+
+  /* ---------------- Forms ---------------- */
+
   const cfg = window.SITE_CONFIG || {};
   const contact = $('#contact-form');
   if (contact) {
-    const status = $('.form__status', contact);
+    const status = $('.status', contact);
     contact.addEventListener('submit', async (e) => {
       e.preventDefault();
       const fd = new FormData(contact);
@@ -311,17 +310,15 @@
             access_key: cfg.web3formsKey,
             subject: 'New inquiry from justinclosemedia.com',
             from_name: 'Justin Close Media website',
-            name: fd.get('name'),
-            email: fd.get('email'),
-            property: fd.get('property'),
-            shoot_type: fd.getAll('shoot_type').join(', '),
+            name: fd.get('name'), email: fd.get('email'),
+            property: fd.get('property'), city: fd.get('city'),
+            need: fd.getAll('need').join(', '), timing: fd.get('timing'),
             message: fd.get('message'),
           }),
         });
-        const data = await res.json();
-        if (!data.success) throw new Error();
+        if (!(await res.json()).success) throw new Error();
         contact.reset();
-        status.textContent = 'Thank you! I’ll be in touch soon.';
+        status.textContent = 'Thanks! I’ll reply soon with next steps.';
       } catch (err) {
         status.textContent = 'Something went wrong. Please email justinclosemedia@gmail.com.';
       }
@@ -330,7 +327,7 @@
 
   const news = $('#newsletter-form');
   if (news) {
-    const status = $('.form__status', news);
+    const status = $('.status', news);
     news.addEventListener('submit', async (e) => {
       e.preventDefault();
       const input = $('input', news);
@@ -345,235 +342,4 @@
       }
     });
   }
-
-  /* ------------------------------------------------------------------
-     3. Scroll experience
-     ------------------------------------------------------------------ */
-
-  if (!motion) return;
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  // Living images
-  const gl = new Map();
-  if (window.GL && GL.supported) {
-    $$('[data-gl]').forEach((el) => {
-      const fx = GL.attach(el, { zoom: parseFloat(el.dataset.glZoom) || 1 });
-      if (fx) gl.set(el, fx);
-    });
-    $$('[data-gl-card]').forEach((el) => {
-      const fx = GL.attach(el, { zoom: 1.08 });
-      if (fx) gl.set(el, fx);
-    });
-  }
-
-  // Smooth scrolling (also feeds scroll speed to the WebGL images)
-  if (window.Lenis) {
-    lenis = new Lenis({ lerp: 0.085, smoothWheel: true });
-    lenis.on('scroll', (l) => {
-      ScrollTrigger.update();
-      onScroll(l.scroll);
-      if (window.GL) GL.setVelocity(l.velocity);
-    });
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  } else {
-    addEventListener('scroll', () => onScroll(scrollY), { passive: true });
-  }
-
-  // Same-page anchor links scroll smoothly
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a || !lenis) return;
-    const target = a.getAttribute('href') === '#main' ? 0 : $(a.getAttribute('href'));
-    if (target === null) return;
-    e.preventDefault();
-    lenis.scrollTo(target, { duration: 1.8 });
-  });
-
-  // Page wipe between pages
-  const wipe = $('.wipe');
-  gsap.set(wipe, { y: 0, yPercent: 100 });
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a[href]');
-    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
-    const url = new URL(a.href, location);
-    if (url.origin !== location.origin || url.pathname === location.pathname || url.protocol === 'mailto:') return;
-    e.preventDefault();
-    store.set('wipe', '1');
-    gsap.to(wipe, { yPercent: 0, duration: 0.75, ease: 'expo.inOut', onComplete: () => (location.href = a.href) });
-  });
-  addEventListener('pageshow', (e) => { if (e.persisted) gsap.set(wipe, { yPercent: 100 }); });
-  const enteringFromWipe = store.get('wipe') === '1';
-  store.set('wipe', '');
-  if (enteringFromWipe) {
-    gsap.set(wipe, { yPercent: 0 });
-    gsap.to(wipe, { yPercent: -100, duration: 1, ease: 'expo.inOut', delay: 0.05 });
-  }
-
-  // Words light up one by one as you scroll
-  $$('[data-words]').forEach((el) => {
-    el.innerHTML = el.textContent.trim().split(/\s+/).map((w) => `<span class="word">${w}</span>`).join(' ');
-    gsap.to($$('.word', el), {
-      opacity: 1, stagger: 0.1, ease: 'none',
-      scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 50%', scrub: true },
-    });
-  });
-
-  // Headings: lines slide up from a mask
-  $$('h1, h2, h3').filter((h) => $('.line', h) && !h.closest('.hero')).forEach((h) => {
-    gsap.to($$('.line > span', h), {
-      y: 0, duration: 1.3, stagger: 0.1, ease: 'expo.out',
-      scrollTrigger: { trigger: h, start: 'top 88%' },
-    });
-  });
-
-  // Fade-up reveals
-  ScrollTrigger.batch('[data-reveal]', {
-    start: 'top 90%',
-    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: 'expo.out', overwrite: true }),
-  });
-
-  // Work page tiles rise in
-  if (grid) {
-    gsap.set($$('.tile', grid), { opacity: 0, y: 60 });
-    ScrollTrigger.batch($$('.tile', grid), {
-      start: 'top 95%',
-      onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08, ease: 'expo.out' }),
-    });
-  }
-
-  // Hero: zooms in on load, then pushes back as you scroll
-  const hero = $('.hero');
-  const heroMedia = $('.hero__media');
-  const heroFx = heroMedia && gl.get(heroMedia);
-  const zoomTarget = (el, fx) => (fx ? fx : $('img', el));
-  const zoomProp = (fx) => (fx ? 'zoom' : 'scale');
-
-  const heroIn = () => {
-    if (!hero) return;
-    const tl = gsap.timeline();
-    if (heroFx) {
-      heroFx.reveal = 0;
-      tl.to(heroFx, { reveal: 1, duration: 1.8, ease: 'power3.inOut' }, 0)
-        .fromTo(heroFx, { zoom: 1.5 }, { zoom: 1.25, duration: 2.4, ease: 'expo.out' }, 0);
-    } else {
-      tl.fromTo('.hero__media img', { scale: 1.3 }, { scale: 1, duration: 2.2, ease: 'expo.out' }, 0);
-    }
-    tl.to($$('.hero .line > span'), { y: 0, duration: 1.4, stagger: 0.12, ease: 'expo.out' }, 0.5)
-      .from('[data-hero-fade]', { opacity: 0, y: 20, duration: 1, stagger: 0.1, ease: 'power3.out' }, 1);
-  };
-  if (hero) {
-    gsap.to(zoomTarget(heroMedia, heroFx), {
-      [zoomProp(heroFx)]: heroFx ? 1 : 1.15, ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
-    });
-    gsap.to('.hero__media', {
-      yPercent: 20, ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true },
-    });
-    gsap.to('.hero__content', {
-      y: -100, opacity: 0, ease: 'none',
-      scrollTrigger: { trigger: hero, start: 'top top', end: '60% top', scrub: true },
-    });
-  }
-
-  // Loader: counts to 100 while images load (home page, once per visit)
-  const loader = $('.loader');
-  if (loader) {
-    if (store.get('seenLoader') || enteringFromWipe) {
-      loader.remove();
-      heroIn();
-    } else {
-      store.set('seenLoader', '1');
-      if (lenis) lenis.stop();
-      const counter = { v: 0 };
-      const num = $('.loader__count span');
-      const tick = () => (num.textContent = Math.round(counter.v));
-      const loaded = new Promise((res) => (document.readyState === 'complete' ? res() : addEventListener('load', res, { once: true })));
-      gsap.from('.loader__name span', { yPercent: 110, duration: 1.1, ease: 'expo.out' });
-      gsap.to(counter, { v: 85, duration: 1.4, ease: 'power2.out', onUpdate: tick });
-      Promise.race([loaded, new Promise((r) => setTimeout(r, 3500))]).then(() => {
-        gsap.timeline()
-          .to(counter, { v: 100, duration: 0.5, ease: 'power2.out', onUpdate: tick })
-          .to(['.loader__name span', '.loader__count'], { yPercent: -110, opacity: 0, duration: 0.6, ease: 'power3.in' })
-          .to(loader, { clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'expo.inOut' }, '-=0.15')
-          .add(() => { heroIn(); if (lenis) lenis.start(); }, '-=0.7')
-          .add(() => loader.remove());
-      });
-    }
-  } else {
-    heroIn();
-  }
-
-  const mm = gsap.matchMedia();
-
-  // A guest's day: pinned, each scene wipes up over the last (desktop)
-  mm.add('(min-width: 900px)', () => {
-    const section = $('.story');
-    if (!section) return;
-    const scenes = $$('.scene', section);
-    const steps = $$('.step', section);
-    gsap.set(scenes.slice(1), { clipPath: 'inset(100% 0% 0% 0%)' });
-    gsap.set(steps.slice(1), { autoAlpha: 0, y: 40 });
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + innerHeight * (scenes.length - 0.5), pin: true, scrub: 1 },
-    });
-    scenes.forEach((scene, i) => {
-      const img = $('img', scene);
-      tl.fromTo(img, { scale: 1.25 }, { scale: 1, ease: 'none', duration: 1 }, i);
-      if (i === 0) return;
-      tl.to(scene, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.inOut', duration: 0.6 }, i - 0.3)
-        .to(steps[i - 1], { autoAlpha: 0, y: -40, duration: 0.3 }, i - 0.3)
-        .to(steps[i], { autoAlpha: 1, y: 0, duration: 0.3 }, i - 0.05);
-    });
-    tl.fromTo('.story__progress i', { scaleY: 0 }, { scaleY: 1, ease: 'none', duration: scenes.length }, 0);
-  });
-
-  // Drone hero: pulls back from close-up as it scrolls past
-  const droneHero = $('.drone__hero');
-  if (droneHero) {
-    const fx = gl.get(droneHero);
-    gsap.fromTo(zoomTarget(droneHero, fx), { [zoomProp(fx)]: fx ? 1.3 : 1.3 }, {
-      [zoomProp(fx)]: 1, ease: 'none',
-      scrollTrigger: { trigger: droneHero, start: 'top bottom', end: 'bottom top', scrub: true },
-    });
-  }
-
-  // Drone strip: vertical scroll moves it sideways (desktop)
-  mm.add('(min-width: 900px)', () => {
-    const section = $('.hscroll');
-    if (!section || !droneTrack) return;
-    const distance = () => Math.max(0, droneTrack.scrollWidth - innerWidth);
-    gsap.to(droneTrack, {
-      x: () => -distance(), ease: 'none',
-      scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + distance(), pin: true, scrub: 1, invalidateOnRefresh: true },
-    });
-  });
-
-  // Photos that wipe open as they enter
-  $$('[data-clip]').forEach((el) => {
-    const img = $('img, video', el);
-    gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 80%' } })
-      .fromTo(el, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.5, ease: 'expo.inOut' })
-      .fromTo(img, { scale: 1.35 }, { scale: 1, duration: 2, ease: 'expo.out' }, 0);
-  });
-
-  // Footer wordmark slides in
-  const word = $('.footer__word');
-  if (word) {
-    gsap.fromTo(word, { xPercent: 12 }, {
-      xPercent: 0, ease: 'none',
-      scrollTrigger: { trigger: '.footer', start: 'top bottom', end: 'bottom bottom', scrub: true },
-    });
-  }
-
-  // Arriving from another page with a #section in the URL
-  addEventListener('load', () => {
-    ScrollTrigger.refresh();
-    if (location.hash && lenis) {
-      const t = $(location.hash);
-      if (t) lenis.scrollTo(t, { immediate: true });
-    }
-  });
 })();
