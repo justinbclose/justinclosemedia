@@ -4,7 +4,7 @@
    - Home: full-screen hero (photo or video), work tiles
    - Photos: filters + viewer that opens from the thumbnail
    - Video: clips play on hover (desktop) or when centered (phone)
-   - Drone: stage + draggable strip
+   - Drone: grid of photos and clips, opens full size in the viewer
    - Forms
    ========================================================================== */
 (function () {
@@ -245,65 +245,31 @@
     });
   }
 
-  /* ---------------- Drone page ---------------- */
+  /* ---------------- Drone page: grid of photos and clips ---------------- */
 
-  const strip = $('#strip');
-  if (strip) {
-    const stage = $('#stage');
-    let cur = 0;
-    strip.innerHTML = DRONE.map((d, i) => `
-      <button data-i="${i}" aria-label="Show ${d.title}">
-        <img src="${d.type === 'video' ? poster(d) : img(d.file, true)}" alt="" loading="lazy">
-        ${d.type === 'video' ? '<span class="play-mark">▶ Video</span>' : ''}
-      </button>`).join('');
-
-    const show = (i, instant) => {
-      cur = (i + DRONE.length) % DRONE.length;
-      const d = DRONE[cur];
-      const el = d.type === 'video'
-        ? Object.assign(document.createElement('video'), { src: vid(d), poster: poster(d), muted: true, loop: true, autoplay: !reduced, playsInline: true })
-        : Object.assign(document.createElement('img'), { src: img(d.file), srcset: `${img(d.file, true)} 1000w, ${img(d.file)} 2000w`, sizes: '(max-width: 820px) 100vw, 75vw', alt: d.alt || d.title });
-      if (!instant && !reduced) { el.style.opacity = 0; }
-      stage.appendChild(el);
-      const done = () => { $$('img, video', stage).forEach((n) => n !== el && n.remove()); };
-      if (instant || reduced) done();
-      else requestAnimationFrame(() => { el.style.transition = 'opacity 350ms cubic-bezier(0.22,1,0.36,1)'; el.style.opacity = 1; setTimeout(done, 380); });
-      $('#stage-title').textContent = d.title;
-      $('#stage-text').textContent = d.text || '';
-      $('#stage-count').textContent = `${pad(cur + 1)} / ${pad(DRONE.length)}`;
-      $$('button', strip).forEach((b, k) => b.setAttribute('aria-current', k === cur));
-      if (!instant) strip.children[cur].scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduced ? 'auto' : 'smooth' });
-    };
-    show(0, true);
-
-    // Hover previews (desktop), click/tap selects
-    let dragged = false;
-    strip.addEventListener('click', (e) => {
-      const b = e.target.closest('button');
-      if (b && !dragged) show(+b.dataset.i);
+  const droneGrid = $('#drone-grid');
+  if (droneGrid) {
+    const list = DRONE.map((d) => ({ ...d, alt: d.alt || d.title }));
+    droneGrid.innerHTML = list.map((d, i) => d.type === 'video' ? `
+        <button class="photo clip rise" style="--i:${i}" data-i="${i}" aria-label="Play ${d.title}">
+          <div class="photo__img clip__media" style="aspect-ratio:${d.w}/${d.h}">
+            <img src="${poster(d)}" alt="" loading="lazy">
+            <video src="${vid(d)}" muted loop playsinline preload="none" aria-hidden="true"></video>
+            <span class="clip__play" aria-hidden="true">▶</span><span class="clip__bar"></span>
+          </div>
+          <div class="photo__cap"><span>${d.title}</span><span>Video</span></div>
+        </button>` : `
+        <button class="photo rise" style="--i:${i}" data-i="${i}" aria-label="Open ${d.title}">
+          <div class="photo__img"><img src="${img(d.file, true)}" alt="${d.alt}" loading="lazy" ${ratio(d)}></div>
+          <div class="photo__cap"><span>${d.title}</span><span class="num">${pad(i + 1)}</span></div>
+        </button>`).join('');
+    $$('.clip', droneGrid).forEach(hoverPlay);
+    droneGrid.addEventListener('click', (e) => {
+      const t = e.target.closest('.photo');
+      if (!t) return;
+      $$('video', droneGrid).forEach((v) => v.pause());
+      openViewer(list, +t.dataset.i, t);
     });
-    if (canHover) {
-      let t;
-      strip.addEventListener('mouseover', (e) => {
-        const b = e.target.closest('button');
-        clearTimeout(t);
-        if (b && +b.dataset.i !== cur) t = setTimeout(() => show(+b.dataset.i), 180);
-      });
-    }
-    addEventListener('keydown', (e) => {
-      if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('input, textarea, select, [contenteditable]')) return;
-      if (e.key === 'ArrowRight') show(cur + 1);
-      if (e.key === 'ArrowLeft') show(cur - 1);
-    });
-    // Drag to scroll the strip
-    let down = false, x0 = 0, s0 = 0;
-    strip.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse') return; down = true; dragged = false; x0 = e.clientX; s0 = strip.scrollLeft; });
-    addEventListener('pointermove', (e) => {
-      if (!down) return;
-      if (Math.abs(e.clientX - x0) > 5) { dragged = true; strip.classList.add('dragging'); }
-      strip.scrollLeft = s0 - (e.clientX - x0);
-    });
-    addEventListener('pointerup', () => { down = false; strip.classList.remove('dragging'); setTimeout(() => (dragged = false), 0); });
   }
 
   /* ---------------- Forms ---------------- */

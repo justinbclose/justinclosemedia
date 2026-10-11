@@ -20,7 +20,7 @@ HEAD = """<!doctype html>
   <meta property="og:description" content="{desc}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="{site_url}/{file}">
-  <meta property="og:image" content="{site_url}/images/portfolio/oceanfront-hotel-pool-dusk.jpg">
+  <meta property="og:image" content="{site_url}/images/portfolio/coastline-resort-aerial.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,7 +95,7 @@ PAGES = [
        desc='Hotel photos and video your marketing team will actually use. Interiors, lifestyle and drone, shot by someone who works in hotel marketing.',
        body="""    <section class="hero" id="hero">
       <div class="hero__media">
-        <img src="images/portfolio/oceanfront-hotel-pool-dusk.jpg" srcset="images/portfolio/oceanfront-hotel-pool-dusk-sm.jpg 1000w, images/portfolio/oceanfront-hotel-pool-dusk.jpg 2000w" sizes="100vw" alt="Aerial view of an oceanfront hotel at dusk with a lit pool, palm trees and the beach" fetchpriority="high">
+        <img src="images/portfolio/coastline-resort-aerial.jpg" srcset="images/portfolio/coastline-resort-aerial-sm.jpg 1000w, images/portfolio/coastline-resort-aerial.jpg 2000w" sizes="100vw" alt="Aerial view of a red-roofed beachfront resort along the coast at sunset" fetchpriority="high">
       </div>
       <div class="hero__content">
         <p class="meta">Hotel photography · Video · Drone</p>
@@ -161,23 +161,15 @@ PAGES = [
   dict(file='drone.html', page='drone',
        title='Drone | Justin Close Media',
        desc='Hotel drone photography and video. Aerial views that show your location, the pool and the view.',
+       extra=VIEWER,
        body="""    <section class="wrap">
       <div class="page-head">
         <div>
           <h1 class="display">Drone</h1>
-          <p class="lead">Your property from above. Aerial photos and video that show the location, the pool and the view.</p>
-        </div>
-        <span class="meta hint-desktop">Drag the strip or use ← → keys</span>
-      </div>
-      <div class="stage">
-        <div class="stage__frame" id="stage"></div>
-        <div class="stage__info">
-          <span class="meta num" id="stage-count"></span>
-          <h2 class="h2" id="stage-title"></h2>
-          <p id="stage-text"></p>
+          <p class="lead">Your property from above. Aerial photos and video that show the location, the pool and the view. Click any shot to see it full size.</p>
         </div>
       </div>
-      <div class="strip" id="strip" role="group" aria-label="Drone photos and videos"></div>
+      <div class="grid grid--drone" id="drone-grid"></div>
     </section>
 """),
   dict(file='about.html', page='about',

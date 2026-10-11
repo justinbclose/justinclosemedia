@@ -40,14 +40,10 @@ window.PHOTOS = [
     alt: 'Tropical cocktail with an orchid and dried pineapple, a lifeguard tower behind' },
   { file: 'beachside-lunch', title: 'Lunch under the umbrellas', group: 'dining', w: 3, h: 4,
     alt: 'Lunch spread on a wooden table under an umbrella with striped beach cabanas beyond' },
-  { file: 'pool-loungers', title: 'Pool loungers', group: 'pools', w: 3, h: 4,
-    alt: 'Hotel pool with a row of loungers and white umbrellas under a cloudy sky' },
   { file: 'golden-hour-margarita', title: 'Golden hour margarita', group: 'lifestyle', w: 3, h: 4,
     alt: 'Margarita with a dried orange slice on a white chair arm in late sunlight' },
   { file: 'cedar-sauna', title: 'Cedar sauna', group: 'spa', w: 3, h: 4,
     alt: 'Cedar sauna with a large window looking out at green hills' },
-  { file: 'oceanfront-hotel-pool-dusk', title: 'Pool at blue hour', group: 'pools', w: 16, h: 9,
-    alt: 'Oceanfront hotel pool lit at dusk with palm trees and the beach behind' },
   { file: 'oceanfront-restaurant', title: 'Oceanfront dining room', group: 'dining', w: 9, h: 16,
     alt: 'Restaurant with tall windows looking out at crashing waves' },
   { file: 'oceanfront-resort-aerial', title: 'Resort courtyard', group: 'property', w: 16, h: 9,
@@ -60,31 +56,28 @@ window.PHOTOS = [
 
 // Video page (first wide clip is shown large at the top)
 window.VIDEOS = [
-  { file: 'dolphins-aerial', title: 'Dolphins off the coast', tag: 'Drone', w: 16, h: 9 },
+  { file: 'dolphins-aerial', w: 16, h: 9, title: 'Dolphins off the coast', tag: 'Drone', w: 16, h: 9 },
   { file: 'oceanfront-dining-clip', title: 'Oceanfront dining room', tag: 'Interior', w: 9, h: 16 },
   { file: 'pool-clip', title: 'By the pool', tag: 'Amenity', w: 9, h: 16 },
   { file: 'beachside-lunch-clip', title: 'Lunch with a view', tag: 'Dining', w: 9, h: 16 },
   { file: 'restaurant-ocean-view', title: 'Dining room walkthrough', tag: 'Interior', w: 9, h: 16 },
-  { file: 'resort-grounds-aerial', title: 'Resort grounds', tag: 'Drone', w: 9, h: 16 },
-  { file: 'palms-boardwalk-aerial', title: 'Palms and the boardwalk', tag: 'Drone', w: 9, h: 16 },
+  { file: 'resort-grounds-aerial', w: 9, h: 16, title: 'Resort grounds', tag: 'Drone', w: 9, h: 16 },
+  { file: 'palms-boardwalk-aerial', w: 9, h: 16, title: 'Palms and the boardwalk', tag: 'Drone', w: 9, h: 16 },
   { file: 'coast-at-dusk', title: 'The coast at dusk', tag: 'Property', w: 9, h: 16 },
-  { file: 'beach-overhead', title: 'Beach from above', tag: 'Drone', w: 9, h: 16 },
+  { file: 'beach-overhead', w: 9, h: 16, title: 'Beach from above', tag: 'Drone', w: 9, h: 16 },
 ];
 
-// Drone page: hotel and coast first, landscapes last
+// Drone page (grid): hotel and coast first, landscapes last
 window.DRONE = [
-  { type: 'photo', file: 'oceanfront-hotel-pool-dusk', title: 'Oceanfront hotel, blue hour', text: 'The pool deck, the beach and the coastline in one frame.' },
   { type: 'video', file: 'resort-grounds-aerial', title: 'Resort grounds', text: 'Gardens, the lagoon and the coast, in one slow pass.' },
-  { type: 'photo', file: 'coastline-resort-aerial', title: 'The resort and the coast', text: 'Shows guests exactly where you are: steps from the sand.' },
+  { type: 'photo', file: 'coastline-resort-aerial', w: 16, h: 9, title: 'The resort and the coast', text: 'Shows guests exactly where you are: steps from the sand.' },
   { type: 'video', file: 'dolphins-aerial', title: 'Dolphins off the coast', text: 'The moments guests share after their stay.' },
-  { type: 'photo', file: 'beachfront-palms-aerial', title: 'Palms over the beach', text: 'A summer evening on the beach in front of the property.' },
   { type: 'video', file: 'palms-boardwalk-aerial', title: 'Palms and the boardwalk', text: 'The walk from the hotel to the water.' },
-  { type: 'photo', file: 'blue-hour-rooftops', title: 'Rooftops at blue hour', text: 'The property and the bay just after sunset.' },
-  { type: 'photo', file: 'island-resort-aerial', title: 'Island resort', text: 'Two bays, the town and the hills, in one frame.' },
+  { type: 'photo', file: 'island-resort-aerial', w: 9, h: 16, title: 'Island resort', text: 'Two bays, the town and the hills, in one frame.' },
   { type: 'video', file: 'beach-overhead', title: 'Beach from above', text: 'Straight down over the surf line.' },
-  { type: 'photo', file: 'rocky-mountain-alpenglow', title: 'Mountains at first light', text: 'Mountain resorts and lodges look best at sunrise.' },
-  { type: 'photo', file: 'alpine-lake-aerial', title: 'Alpine lake', text: 'Lakes, trails and the scenery around a property.' },
-  { type: 'photo', file: 'mountain-lake-reflection', title: 'Still water', text: 'Calm mornings make the best aerials.' },
+  { type: 'photo', file: 'rocky-mountain-alpenglow', w: 16, h: 9, title: 'Mountains at first light', text: 'Mountain resorts and lodges look best at sunrise.' },
+  { type: 'photo', file: 'alpine-lake-aerial', w: 16, h: 9, title: 'Alpine lake', text: 'Lakes, trails and the scenery around a property.' },
+  { type: 'photo', file: 'mountain-lake-reflection', w: 16, h: 9, title: 'Still water', text: 'Calm mornings make the best aerials.' },
 ];
 
 // Home page "See the work" tiles
