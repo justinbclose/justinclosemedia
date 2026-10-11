@@ -81,6 +81,11 @@ domain itself, by Justin's choice).
      Never invent these.
   4. Optional: a home page background video (set `HERO.video` in `site/js/photos.js`).
 - Newsletter signup is on the Contact page but not connected (no email tool chosen yet).
+- **Outreach (next phase):** plan in `outreach/hotel-outreach-plan.md`: 2 free day shoots, then
+  2–3 overnight guest-journey shoots, then paid clients (hotel groups first). Max 4 free shoots.
+  After the first shoots, add a "Worked with" section to the site (with each hotel's permission).
+- Gym photo in Downloads ("Modern, airy gym with bright lighting.png") was held back: the file name
+  suggests AI generation/editing. Add only if Justin confirms it's his real, unedited photo.
 
 ### Costs
 
@@ -150,6 +155,7 @@ newest files.
 - `tools/`: `build-pages.py`, `optimize-photo.sh`, `optimize-video.sh`, `strip-gps.py`,
   `strip-video-location.py` (photo and video tools remove GPS location data)
 - `.claude/agents/`: helper roles (hotel-marketer, web-designer, photo-curator, qa-reviewer)
+- `outreach/`: `hotel-outreach-plan.md` (target hotels, phases, pitch)
 - `research/`: `marketing-brief.md`, `design-spec.md` (some of its details were later changed;
   the "Design decisions" section above wins), plus early research (hosting, inspiration, palettes)
 - `Photos/`: Justin's source photos/videos (git-ignored). `Photos/instagram/` = images downloaded
