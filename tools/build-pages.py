@@ -39,7 +39,7 @@ HEAD = """<!doctype html>
         <a href="video.html" data-nav="video">Video</a>
         <a href="drone.html" data-nav="drone">Drone</a>
         <a href="about.html" data-nav="about">About</a>
-        <a class="btn btn--sm" href="contact.html">Check availability</a>
+        <a href="contact.html" data-nav="contact">Contact</a>
       </nav>
     </div>
   </header>
@@ -48,11 +48,19 @@ HEAD = """<!doctype html>
 
 CTA = """  <section class="dark">
     <div class="wrap cta">
-      <h2 class="h2">Booking a shoot for your property?</h2>
-      <div class="cta__right">
-        <a class="link" href="mailto:{email}">{email}</a>
-        <a class="btn" href="contact.html">Check availability</a>
+      <div>
+        <p class="meta">Book a shoot</p>
+        <h2 class="h2">Booking a shoot for your property?</h2>
+        <p class="lead">Leave your details and I'll reply with ideas, timing and pricing. Or email <a class="link" href="mailto:{email}">{email}</a>.</p>
       </div>
+      <form class="quick" data-inquiry novalidate>
+        <div class="field"><label for="q-name">Name</label><input id="q-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="q-property">Hotel or property</label><input id="q-property" name="property" autocomplete="organization"></div>
+        <div class="field"><label for="q-message">What do you need?</label><input id="q-message" name="message" placeholder="Photos, video, drone…"></div>
+        <button class="btn" type="submit">Send inquiry</button>
+        <p class="status" role="status"></p>
+      </form>
     </div>
 """
 
@@ -85,25 +93,19 @@ PAGES = [
   dict(file='index.html', page='home',
        title='Justin Close Media | Hotel Photography, Video and Drone',
        desc='Hotel photos and video your marketing team will actually use. Interiors, lifestyle and drone, shot by someone who works in hotel marketing.',
-       scripts='<script src="js/gl.js"></script>\n  ',
-       body="""    <section class="wrap hero">
-      <div class="hero__top">
-        <div>
-          <h1 class="display">Hotel photos and video your marketing team will actually use.</h1>
-          <p class="lead">Interiors, lifestyle and drone, shot by someone who works in hotel marketing.</p>
-        </div>
-        <div class="hero__actions">
-          <a class="btn" href="contact.html">Check availability</a>
-          <a class="btn btn--ghost" href="photos.html">See the work</a>
-        </div>
+       body="""    <section class="hero" id="hero">
+      <div class="hero__media">
+        <img src="images/portfolio/oceanfront-hotel-pool-dusk.jpg" srcset="images/portfolio/oceanfront-hotel-pool-dusk-sm.jpg 1000w, images/portfolio/oceanfront-hotel-pool-dusk.jpg 2000w" sizes="100vw" alt="Aerial view of an oceanfront hotel at dusk with a lit pool, palm trees and the beach" fetchpriority="high">
       </div>
-      <div class="hero__frame" data-gl>
-        <img src="images/portfolio/oceanfront-hotel-pool-dusk.jpg" srcset="images/portfolio/oceanfront-hotel-pool-dusk-sm.jpg 1000w, images/portfolio/oceanfront-hotel-pool-dusk.jpg 2000w" sizes="(max-width: 1400px) 100vw, 1320px" alt="Aerial view of an oceanfront hotel at dusk with a lit pool, palm trees and the beach" fetchpriority="high">
+      <div class="hero__content">
+        <p class="meta">Hotel photography · Video · Drone</p>
+        <h1 class="display">Hotel photos and video your marketing team will actually use.</h1>
+        <a class="btn btn--light" href="photos.html">View the work</a>
       </div>
-      <div class="caption"><span>Oceanfront hotel · Blue hour · Drone</span><span class="num">Justin Close Media</span></div>
+      <a class="hero__down" href="#work" aria-label="Scroll to the work">↓</a>
     </section>
 
-    <section class="wrap section">
+    <section class="wrap section" id="work">
       <div class="page-head" style="padding-top:0">
         <h2 class="h2">See the work</h2>
         <span class="meta">Photos · Video · Drone</span>
@@ -204,16 +206,16 @@ PAGES = [
           <li><b class="num">03</b>Shoot day</li>
           <li><b class="num">04</b>Your edited photos and video are delivered</li>
         </ul>
-        <p style="margin-top:32px"><a class="btn" href="contact.html">Check availability</a></p>
+        <p style="margin-top:32px"><a class="btn" href="contact.html">Get in touch</a></p>
       </div>
     </section>
 """),
   dict(file='contact.html', page='contact', cta=False,
        title='Contact | Justin Close Media',
-       desc='Check availability for a hotel photo, video or drone shoot with Justin Close Media.',
+       desc='Book a hotel photo, video or drone shoot with Justin Close Media.',
        body="""    <section class="wrap contact">
       <div>
-        <h1 class="display">Check availability</h1>
+        <h1 class="display">Let’s talk about your property</h1>
         <p class="lead">Tell me about your property and what you need. I'll reply with ideas, timing and pricing.</p>
         <a class="contact__email" href="mailto:{email}">{email}</a>
 
@@ -231,7 +233,7 @@ PAGES = [
         </div>
       </div>
 
-      <form class="form" id="contact-form" novalidate>
+      <form class="form" id="contact-form" data-inquiry novalidate>
         <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="f-property">Hotel or property</label><input id="f-property" name="property" autocomplete="organization"></div>
@@ -254,7 +256,7 @@ PAGES = [
           </div>
         </fieldset>
         <div class="field field--full"><label for="f-message">Message (optional)</label><textarea id="f-message" name="message" rows="3"></textarea></div>
-        <div class="field--full"><button class="btn" type="submit">Send →</button></div>
+        <div class="field--full"><button class="btn" type="submit">Send inquiry</button></div>
         <p class="status" role="status"></p>
       </form>
     </section>

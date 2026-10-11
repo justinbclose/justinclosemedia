@@ -9,6 +9,10 @@
   w / h = width and height (any matching ratio works, e.g. 3 / 4).
 */
 
+// Home page full-screen background. To use a video: run tools/optimize-video.sh, then set
+// video: '<name>' (the photo shows until the video starts, and on slow connections).
+window.HERO = { video: '' };
+
 // Photos page filters
 window.GROUPS = [
   { id: 'pools', name: 'Pools' },

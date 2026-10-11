@@ -1,7 +1,7 @@
 /* ==========================================================================
    Justin Close Media: site behavior (no libraries needed)
    - Nav: current page, mobile menu
-   - Home: work tiles, subtle WebGL ripple on the hero
+   - Home: full-screen hero (photo or video), work tiles
    - Photos: filters + viewer that opens from the thumbnail
    - Video: clips play on hover (desktop) or when centered (phone)
    - Drone: stage + draggable strip
@@ -73,8 +73,24 @@
     $$('.tile--video', tiles).forEach(hoverPlay);
   }
 
-  const heroFrame = $('[data-gl]');
-  if (heroFrame && window.GL && GL.supported && !reduced && canHover) GL.attach(heroFrame);
+  // Hero: swap in a background video once one is set in photos.js (HERO.video)
+  const hero = $('#hero');
+  if (hero && window.HERO && HERO.video) {
+    const media = $('.hero__media', hero);
+    const v = Object.assign(document.createElement('video'), {
+      src: `video/${HERO.video}.mp4`, poster: `video/${HERO.video}.jpg`,
+      muted: true, loop: true, playsInline: true, autoplay: !reduced,
+    });
+    v.setAttribute('aria-hidden', 'true');
+    media.prepend(v);
+    v.addEventListener('playing', () => { const i = $('img', media); if (i) i.remove(); }, { once: true });
+  }
+  // Home: the top bar is see-through over the hero, solid after it
+  if (hero) {
+    const solid = () => bar.classList.toggle('solid', scrollY > hero.offsetHeight - 80);
+    addEventListener('scroll', solid, { passive: true });
+    solid();
+  }
 
   /* ---------------- Viewer (Photos + Video pages) ---------------- */
 
@@ -293,13 +309,13 @@
   /* ---------------- Forms ---------------- */
 
   const cfg = window.SITE_CONFIG || {};
-  const contact = $('#contact-form');
-  if (contact) {
-    const status = $('.status', contact);
-    contact.addEventListener('submit', async (e) => {
+  $$('form[data-inquiry]').forEach((form) => {
+    const status = $('.status', form);
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const fd = new FormData(contact);
-      if (!fd.get('name') || !fd.get('email') || !$('#f-email').checkValidity()) {
+      const fd = new FormData(form);
+      const email = $('input[type="email"]', form);
+      if (!fd.get('name') || !fd.get('email') || !email.checkValidity()) {
         status.textContent = 'Please add your name and a valid email.';
         return;
       }
@@ -317,19 +333,20 @@
             subject: 'New inquiry from justinclosemedia.com',
             from_name: 'Justin Close Media website',
             name: fd.get('name'), email: fd.get('email'),
-            property: fd.get('property'), city: fd.get('city'),
-            need: fd.getAll('need').join(', '), timing: fd.get('timing'),
-            message: fd.get('message'),
+            property: fd.get('property') || '', city: fd.get('city') || '',
+            need: fd.getAll('need').join(', '), timing: fd.get('timing') || '',
+            message: fd.get('message') || '',
+            page: location.pathname,
           }),
         });
         if (!(await res.json()).success) throw new Error();
-        contact.reset();
+        form.reset();
         status.textContent = 'Thanks! I’ll reply soon with next steps.';
       } catch (err) {
         status.textContent = 'Something went wrong. Please email justinclosemedia@gmail.com.';
       }
     });
-  }
+  });
 
   const news = $('#newsletter-form');
   if (news) {
