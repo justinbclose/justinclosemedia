@@ -18,7 +18,7 @@ window.GROUPS = [
   { id: 'pools', name: 'Pools' },
   { id: 'dining', name: 'Dining' },
   { id: 'lifestyle', name: 'Lifestyle' },
-  { id: 'spa', name: 'Spa' },
+  { id: 'spa', name: 'Rooms & spa' },
   { id: 'property', name: 'Property' },
 ];
 
@@ -26,6 +26,8 @@ window.GROUPS = [
 window.PHOTOS = [
   { file: 'oceanfront-terrace', title: 'Oceanfront terrace', group: 'dining', w: 4, h: 3,
     alt: 'Hotel restaurant terrace with white umbrellas, set tables and the ocean beyond' },
+  { file: 'marine-room-window', title: 'Window seat, oceanfront dining', group: 'dining', w: 3, h: 4,
+    alt: 'Restaurant window seat with an orange velvet chair, a marble table and a tall plant in soft daylight' },
   { file: 'hotel-pool-courtyard', title: 'Pool courtyard', group: 'pools', w: 3, h: 4,
     alt: 'Hotel pool courtyard with white umbrellas and loungers, palm trees and the ocean behind' },
   { file: 'arched-dining-room', title: 'Arched dining room', group: 'dining', w: 3, h: 4,
@@ -40,6 +42,10 @@ window.PHOTOS = [
     alt: 'Tropical cocktail with an orchid and dried pineapple, a lifeguard tower behind' },
   { file: 'beachside-lunch', title: 'Lunch under the umbrellas', group: 'dining', w: 3, h: 4,
     alt: 'Lunch spread on a wooden table under an umbrella with striped beach cabanas beyond' },
+  { file: 'sunny-pool-steps', title: 'Pool steps', group: 'pools', w: 3, h: 4,
+    alt: 'Hotel pool with chrome steps, white umbrellas and terracotta roofs under a blue sky' },
+  { file: 'cabin-window-view', title: 'Cabin window', group: 'spa', w: 3, h: 4,
+    alt: 'Log cabin window framing pine trees and mountains' },
   { file: 'golden-hour-margarita', title: 'Golden hour margarita', group: 'lifestyle', w: 3, h: 4,
     alt: 'Margarita with a dried orange slice on a white chair arm in late sunlight' },
   { file: 'cedar-sauna', title: 'Cedar sauna', group: 'spa', w: 3, h: 4,
