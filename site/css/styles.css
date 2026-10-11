@@ -313,3 +313,8 @@ body[data-page="home"] .bar:not(.solid):not(.open) { background: transparent; bo
 .note__quote { font: italic 400 clamp(22px, 2.2vw, 30px)/1.4 var(--serif); margin: 14px 0 0; color: var(--ink); }
 .steps b { font-family: var(--serif); font-weight: 400; font-size: 19px; }
 @media (max-width: 820px) { .note { grid-template-columns: 1fr; } .note__photo { max-width: 280px; } }
+
+/* Recent work: tiles slide in from the left when the section comes into view */
+.tiles.slide-ready .tile { opacity: 0; transform: translateX(-60px); transition: opacity 800ms var(--ease), transform 900ms var(--ease); transition-delay: calc(var(--i, 0) * 90ms); }
+.tiles.slide-ready.in .tile { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .tiles.slide-ready .tile { opacity: 1; transform: none; } }

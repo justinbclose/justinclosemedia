@@ -71,6 +71,15 @@
       </a>`;
     }).join('');
     $$('.tile--video', tiles).forEach(hoverPlay);
+    // Slide the tiles in from the left, one after another, when the section scrolls into view
+    if (!reduced && 'IntersectionObserver' in window) {
+      $$('.tile', tiles).forEach((el, i) => el.style.setProperty('--i', i));
+      tiles.classList.add('slide-ready');
+      const io = new IntersectionObserver(([e]) => {
+        if (e.isIntersecting) { tiles.classList.add('in'); io.disconnect(); }
+      }, { threshold: 0.2 });
+      io.observe(tiles);
+    }
   }
 
   // Hero: swap in a background video once one is set in photos.js (HERO.video)
