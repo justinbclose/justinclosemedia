@@ -252,7 +252,7 @@
     const list = DRONE.map((d) => ({ ...d, alt: d.alt || d.title }));
     droneGrid.innerHTML = list.map((d, i) => d.type === 'video' ? `
         <button class="photo clip rise" style="--i:${i}" data-i="${i}" aria-label="Play ${d.title}">
-          <div class="photo__img clip__media" style="aspect-ratio:${d.w}/${d.h}">
+          <div class="photo__img clip__media">
             <img src="${poster(d)}" alt="" loading="lazy">
             <video src="${vid(d)}" muted loop playsinline preload="none" aria-hidden="true"></video>
             <span class="clip__play" aria-hidden="true">▶</span><span class="clip__bar"></span>

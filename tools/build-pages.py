@@ -4,10 +4,15 @@ Run after editing this file:  python3 -I tools/build-pages.py
 Each page's main content lives in the PAGES list below.
 """
 from pathlib import Path
+import hashlib
 
 SITE = Path(__file__).resolve().parent.parent / 'site'
 EMAIL = 'justinclosemedia@gmail.com'
 SITE_URL = 'https://justinclosemedia.com'
+
+# Version stamp so browsers fetch fresh CSS/JS after every change
+VER = hashlib.md5(b''.join((SITE / f).read_bytes() for f in
+      ['css/styles.css', 'js/main.js', 'js/photos.js', 'js/config.js'])).hexdigest()[:8]
 
 HEAD = """<!doctype html>
 <html lang="en">
@@ -26,7 +31,7 @@ HEAD = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css?v={ver}">
 </head>
 <body data-page="{page}">
   <a class="skip" href="#main">Skip to content</a>
@@ -72,9 +77,9 @@ FOOT = """    <footer class="footer">
     </footer>
   </section>
   {extra}
-  <script src="js/config.js"></script>
-  <script src="js/photos.js"></script>
-  {scripts}<script src="js/main.js"></script>
+  <script src="js/config.js?v={ver}"></script>
+  <script src="js/photos.js?v={ver}"></script>
+  {scripts}<script src="js/main.js?v={ver}"></script>
 </body>
 </html>
 """
@@ -256,14 +261,14 @@ PAGES = [
 ]
 
 for p in PAGES:
-    html = HEAD.format(site_url=SITE_URL, **p)
+    html = HEAD.format(site_url=SITE_URL, ver=VER, **p)
     html += p['body'].replace('{email}', EMAIL)
     html += '  </main>\n'
     if p.get('cta', True):
         html += CTA.format(email=EMAIL)
     else:
         html += '  <section class="dark">\n'
-    html += FOOT.format(email=EMAIL, extra=p.get('extra', ''), scripts=p.get('scripts', ''))
+    html += FOOT.format(email=EMAIL, ver=VER, extra=p.get('extra', ''), scripts=p.get('scripts', ''))
     (SITE / p['file']).write_text(html)
     print('wrote', p['file'])
 
