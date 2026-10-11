@@ -96,10 +96,17 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
   those "AI-looking" and too much scrolling.
 - **Luxury, restrained look** (modeled on Four Seasons / Ritz-Carlton sites): warm cream `#F8F5EF`,
   near-black `#1B1A17`, one antique-brass accent `#9A7B4F`. Square corners, thin lines, small
-  spaced-out uppercase labels. Cormorant Garamond (headings) + Inter (body).
+  spaced-out uppercase labels.
+- **Typography:** Bodoni Moda (headlines, italic for quotes and buttons), Jost (body and labels),
+  Pinyon Script only for Justin's signature. Inter/Cormorant were dropped for feeling "AI".
+- **Buttons are editorial text links** (italic serif, hairline underline, sliding →), never filled
+  boxes or pill buttons.
+- **Personality** (inspired by coastlinecollective.us): first-person voice, a "Hi, I'm Justin" note
+  with his photo and script signature on the home page, signature in the booking bar.
 - **Home:** full-screen cover photo (currently `coastline-resort-aerial`) with a centered headline,
-  then 6 small tiles (Pools, Dining, Video, Drone, Lifestyle, Spa), "How it works", and the booking bar.
-- **Hover:** the whole image grows slightly. No glow/ripple/WebGL effects.
+  then "Recent work" (6 tiles: Pools, Dining, Video, Drone, Lifestyle, Spa), the personal note,
+  "How it works", and the booking bar ("Let's plan your shoot.").
+- **Hover:** every image grows gently (scale ~1.05–1.06, 0.9s). No glow/ripple/WebGL effects.
 - **Galleries:** square tiles (like coastlinecollective.us/photography). Click opens the full,
   uncropped photo in a viewer.
 - **Booking bar** at the bottom of every page has the form fields inline. Never use the words
