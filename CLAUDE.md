@@ -74,8 +74,8 @@ domain itself, by Justin's choice).
      wall, drinks). Not reachable logged out. Needs the post link (single posts load logged out),
      an Instagram login in the browser pane, or Claude in Chrome connected. Then add it to Pools
      and make it the home page Pools tile.
-  2. **Web3Forms access key** (free, for justinclosemedia@gmail.com). Put it in
-     `site/js/config.js` → `web3formsKey`. Until then the forms tell visitors to email instead.
+  2. ~~Web3Forms key~~ Done: forms are connected (key in `site/js/config.js`); inquiries go to
+     justinclosemedia@gmail.com. Free plan: 250 submissions/month.
   3. Facts for copy (from `research/marketing-brief.md`): reply time, delivery turnaround, number
      of photos delivered, FAA Part 107 license / insurance, whether to show a starting price.
      Never invent these.
