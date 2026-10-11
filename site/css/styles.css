@@ -236,7 +236,7 @@ body[data-page="home"] .bar:not(.solid):not(.open) { background: transparent; bo
 .clip.playing .clip__play { opacity: 0; }
 .clip__cap { display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; }
 .clip__cap span:last-child { color: var(--muted); }
-.feature { margin-bottom: 24px; max-width: 900px; }
+.feature { margin-bottom: 24px; max-width: 620px; }
 
 /* ---------- Drone ---------- */
 
