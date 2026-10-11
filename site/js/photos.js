@@ -106,7 +106,7 @@ window.DRONE = [
 // Home page "See the work" tiles
 window.HOME_TILES = [
   { label: 'Pools', href: 'photos.html?c=pools', file: 'poolside-tile-loungers', alt: 'Pool loungers with striped towels by a blue tile wall' },
-  { label: 'Dining', href: 'photos.html?c=dining', file: 'arched-dining-room', alt: 'Arched dining room over the ocean' },
+  { label: 'Dining', href: 'photos.html?c=dining', file: 'beachside-brunch-pour', alt: 'Syrup poured over pancakes with a mimosa by the beach' },
   { label: 'Video', href: 'video.html', video: { file: 'oceanfront-dining-clip' } },
   { label: 'Drone', href: 'drone.html', file: 'coastline-resort-aerial', alt: 'Resort and coastline from above' },
   { label: 'Lifestyle', href: 'photos.html?c=lifestyle', file: 'beach-chairs-umbrella', alt: 'Beach chairs under an umbrella' },
