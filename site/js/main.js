@@ -95,12 +95,6 @@
     media.prepend(v);
     v.addEventListener('playing', () => { const i = $('img', media); if (i) i.remove(); }, { once: true });
   }
-  // Home: the top bar is see-through over the hero, solid after it
-  if (hero) {
-    const solid = () => bar.classList.toggle('solid', scrollY > hero.offsetHeight - 80);
-    addEventListener('scroll', solid, { passive: true });
-    solid();
-  }
 
   /* ---------------- Viewer (Photos + Video pages) ---------------- */
 
