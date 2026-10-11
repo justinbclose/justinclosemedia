@@ -25,6 +25,10 @@ window.GROUPS = [
 
 // Photos page
 window.PHOTOS = [
+  { file: 'poolside-tile-loungers', title: 'Poolside', group: 'pools', w: 3, h: 4,
+    alt: 'Gray pool loungers with striped towels, white umbrellas, a blue tile wall and two cocktails by the pool' },
+  { file: 'beachside-brunch-pour', title: 'Brunch by the beach', group: 'dining', w: 3, h: 4,
+    alt: 'Syrup poured over pancakes beside a mimosa and a fruit bowl, with the beach and ocean behind' },
   { file: 'oceanfront-terrace', title: 'Oceanfront terrace', group: 'dining', w: 4, h: 3,
     alt: 'Hotel restaurant terrace with white umbrellas, set tables and the ocean beyond' },
   { file: 'marine-room-window', title: 'Window seat, oceanfront dining', group: 'dining', w: 3, h: 4,
@@ -101,7 +105,7 @@ window.DRONE = [
 
 // Home page "See the work" tiles
 window.HOME_TILES = [
-  { label: 'Pools', href: 'photos.html?c=pools', file: 'hotel-pool-courtyard', alt: 'Hotel pool courtyard' },
+  { label: 'Pools', href: 'photos.html?c=pools', file: 'poolside-tile-loungers', alt: 'Pool loungers with striped towels by a blue tile wall' },
   { label: 'Dining', href: 'photos.html?c=dining', file: 'arched-dining-room', alt: 'Arched dining room over the ocean' },
   { label: 'Video', href: 'video.html', video: { file: 'oceanfront-dining-clip' } },
   { label: 'Drone', href: 'drone.html', file: 'coastline-resort-aerial', alt: 'Resort and coastline from above' },
