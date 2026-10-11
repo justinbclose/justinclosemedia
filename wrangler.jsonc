@@ -1,0 +1,8 @@
+// Cloudflare settings. Only the site/ folder is published; everything else stays private.
+{
+  "name": "justinclosemedia",
+  "compatibility_date": "2026-10-06",
+  "assets": {
+    "directory": "./site"
+  }
+}
