@@ -106,6 +106,8 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
 - **Home:** full-screen cover photo (currently `coastline-resort-aerial`) with a centered headline,
   then "Recent work" (6 tiles: Pools, Dining, Video, Drone, Lifestyle, Spa), the personal note,
   "How it works", and the booking bar ("Let's plan your shoot.").
+- **Keep the current home layout.** Justin tried a version with the headline bottom-left, one large
+  lead tile, no small labels and list-style steps, and preferred this one (it was reverted).
 - **Hover:** every image grows gently (scale ~1.05–1.06, 0.9s). No glow/ripple/WebGL effects.
 - **Galleries:** square tiles (like coastlinecollective.us/photography). Click opens the full,
   uncropped photo in a viewer.
