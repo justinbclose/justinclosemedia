@@ -7,6 +7,7 @@ from pathlib import Path
 
 SITE = Path(__file__).resolve().parent.parent / 'site'
 EMAIL = 'justinclosemedia@gmail.com'
+SITE_URL = 'https://justinclosemedia.com'
 
 HEAD = """<!doctype html>
 <html lang="en">
@@ -17,7 +18,11 @@ HEAD = """<!doctype html>
   <meta name="description" content="{desc}">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
-  <meta property="og:image" content="images/portfolio/oceanfront-hotel-pool-dusk.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{site_url}/{file}">
+  <meta property="og:image" content="{site_url}/images/portfolio/oceanfront-hotel-pool-dusk.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap" rel="stylesheet">
@@ -93,7 +98,7 @@ PAGES = [
         </div>
       </div>
       <div class="hero__frame" data-gl>
-        <img src="images/portfolio/oceanfront-hotel-pool-dusk.jpg" alt="Aerial view of an oceanfront hotel at dusk with a lit pool, palm trees and the beach" fetchpriority="high">
+        <img src="images/portfolio/oceanfront-hotel-pool-dusk.jpg" srcset="images/portfolio/oceanfront-hotel-pool-dusk-sm.jpg 1000w, images/portfolio/oceanfront-hotel-pool-dusk.jpg 2000w" sizes="(max-width: 1400px) 100vw, 1320px" alt="Aerial view of an oceanfront hotel at dusk with a lit pool, palm trees and the beach" fetchpriority="high">
       </div>
       <div class="caption"><span>Oceanfront hotel · Blue hour · Drone</span><span class="num">Justin Close Media</span></div>
     </section>
@@ -160,7 +165,7 @@ PAGES = [
           <h1 class="display">Drone</h1>
           <p class="lead">Your property from above. Aerial photos and video that show the location, the pool and the view.</p>
         </div>
-        <span class="meta">Drag the strip or use ← → keys</span>
+        <span class="meta hint-desktop">Drag the strip or use ← → keys</span>
       </div>
       <div class="stage">
         <div class="stage__frame" id="stage"></div>
@@ -170,7 +175,7 @@ PAGES = [
           <p id="stage-text"></p>
         </div>
       </div>
-      <div class="strip" id="strip" aria-label="Drone photos and videos"></div>
+      <div class="strip" id="strip" role="group" aria-label="Drone photos and videos"></div>
     </section>
 """),
   dict(file='about.html', page='about',
@@ -257,7 +262,7 @@ PAGES = [
 ]
 
 for p in PAGES:
-    html = HEAD.format(**p)
+    html = HEAD.format(site_url=SITE_URL, **p)
     html += p['body'].replace('{email}', EMAIL)
     html += '  </main>\n'
     if p.get('cta', True):

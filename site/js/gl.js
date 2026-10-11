@@ -47,7 +47,7 @@ window.GL = (function () {
       col.b = texture2D(tex, c - vec2(shift, 0.0)).b;
       // wave-edged reveal from the bottom (reveal 0 → hidden, 1 → shown)
       float edge = reveal * 1.2 - 0.1 + sin(uv.x * 9.0 + time) * 0.03;
-      col.a = smoothstep(edge, edge - 0.08, 1.0 - uv.y);
+      col.a = reveal >= 1.0 ? 1.0 : smoothstep(edge, edge - 0.08, 1.0 - uv.y);
       gl_FragColor = vec4(col.rgb * col.a, col.a);
     }`;
 

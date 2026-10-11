@@ -88,7 +88,7 @@
     const stage = $('#v-stage');
     stage.innerHTML = it.type === 'video'
       ? `<video src="${vid(it)}" poster="${poster(it)}" controls autoplay muted loop playsinline></video>`
-      : `<img src="${img(it.file)}" alt="${it.alt}">`;
+      : `<img src="${img(it.file)}" srcset="${img(it.file, true)} 1000w, ${img(it.file)} 2000w" sizes="80vw" alt="${it.alt}">`;
     $('#v-title').textContent = it.title;
     $('#v-count').textContent = `${pad(pos + 1)} / ${pad(items.length)}`;
     $$('#v-thumbs button').forEach((b, i) => b.setAttribute('aria-current', i === pos));
@@ -104,7 +104,7 @@
       `<button data-i="${i}" aria-label="Show ${it.title}"><img src="${it.type === 'video' ? poster(it) : img(it.file, true)}" alt=""></button>`).join('');
     renderViewer();
 
-    const show = () => { viewer.classList.add('open'); document.body.style.overflow = 'hidden'; $('#v-close').focus(); };
+    const show = () => { viewer.classList.add('open'); document.body.style.overflow = 'hidden'; setInert(true); $('#v-close').focus(); };
     const thumb = fromEl && $('img', fromEl);
     if (reduced || !thumb || items[index].type === 'video') return show();
 
@@ -126,7 +126,11 @@
     };
   }
 
+  // While the viewer is open, the page behind it can't be reached with Tab
+  function setInert(on) { ['main', '.bar', 'body > .dark'].forEach((s) => { const el = $(s); if (el) el.inert = on; }); }
+
   function closeViewer() {
+    setInert(false);
     viewer.classList.remove('open');
     document.body.style.overflow = '';
     $('#v-stage').innerHTML = '';
@@ -151,7 +155,7 @@
     });
     // Swipe on phones
     let x0 = null;
-    viewer.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    viewer.addEventListener('touchstart', (e) => { x0 = e.target.closest('video') ? null : e.touches[0].clientX; }, { passive: true });
     viewer.addEventListener('touchend', (e) => {
       if (x0 === null) return;
       const dx = e.changedTouches[0].clientX - x0;
@@ -242,7 +246,7 @@
       const d = DRONE[cur];
       const el = d.type === 'video'
         ? Object.assign(document.createElement('video'), { src: vid(d), poster: poster(d), muted: true, loop: true, autoplay: !reduced, playsInline: true })
-        : Object.assign(document.createElement('img'), { src: img(d.file), alt: d.alt || d.title });
+        : Object.assign(document.createElement('img'), { src: img(d.file), srcset: `${img(d.file, true)} 1000w, ${img(d.file)} 2000w`, sizes: '(max-width: 820px) 100vw, 75vw', alt: d.alt || d.title });
       if (!instant && !reduced) { el.style.opacity = 0; }
       stage.appendChild(el);
       const done = () => { $$('img, video', stage).forEach((n) => n !== el && n.remove()); };
@@ -252,6 +256,7 @@
       $('#stage-text').textContent = d.text || '';
       $('#stage-count').textContent = `${pad(cur + 1)} / ${pad(DRONE.length)}`;
       $$('button', strip).forEach((b, k) => b.setAttribute('aria-current', k === cur));
+      if (!instant) strip.children[cur].scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduced ? 'auto' : 'smooth' });
     };
     show(0, true);
 
@@ -270,6 +275,7 @@
       });
     }
     addEventListener('keydown', (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('input, textarea, select, [contenteditable]')) return;
       if (e.key === 'ArrowRight') show(cur + 1);
       if (e.key === 'ArrowLeft') show(cur - 1);
     });
