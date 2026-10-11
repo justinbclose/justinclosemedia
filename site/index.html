@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Justin Close Media | Hotel Photography</title>
+  <meta name="description" content="Hotel photography for interiors, lifestyle, property and drone. Beautiful, affordable images for your website, Instagram and booking pages.">
+  <meta property="og:title" content="Justin Close Media | Hotel Photography">
+  <meta property="og:description" content="Hotel photography for interiors, lifestyle, property and drone.">
+  <meta property="og:image" content="images/portfolio/oceanfront-suite-sunset.jpg">
+  <script>
+    document.documentElement.classList.add('js');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('reduced');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="home">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="loader" aria-hidden="true">
+    <div class="loader__name"><span>Justin Close Media</span></div>
+    <div class="loader__bar"><i></i></div>
+  </div>
+  <div class="wipe" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span>View</span></div>
+
+  <header class="header">
+    <a class="logo" href="index.html">Justin Close Media</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="work.html">Work</a>
+      <a href="#drone">Drone</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__media">
+        <img src="images/portfolio/oceanfront-suite-sunset.jpg" alt="Hotel suite facing the ocean at sunset" fetchpriority="high">
+      </div>
+      <div class="hero__content">
+        <h1 class="display">
+          <span class="line"><span>Hotels, seen</span></span>
+          <span class="line"><span>the way guests</span></span>
+          <span class="line"><span><em>feel them.</em></span></span>
+        </h1>
+        <div>
+          <p class="hero__meta" data-hero-fade>Interiors, lifestyle, property and drone photography for hotels and resorts.</p>
+          <div class="hero__scroll" data-hero-fade><i></i>Scroll</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intro statement -->
+    <section class="section wrap">
+      <div class="intro">
+        <p class="eyebrow muted" data-reveal>Justin Close Media</p>
+        <p class="intro__text" data-words>I work in hotel marketing, and I know how hard it is to get great photos. Justin Close Media makes it simple: beautiful images of your property, at a fair price, ready for your website, Instagram and booking pages.</p>
+      </div>
+    </section>
+
+    <!-- Selected work: horizontal scroll -->
+    <section class="hscroll dark" aria-labelledby="work-title">
+      <div class="hscroll__head wrap">
+        <h2 class="h2" id="work-title">
+          <span class="line"><span>Selected</span></span>
+          <span class="line"><span><em>work</em></span></span>
+        </h2>
+        <p class="eyebrow muted" data-reveal>Drag or scroll →</p>
+      </div>
+      <div class="hscroll__viewport">
+        <div class="hscroll__track" id="featured-track">
+          <!-- Cards are added from js/photos.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section wrap" aria-labelledby="services-title">
+      <p class="eyebrow muted" data-reveal>What I shoot</p>
+      <h2 class="h2" id="services-title" style="margin-top:20px">
+        <span class="line"><span>Every part</span></span>
+        <span class="line"><span>of your <em>property</em></span></span>
+      </h2>
+      <div class="services__list">
+        <a class="service" href="work.html?c=interiors" data-preview="interiors" data-reveal>
+          <span class="service__num">01</span>
+          <span class="service__name">Interiors</span>
+          <span class="service__desc">Rooms, suites, lobbies, restaurants and spas, lit and composed so guests can picture themselves there.</span>
+          <span class="service__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="service" href="work.html?c=lifestyle" data-preview="lifestyle" data-reveal>
+          <span class="service__num">02</span>
+          <span class="service__name">Lifestyle</span>
+          <span class="service__desc">People enjoying the space: cocktails at the bar, brunch by the beach, an afternoon by the pool.</span>
+          <span class="service__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="service" href="work.html?c=property" data-preview="property" data-reveal>
+          <span class="service__num">03</span>
+          <span class="service__name">Property</span>
+          <span class="service__desc">Exteriors, grounds and views. The full picture of your hotel, from arrival to sunset.</span>
+          <span class="service__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="service" href="#drone" data-preview="drone" data-reveal>
+          <span class="service__num">04</span>
+          <span class="service__name">Drone</span>
+          <span class="service__desc">Aerial photos and video that show your location, your coastline and everything around you.</span>
+          <span class="service__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+    <div class="service-preview" aria-hidden="true"></div>
+
+    <!-- Statement image -->
+    <section class="statement" aria-label="Featured image">
+      <div class="statement__media">
+        <img src="images/portfolio/cedar-sauna-view.jpg" alt="Cedar sauna with a large window looking out at green hills" loading="lazy">
+      </div>
+      <div class="statement__text">
+        <h2 class="h2">
+          <span class="line"><span>Spaces guests can feel</span></span>
+          <span class="line"><span><em>before they arrive.</em></span></span>
+        </h2>
+      </div>
+    </section>
+
+    <!-- Drone & video -->
+    <section class="dark" id="drone" aria-labelledby="drone-title">
+      <div class="drone__hero">
+        <img src="images/portfolio/oceanfront-resort-aerial.jpg" alt="Aerial view of an oceanfront resort with a pool and palm trees" loading="lazy" data-zoom>
+        <div class="drone__title">
+          <p class="eyebrow" data-reveal>04 — Drone &amp; video</p>
+          <h2 class="display" id="drone-title" style="margin-top:16px">
+            <span class="line"><span>From <em>above.</em></span></span>
+          </h2>
+        </div>
+      </div>
+      <div class="section wrap">
+        <div class="drone__grid">
+          <div class="video-frame" data-reveal>
+            <span class="video-frame__tag">Video</span>
+            <video src="video/restaurant-ocean-view.mp4" poster="video/restaurant-ocean-view-poster.jpg" muted loop playsinline preload="none" aria-label="Short video moving through an oceanfront restaurant"></video>
+          </div>
+          <div class="drone__copy">
+            <h3 class="h2">
+              <span class="line"><span>Photos that</span></span>
+              <span class="line"><span><em>move.</em></span></span>
+            </h3>
+            <p class="muted" data-reveal>Aerial shots show guests where you are and what surrounds you: the coastline, the pool, the grounds. Short video clips bring rooms and restaurants to life on Instagram Reels and your website.</p>
+            <p class="muted" data-reveal>Every shoot can include drone stills and vertical video, made for social media.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Parallax mosaic -->
+    <section class="section wrap" aria-labelledby="more-title">
+      <div class="page-head__row" style="margin-bottom:clamp(40px,6vw,80px)">
+        <h2 class="h2" id="more-title">
+          <span class="line"><span>More from</span></span>
+          <span class="line"><span>the <em>portfolio</em></span></span>
+        </h2>
+        <a class="btn btn--line" href="work.html" data-reveal>View all work <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="mosaic" id="mosaic">
+        <!-- Tiles are added from js/photos.js -->
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about section wrap" id="about" aria-labelledby="about-title">
+      <div class="about__grid">
+        <div class="about__photo" data-clip>
+          <img src="images/about/justin-portrait.jpg" alt="Justin Close standing on a trail in front of mountains" loading="lazy">
+        </div>
+        <div class="about__copy">
+          <p class="eyebrow muted" data-reveal>About</p>
+          <h2 class="h2" id="about-title">
+            <span class="line"><span>Hi, I'm <em>Justin.</em></span></span>
+          </h2>
+          <p data-reveal>I work in marketing at a hotel. Every day I see the same gap: hotels need fresh, high-quality photos for Instagram, their website and booking sites, but budgets, schedules and the hassle of hiring a photographer get in the way.</p>
+          <p data-reveal>I started Justin Close Media to fix that. I shoot interiors, lifestyle, property and drone, at a fair price, with a process that's easy for your team.</p>
+          <div class="facts" data-reveal>
+            <div><strong>Marketer</strong>I know what your team needs</div>
+            <div><strong>Simple</strong>Easy to book, fast delivery</div>
+            <div><strong>Affordable</strong>Pricing built for hotels</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact + newsletter -->
+    <section class="dark section wrap" id="contact" aria-labelledby="contact-title">
+      <div class="contact__grid">
+        <div class="contact__intro">
+          <p class="eyebrow muted" data-reveal>Contact</p>
+          <h2 class="h2" id="contact-title" style="margin:20px 0 28px">
+            <span class="line"><span>Let's shoot</span></span>
+            <span class="line"><span>your <em>property.</em></span></span>
+          </h2>
+          <p class="muted" data-reveal>Tell me a little about your hotel and what you need. I'll reply with ideas, timing and pricing.</p>
+        </div>
+
+        <form class="form" id="contact-form" novalidate data-reveal>
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field field--full">
+            <label for="f-property">Hotel or property</label>
+            <input id="f-property" name="property" autocomplete="organization">
+          </div>
+          <fieldset class="field field--full">
+            <legend>What do you need?</legend>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="shoot_type" value="Interiors"><span>Interiors</span></label>
+              <label class="chip"><input type="checkbox" name="shoot_type" value="Lifestyle"><span>Lifestyle</span></label>
+              <label class="chip"><input type="checkbox" name="shoot_type" value="Property"><span>Property</span></label>
+              <label class="chip"><input type="checkbox" name="shoot_type" value="Drone"><span>Drone</span></label>
+              <label class="chip"><input type="checkbox" name="shoot_type" value="Video"><span>Video</span></label>
+            </div>
+          </fieldset>
+          <div class="field field--full">
+            <label for="f-message">Message</label>
+            <textarea id="f-message" name="message" rows="4"></textarea>
+          </div>
+          <div class="field--full"><button class="btn" type="submit">Send inquiry <span aria-hidden="true">→</span></button></div>
+          <p class="form__status" role="status"></p>
+        </form>
+      </div>
+
+      <div class="newsletter">
+        <div>
+          <h3 class="h2" style="font-size:clamp(32px,4vw,56px)" data-reveal>New work, <em>first.</em></h3>
+          <p class="muted" data-reveal>Occasional emails with new shoots and ideas for hotel marketing. No spam.</p>
+        </div>
+        <form id="newsletter-form" novalidate data-reveal>
+          <label class="sr-only" for="n-email">Email address</label>
+          <div class="newsletter__form">
+            <input id="n-email" name="email_address" type="email" placeholder="Your email" autocomplete="email" required>
+            <button type="submit">Subscribe</button>
+          </div>
+          <p class="form__status" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="footer__word" aria-hidden="true">Justin Close Media</p>
+    <div class="footer__row">
+      <span>© <span data-year></span> Justin Close Media</span>
+      <span>Hotel photography: interiors, lifestyle, property, drone</span>
+      <a href="#main">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/photos.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
