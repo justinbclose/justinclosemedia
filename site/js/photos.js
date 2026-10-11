@@ -32,6 +32,8 @@ window.PHOTOS = [
     alt: 'Hotel pool courtyard with white umbrellas and loungers, palm trees and the ocean behind' },
   { file: 'arched-dining-room', title: 'Arched dining room', group: 'dining', w: 3, h: 4,
     alt: 'Dining room with tall arched windows looking out over the ocean' },
+  { file: 'beach-chairs-umbrella', title: 'Beach day', group: 'lifestyle', w: 3, h: 4,
+    alt: 'Two blue beach chairs with striped towels under a blue and white umbrella on the sand, ocean behind' },
   { file: 'brunch-by-the-sea', title: 'Brunch by the sea', group: 'lifestyle', w: 3, h: 4,
     alt: 'Mimosas, pancakes and a pastry plate on a white table with the beach behind' },
   { file: 'poolside-umbrellas', title: 'Poolside detail', group: 'pools', w: 3, h: 4,
