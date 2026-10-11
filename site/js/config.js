@@ -8,6 +8,6 @@
   newsletterUrl:  the form "action" URL from your email tool (e.g. Kit)
 */
 window.SITE_CONFIG = {
-  web3formsKey: '',
+  web3formsKey: '8b90e681-4190-449f-b1f9-6d200bc9b716',
   newsletterUrl: '',
 };
