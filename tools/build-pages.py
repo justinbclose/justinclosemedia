@@ -54,6 +54,7 @@ HEAD = """<!doctype html>
 CTA = """  <section class="dark">
     <div class="wrap cta">
       <div>
+        <p class="meta">Book a shoot</p>
         <h2 class="h2">Let’s plan your shoot.</h2>
         <p class="lead">Tell me a little about your property and I’ll reply with ideas, timing and pricing. Or email me at <a class="link" href="mailto:{email}">{email}</a>.</p>
         <p class="signature" aria-hidden="true">Justin</p>
@@ -103,10 +104,11 @@ PAGES = [
         <img src="images/portfolio/coastline-resort-aerial.jpg" srcset="images/portfolio/coastline-resort-aerial-sm.jpg 1000w, images/portfolio/coastline-resort-aerial.jpg 2000w" sizes="100vw" alt="Aerial view of a red-roofed beachfront resort along the coast at sunset" fetchpriority="high">
       </div>
       <div class="hero__content">
+        <p class="meta">Hotel photography · Video · Drone</p>
         <h1 class="display">Hotel assets your marketing team will actually use.</h1>
         <a class="btn btn--light" href="photos.html">View the work</a>
       </div>
-      <p class="hero__caption">La Jolla, California · Drone</p>
+      <a class="hero__down" href="#work" aria-label="Scroll to the work">↓</a>
     </section>
 
     <section class="wrap section" id="work">
@@ -120,7 +122,8 @@ PAGES = [
     <section class="wrap section note" style="padding-top:0">
       <div class="note__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close" loading="lazy"></div>
       <div class="note__text">
-        <p class="note__quote">Hi, I’m Justin. I’ve worked in hotel marketing, and I kept running into the same problem: never enough good photos. So I started taking them.</p>
+        <p class="meta">Hi, I’m Justin</p>
+        <p class="note__quote">I’ve worked in hotel marketing, and I kept running into the same problem: never enough good photos. So I started taking them.</p>
         <p class="signature" aria-hidden="true">Justin Close</p>
         <a class="btn" href="about.html">More about me</a>
       </div>
@@ -129,7 +132,8 @@ PAGES = [
     <section class="wrap section" style="padding-top:0">
       <div class="how">
         <div>
-          <h2 class="h2" style="margin:0 0 14px">How it works</h2>
+          <p class="meta">How it works</p>
+          <h2 class="h2" style="margin:10px 0 14px">Simple, start to finish.</h2>
           <p style="color:var(--muted)">I’ve worked in hotel marketing, so I know the shots your team actually needs: images for your website, Instagram, booking sites and ads.</p>
         </div>
         <ol class="steps">

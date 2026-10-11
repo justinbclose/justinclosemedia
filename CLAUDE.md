@@ -104,11 +104,8 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
 - **Personality** (inspired by coastlinecollective.us): first-person voice, a "Hi, I'm Justin" note
   with his photo and script signature on the home page, signature in the booking bar.
 - **Home:** full-screen cover photo (currently `coastline-resort-aerial`) with a centered headline,
-  then "Recent work" (one large Pools photo + a 2×2 of Dining, Video, Drone, Lifestyle), the personal note,
+  then "Recent work" (6 tiles: Pools, Dining, Video, Drone, Lifestyle, Spa), the personal note,
   "How it works", and the booking bar ("Let's plan your shoot.").
-- **Avoid AI-template tells:** no eyebrow labels above headings, no centered hero (text sits
-  bottom-left with a real caption), no rows of equal cards, no fade-in on every element, no arrows
-  on every link, steps as a quiet list (not cards).
 - **Hover:** every image grows gently (scale ~1.05–1.06, 0.9s). No glow/ripple/WebGL effects.
 - **Galleries:** square tiles (like coastlinecollective.us/photography). Click opens the full,
   uncropped photo in a viewer.

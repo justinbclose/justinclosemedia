@@ -65,9 +65,9 @@
       const media = t.video
         ? `<img src="${poster(t.video)}" alt="" loading="lazy"><video src="${vid(t.video)}" muted loop playsinline preload="none" aria-hidden="true"></video>`
         : `<img src="${img(t.file, true)}" alt="${t.alt || ''}" loading="lazy">`;
-      return `<a class="tile${t.video ? ' tile--video' : ''}" href="${t.href}">
+      return `<a class="tile rise${t.video ? ' tile--video' : ''}" href="${t.href}" style="--i:${i}">
         <div class="tile__media">${media}</div>
-        <div class="tile__label">${t.label}</div>
+        <div class="tile__label"><span>${t.label}</span><span>→</span></div>
       </a>`;
     }).join('');
     $$('.tile--video', tiles).forEach(hoverPlay);
@@ -195,7 +195,7 @@
     const render = (f) => {
       visible = f === 'all' ? PHOTOS : PHOTOS.filter((p) => p.group === f);
       grid.innerHTML = visible.map((p, i) => `
-        <button class="photo" data-i="${i}" aria-label="Open ${p.title}">
+        <button class="photo rise" style="--i:${Math.min(i, 16)}" data-i="${i}" aria-label="Open ${p.title}">
           <div class="photo__img"><img src="${img(p.file, true)}" alt="${p.alt}" loading="lazy" ${ratio(p)}></div>
           <div class="photo__cap"><span>${p.title}</span><span class="num">${pad(i + 1)}</span></div>
         </button>`).join('');
@@ -226,7 +226,7 @@
     const wide = VIDEOS.filter((v) => v.w > v.h);
     const tall = VIDEOS.filter((v) => v.w <= v.h);
     const card = (v, i, cls = '') => `
-      <button class="clip ${cls}" data-file="${v.file}" aria-label="Play ${v.title}">
+      <button class="clip rise ${cls}" style="--i:${i}" data-file="${v.file}" aria-label="Play ${v.title}">
         <div class="clip__media">
           <img src="${poster(v)}" alt="" loading="lazy">
           <video src="${vid(v)}" muted loop playsinline preload="none" aria-hidden="true"></video>
@@ -251,7 +251,7 @@
   if (droneGrid) {
     const list = DRONE.map((d) => ({ ...d, alt: d.alt || d.title }));
     droneGrid.innerHTML = list.map((d, i) => d.type === 'video' ? `
-        <button class="photo clip" data-i="${i}" aria-label="Play ${d.title}">
+        <button class="photo clip rise" style="--i:${i}" data-i="${i}" aria-label="Play ${d.title}">
           <div class="photo__img clip__media">
             <img src="${poster(d)}" alt="" loading="lazy">
             <video src="${vid(d)}" muted loop playsinline preload="none" aria-hidden="true"></video>
@@ -259,7 +259,7 @@
           </div>
           <div class="photo__cap"><span>${d.title}</span><span>Video</span></div>
         </button>` : `
-        <button class="photo" data-i="${i}" aria-label="Open ${d.title}">
+        <button class="photo rise" style="--i:${i}" data-i="${i}" aria-label="Open ${d.title}">
           <div class="photo__img"><img src="${img(d.file, true)}" alt="${d.alt}" loading="lazy" ${ratio(d)}></div>
           <div class="photo__cap"><span>${d.title}</span><span class="num">${pad(i + 1)}</span></div>
         </button>`).join('');
