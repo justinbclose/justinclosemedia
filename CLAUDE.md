@@ -154,6 +154,21 @@ Keep the portfolio small for now; he will hand over specific photos to add. Expo
 Desktop: `drone photos export`, `pool export`, `hotel favorites export`,
 `restaurant favorites export`, `drone favorites export`.
 
+## Publishing (Cloudflare Workers + GitHub)
+
+- Repo: `github.com/justinbclose/justinclosemedia` (private). Claude pushes over SSH with the
+  deploy key `~/.ssh/justinclosemedia_github` (set in this repo's `core.sshCommand`).
+- `wrangler.jsonc` makes Cloudflare publish only `site/`. Everything else stays private.
+- **`preview` branch** → https://preview-justinclosemedia.justinbclose.workers.dev
+- **`main` branch** → live site: https://justinclosemedia.com (also www, and
+  https://justinclosemedia.justinbclose.workers.dev)
+- **Workflow (Justin's choice):** make changes on `preview`, push, send Justin the preview
+  link. Merge into `main` only after he says "publish". Builds take about 30 seconds.
+- Domain: registered at WordPress.com; nameservers point to Cloudflare
+  (candy/marty.ns.cloudflare.com). The root and www are custom domains on the Worker.
+  Old WordPress A/CNAME records were deleted; the TXT records were kept.
+- `Photos/` (Justin's source photos and videos) is git-ignored. Never push it.
+
 **Local preview:** run `python3 -m http.server 4322` from inside `site/`, then open
 http://127.0.0.1:4322.
 
