@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hotel Outreach Board</title>
+<style>
+  :root { --bg:#F8F5EF; --card:#FFFFFF; --ink:#1B1A17; --muted:#6A645B; --line:rgba(27,26,23,.12); --accent:#9A7B4F; --tag:#EFE9DF; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#171614; --card:#211F1C; --ink:#EFE9DF; --muted:#A9A193; --line:rgba(239,233,223,.14); --accent:#C9AE7F; --tag:#2B2824; } }
+  :root[data-theme="dark"] { --bg:#171614; --card:#211F1C; --ink:#EFE9DF; --muted:#A9A193; --line:rgba(239,233,223,.14); --accent:#C9AE7F; --tag:#2B2824; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 -apple-system, system-ui, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font: 400 28px/1.15 Georgia, serif; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .rules { background: var(--card); border: 1px solid var(--line); padding: 14px 16px; margin-bottom: 24px; }
+  .rules b { color: var(--accent); }
+  .rules ul { margin: 6px 0 0; padding-left: 18px; }
+  h2 { font: 400 20px/1.2 Georgia, serif; margin: 28px 0 4px; }
+  h2 small { font: 12px/1 -apple-system, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin-left: 6px; }
+  .offer { color: var(--muted); margin: 0 0 10px; font-size: 14px; }
+  .hotel { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; background: var(--card); border: 1px solid var(--line); padding: 12px 14px; margin-bottom: 8px; }
+  .hotel a.name { font-weight: 600; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+  .hotel a.name:hover { color: var(--accent); }
+  .area { font-size: 12px; color: var(--muted); align-self: start; text-align: right; white-space: nowrap; }
+  .why { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
+  .tag { display: inline-block; font-size: 11px; background: var(--tag); padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+  .warn { border-left: 3px solid var(--accent); padding: 10px 14px; background: var(--card); margin-top: 24px; font-size: 14px; }
+  pre { white-space: pre-wrap; background: var(--card); border: 1px solid var(--line); padding: 14px; font: 14px/1.55 -apple-system, sans-serif; }
+</style>
+</head>
+<body>
+<main>
+  <h1>San Diego hotel outreach</h1>
+  <p class="sub">Justin Close Media · build the portfolio with 4 free shoots, then go paid</p>
+
+  <div class="rules">
+    <b>Rules</b>
+    <ul>
+      <li>Max <b>4 free shoots</b>. After that, everything is paid.</li>
+      <li>Put it in writing (email is fine): what you deliver, when, and that you can show their name and the photos.</li>
+      <li>Always ask: "Would you introduce me to your sister properties?"</li>
+    </ul>
+  </div>
+
+  <h2>1 · Day shoots <small>Pick 2 · free</small></h2>
+  <p class="offer">You give: 15 edited photos + 1 reel in 7 days. You get: portfolio, "Worked with" listing, testimonial.</p>
+  <div class="hotel"><a class="name" href="https://www.thepearlsd.com/" target="_blank" rel="noopener">The Pearl Hotel</a><span class="area">Point Loma</span><span class="why">Retro mid-century boutique with a pool. Very Instagram-friendly.</span></div>
+  <div class="hotel"><a class="name" href="http://www.crystalpier.com/" target="_blank" rel="noopener">Crystal Pier Hotel &amp; Cottages</a><span class="area">Pacific Beach</span><span class="why">Cottages built right on the pier. Iconic, unforgettable shots.</span></div>
+  <div class="hotel"><a class="name" href="https://innatsunsetcliffs.com/" target="_blank" rel="noopener">Inn at Sunset Cliffs</a><span class="tag">backup</span><span class="area">Ocean Beach</span><span class="why">Cliffside ocean views and dramatic sunsets.</span></div>
+  <div class="hotel"><a class="name" href="https://www.lapensionehotel.com/" target="_blank" rel="noopener">La Pensione Hotel</a><span class="tag">backup</span><span class="area">Little Italy</span><span class="why">Small boutique in a walkable neighborhood. Great street and café content.</span></div>
+
+  <h2>2 · Overnight stays <small>Pick 2–3 · comped room</small></h2>
+  <p class="offer">You give: 25 photos + 3 reels, check-in to check-out, through the guest's eyes. You get: the full guest journey + a stay.</p>
+  <div class="hotel"><a class="name" href="https://lafayettehotelsd.com/" target="_blank" rel="noopener">Lafayette Hotel</a><span class="area">North Park</span><span class="why">Historic hotel with a big pool and restaurants. Strong lifestyle story.</span></div>
+  <div class="hotel"><a class="name" href="https://www.resortkonakai.com/" target="_blank" rel="noopener">Kona Kai Resort &amp; Spa</a><span class="area">Shelter Island</span><span class="why">Marina, spa and bay views. Great for drone.</span></div>
+  <div class="hotel"><a class="name" href="https://www.t23hotel.com/" target="_blank" rel="noopener">Tower23 Hotel</a><span class="area">Pacific Beach</span><span class="why">Modern hotel on the boardwalk. Beach lifestyle content.</span></div>
+  <div class="hotel"><a class="name" href="https://1906lodge.com/" target="_blank" rel="noopener">1906 Lodge at Coronado Beach</a><span class="tag">backup</span><span class="area">Coronado</span><span class="why">Small luxury inn. Romantic stays.</span></div>
+  <div class="hotel"><a class="name" href="https://www.gloriettabayinn.com/" target="_blank" rel="noopener">Glorietta Bay Inn</a><span class="tag">backup</span><span class="area">Coronado</span><span class="why">Historic mansion on the bay.</span></div>
+
+  <h2>3 · Paid clients <small>Use your portfolio</small></h2>
+  <p class="offer">Go after hotel groups: one happy client can open several properties.</p>
+  <div class="hotel"><a class="name" href="https://www.evanshotels.com/" target="_blank" rel="noopener">Evans Hotels</a><span class="area">Group</span><span class="why"><a href="https://www.bahiahotel.com/" target="_blank" rel="noopener">Bahia Resort</a> · <a href="https://www.catamaranresort.com/" target="_blank" rel="noopener">Catamaran Resort</a> · <a href="https://www.lodgetorreypines.com/" target="_blank" rel="noopener">The Lodge at Torrey Pines</a> (La Jolla: see note)</span></div>
+  <div class="hotel"><a class="name" href="https://www.bartellhotels.com/" target="_blank" rel="noopener">Bartell Hotels</a><span class="area">Group</span><span class="why"><a href="https://thedana.com/" target="_blank" rel="noopener">The Dana on Mission Bay</a> · <a href="https://halfmooninn.com/" target="_blank" rel="noopener">Humphreys Half Moon Inn</a></span></div>
+  <div class="hotel"><a class="name" href="https://www.paradisepoint.com/" target="_blank" rel="noopener">Paradise Point Resort</a><span class="area">Mission Bay</span><span class="why">Island resort with bungalows, beaches and a spa.</span></div>
+  <div class="hotel"><a class="name" href="https://www.hoteldel.com/" target="_blank" rel="noopener">Hotel del Coronado</a><span class="area">Coronado</span><span class="why">The legendary one. A long-term goal.</span></div>
+  <div class="hotel"><a class="name" href="https://pendry.com/san-diego" target="_blank" rel="noopener">Pendry San Diego</a><span class="area">Gaslamp</span><span class="why">Luxury downtown hotel with a rooftop pool.</span></div>
+
+  <div class="warn"><b>Day-job note:</b> before pitching La Jolla hotels near La Jolla Shores Hotel (La Valencia, Grande Colonial, Pantai Inn, La Jolla Cove Hotel, Estancia, Lodge at Torrey Pines), check your employer's policy. Get their OK before listing La Jolla Shores Hotel or The Marine Room under "Worked with".</div>
+
+  <h2>Pitch to copy</h2>
+<pre>Hi [Name],
+
+I'm Justin. I've worked in hotel marketing and now shoot hotel photo, video and drone content here in San Diego. I'm building my portfolio and would love to photograph [Hotel].
+
+In exchange, you'd get [15 edited photos and a short reel] to use anywhere: your website, Instagram and ads. No cost.
+
+Would you be open to a quick visit [this week / a date that works]? You can see my work at justinclosemedia.com.
+
+Justin Close
+justinclosemedia@gmail.com</pre>
+  <p class="offer">For overnight stays, swap the offer for: "a 1–2 night stay so I can capture the full guest experience, from check-in to check-out. You'd receive 25 edited photos and 3 reels."</p>
+</main>
+</body>
+</html>
