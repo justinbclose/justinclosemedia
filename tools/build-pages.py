@@ -139,7 +139,7 @@ PAGES = [
         <ol class="steps">
           <li><span class="meta num">01</span><b>Tell me about your property</b><p>Tell me what you’d like photos of, and where you’ll use them: website, Instagram, ads.</p></li>
           <li><span class="meta num">02</span><b>Send a shot list or the vibe</b><p>If you have one, send a shot list or a few examples of the look you want. No list? We’ll plan it together.</p></li>
-          <li><span class="meta num">03</span><b>Shoot day</b><p>Photos, video and drone in one visit, with little disruption to guests.</p></li>
+          <li><span class="meta num">03</span><b>Shoot day</b><p>Photos, video and drone in one visit, including the area around the property, with little disruption to guests.</p></li>
           <li><span class="meta num">04</span><b>Delivery</b><p>Edited files sized for your website, social media and booking sites.</p></li>
         </ol>
       </div>
@@ -176,13 +176,13 @@ PAGES = [
 """),
   dict(file='drone.html', page='drone',
        title='Drone | Justin Close Media',
-       desc='Hotel drone photography and video. Aerial views that show your location, the pool and the view.',
+       desc='Hotel drone photography and video of your property and the area around it: the beach, the views and the neighborhood your guests come for.',
        extra=VIEWER,
        body="""    <section class="wrap">
       <div class="page-head">
         <div>
           <h1 class="display">Drone</h1>
-          <p class="lead">Your property from above. Aerial photos and video that show the location, the pool and the view. Click any shot to see it full size.</p>
+          <p class="lead">Your property from above, and everything around it. Guests don’t just book a room; they come for the beach, the views and the neighborhood too. Aerial photos and video show it all. Click any shot to see it full size.</p>
         </div>
       </div>
       <div class="grid grid--drone" id="drone-grid"></div>
@@ -204,7 +204,7 @@ PAGES = [
         <ul class="list">
           <li><b>·</b>Edited photos of rooms, amenities, dining and the property</li>
           <li><b>·</b>Short vertical video for Reels and Stories</li>
-          <li><b>·</b>Drone photos and video of the property and its location</li>
+          <li><b>·</b>Drone photos and video of the property and the area around it, because guests come for that too</li>
           <li><b>·</b>Files sized for your website, social media and booking sites</li>
           <li><b>·</b>Full rights to use every photo anywhere, including ads</li>
         </ul>
