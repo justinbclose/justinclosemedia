@@ -6,7 +6,7 @@ This file gives Claude Code guidance when working in this repository.
 
 This is background for Claude only. It is not website copy.
 
-- Justin works in **marketing at a hotel**. He knows the hospitality business from the inside.
+- Justin has worked in **hotel marketing** (La Jolla Shores Hotel; he shoots for its Instagram, @ljshoreshotel). He knows the hospitality business from the inside.
 - In that job he saw a real gap: hotels often don't have enough **high-quality photos** for
   Instagram, their website, and other marketing. Budgets, scheduling, and the hassle of
   hiring photographers all get in the way.
@@ -62,92 +62,94 @@ How Claude should write and explain things to Justin:
 
 ## Project
 
-Justin's photography portfolio website, focused on **hospitality / hotel photography**.
+**Justin Close Media**: a hotel photography business (photos, video, drone). The website is LIVE at
+https://justinclosemedia.com. Contact email: **justinclosemedia@gmail.com** (Gmail; no email on the
+domain itself, by Justin's choice).
 
-Justin is starting out in hotel photography and is building a portfolio to win clients
-(hotels, resorts, boutique properties, hospitality brands and agencies). He has some work
-to show now and will add a lot more over time.
+### Current status (keep this updated)
 
-### Services / photo categories
+- Live site and preview are in sync as of the last "publish".
+- **Waiting on Justin:**
+  1. **Instagram pool photo** (ljshoreshotel post, Aug 26: loungers with striped towels, blue tile
+     wall, drinks). Not reachable logged out. Needs the post link (single posts load logged out),
+     an Instagram login in the browser pane, or Claude in Chrome connected. Then add it to Pools
+     and make it the home page Pools tile.
+  2. **Web3Forms access key** (free, for justinclosemedia@gmail.com). Put it in
+     `site/js/config.js` → `web3formsKey`. Until then the forms tell visitors to email instead.
+  3. Facts for copy (from `research/marketing-brief.md`): reply time, delivery turnaround, number
+     of photos delivered, FAA Part 107 license / insurance, whether to show a starting price.
+     Never invent these.
+  4. Optional: a home page background video (set `HERO.video` in `site/js/photos.js`).
+- Newsletter signup is on the Contact page but not connected (no email tool chosen yet).
 
-- **Interiors**: rooms, suites, lobbies, restaurants, spas, architectural details
-- **Lifestyle**: people using the space, such as guests, dining, pool and amenities
-- **Property**: exteriors, grounds, full property coverage
-- **Drone / aerial**: gets its own dedicated section
+### Costs
 
-## Goals
+Hosting (Cloudflare Workers, static assets), GitHub private repo, Web3Forms, and Google Fonts are
+all free. The only cost is the domain: **$13/year at WordPress.com**, renews July 9, 2027
+(auto-renew on). Optional: transfer the domain to Cloudflare (~$10.50/yr). The old WordPress.com
+site (justinclosemedia-pbefw) is unused; don't delete the domain registration there.
 
-- **High end and distinctive.** It must stand out from other photographers' portfolios and
-  never look like a generic template. It should feel like a luxury hotel brand.
-- **Dynamic and interactive.** Content flows as you scroll, elements reveal and animate in,
-  and sections respond to the user (scroll-driven animation, parallax, image reveals,
-  hover interactions, smooth transitions between pages and sections).
-- **Photos come first.** The design should frame the photography and never compete with it.
-- **Easy to add work later.** Adding photos or a new project should be simple, ideally
-  dropping images into a folder and/or editing one data file. No layout code changes needed.
-- **Works with only a few photos for now.** Layouts need to look strong with a small number
-  of images and scale up as the portfolio grows.
+## Design decisions (from Justin's feedback, keep following them)
 
-## Required sections / pages
+- **Simple and compact.** Six short pages (Home, Photos, Video, Drone, About, Contact). No long
+  scroll effects, pinned sections, loaders, giant headlines or word-by-word reveals. Justin found
+  those "AI-looking" and too much scrolling.
+- **Luxury, restrained look** (modeled on Four Seasons / Ritz-Carlton sites): warm cream `#F8F5EF`,
+  near-black `#1B1A17`, one antique-brass accent `#9A7B4F`. Square corners, thin lines, small
+  spaced-out uppercase labels. Cormorant Garamond (headings) + Inter (body).
+- **Home:** full-screen cover photo (currently `coastline-resort-aerial`) with a centered headline,
+  then 6 small tiles (Pools, Dining, Video, Drone, Lifestyle, Spa), "How it works", and the booking bar.
+- **Hover:** the whole image grows slightly. No glow/ripple/WebGL effects.
+- **Galleries:** square tiles (like coastlinecollective.us/photography). Click opens the full,
+  uncropped photo in a viewer.
+- **Booking bar** at the bottom of every page has the form fields inline. Never use the words
+  "Check availability". The nav says "Contact".
+- **About:** even 50/50 split, sticky portrait. Says "I've worked in hotel marketing" and that hotels
+  **own the rights to every photo** (website, Instagram, ads, "no ifs, ands or buts").
 
-- **Hero / home**: a strong first impression with full-bleed imagery and motion
-- **Portfolio / work**: browsable by category (Interiors, Lifestyle, Property, Drone),
-  with optional individual project/property pages
-- **Drone**: a dedicated aerial section (stills and possibly video)
-- **About**: Justin's story, approach, and why hotels should hire him
-- **Contact / inquiry form**: for potential clients to reach out (name, email, property,
-  type of shoot, message)
-- **Email newsletter signup**: lets visitors subscribe to updates
+## Photo rules
 
-## Tech stack
+- Only real photos and video by Justin. **No AI-generated or AI-edited images.**
+- **No gray, overcast or dull shots.** Bright, warm, hotel-relevant images only.
+- **Food and drinks go under Dining**, not Lifestyle. Lifestyle = people/beach/leisure moments.
+- Spa = spa only (the cabin window was removed for not fitting).
+- Mountains and lakes go at the end of the Drone page, never as a lead image.
+- A small portfolio is fine; Justin is just starting. Quality over quantity.
+- **Don't comb his Photos library** (it uses up his usage). Use what he hands over: the
+  `Photos/` folder in this project, or specific Instagram posts he points to (he took the photos
+  on @ljshoreshotel and @themarineroom).
+- Always strip GPS: the photo/video tools do this automatically.
 
-**Decided:** plain HTML/CSS/JS (no build step), hosted on Cloudflare Pages (free).
-- GSAP + ScrollTrigger (cdnjs) for scroll animation, Lenis (unpkg) for smooth scrolling
-- Fonts: Cormorant Garamond (headings) + Inter (body), from Google Fonts
-- Palette: neutral luxury (bone, ink, warm ivory, champagne accent) so it suits any hotel brand
-- Contact form: Web3Forms. Newsletter: Kit. Both are set in `site/js/config.js` (not connected yet)
-- Node.js is not installed on Justin's Mac. Photos are resized with macOS `sips`, video with `avconvert`
+## Tech
 
-Requirements this stack covers:
-- Smooth scroll-driven animation (e.g., GSAP + ScrollTrigger, Lenis smooth scroll)
-- Optimized, responsive images (modern formats, lazy loading, multiple sizes), since this
-  is an image-heavy site where performance matters
-- Content-driven portfolio data (e.g., a JSON/Markdown collection per project)
-- Working form submission and email-list integration (provider TBD)
-- Easy hosting/deploys (e.g., Vercel or Netlify)
-
-## Commands
-
-_Fill in once the project is set up._
-
-```bash
-# install dependencies
-# run dev server
-# build for production
-```
+Plain HTML/CSS/JS, no libraries and no build step except the page builder. Node.js is not installed
+on Justin's Mac; photos are resized with macOS `sips`, video with `avconvert`.
+CSS/JS links carry a version stamp (`?v=...`) set by the page builder so browsers always load the
+newest files.
 
 ## Structure
-
-- `research/`: planning research (not part of the website)
-  - `hosting-options.md`: platform comparison, costs, and recommendation
-  - `design-inspiration.md`: example websites and ideas to borrow
-  - `color-palettes.md`: luxury color palette options with hex codes
 
 - `site/`: the website (this folder is what gets deployed)
   - `index.html`, `photos.html`, `video.html`, `drone.html`, `about.html`, `contact.html`:
     **generated by `tools/build-pages.py`**. Edit page text there, then run
     `python3 -I tools/build-pages.py`. Don't edit the HTML files directly.
   - `js/photos.js`: **every photo and video on the site** (PHOTOS, VIDEOS, DRONE, HOME_TILES)
-  - `js/main.js`: nav, galleries, viewer, drone strip, forms. `js/gl.js`: hero ripple
+  - `js/main.js`: nav, home tiles, galleries, viewer, video hover-play, forms
   - `css/styles.css`: all styles and color tokens. `js/config.js`: form settings
   - `images/portfolio/` (`name.jpg` 2000px + `name-sm.jpg` 1000px), `images/about/`, `video/`
 - `tools/`: `build-pages.py`, `optimize-photo.sh`, `optimize-video.sh`, `strip-gps.py`,
   `strip-video-location.py` (photo and video tools remove GPS location data)
 - `.claude/agents/`: helper roles (hotel-marketer, web-designer, photo-curator, qa-reviewer)
-- `research/`: briefs (`marketing-brief.md`, `design-spec.md`) and earlier research
+- `research/`: `marketing-brief.md`, `design-spec.md` (some of its details were later changed;
+  the "Design decisions" section above wins), plus early research (hosting, inspiration, palettes)
+- `Photos/`: Justin's source photos/videos (git-ignored). `Photos/instagram/` = images downloaded
+  from his Instagram posts.
 
 **To add a photo:** `tools/optimize-photo.sh "<photo path>" <lowercase-name>`, then add one line
-to `site/js/photos.js`. **To add a video:** `tools/optimize-video.sh` the same way.
+to `site/js/photos.js` (check the true width/height; phone photos may be rotated by an EXIF flag).
+**To add a video:** `tools/optimize-video.sh "<path>" <name> [seconds, default 6]`; use
+`PRESET=Preset1280x720` for drone clips. Then rebuild pages (`python3 -I tools/build-pages.py`)
+so the version stamp updates.
 
 **Photo search:** Justin asked to stop combing his Photos library (it uses up his usage fast).
 Keep the portfolio small for now; he will hand over specific photos to add. Exports already on his
@@ -172,25 +174,19 @@ Desktop: `drone photos export`, `pool export`, `hotel favorites export`,
 **Local preview:** run `python3 -m http.server 4322` from inside `site/`, then open
 http://127.0.0.1:4322.
 
-**Source photos:** `~/Desktop/Photo for website/`. Placeholders came from here.
-`Generated-image_-Elegant-poolside-retreat-with-loungers.webp` was left out because it's an
-AI-generated image, not Justin's work.
+**Local preview:** the Browser pane can't start a server from the Desktop folder (macOS
+permissions), so start it with Bash in the background (`python3 -m http.server 4322 --bind 127.0.0.1`
+from `site/`) and use the `site` entry in `~/Desktop/.claude/launch.json` (attaches to that port).
+
+**Accounts:** GitHub `justinbclose`; Cloudflare and WordPress.com are logged in on the built-in
+browser pane (Justin signs in himself; never type his passwords). Deleting DNS records needs his
+explicit OK in chat.
 
 ## Conventions
 
-- Mobile-first and fully responsive. Animations must also feel good on phones.
-- Respect `prefers-reduced-motion`: provide calmer fallbacks for animations.
-- Performance matters: compress and size images properly, avoid layout shift, and keep
-  animation smooth (60fps, animate transform/opacity).
-- Use semantic HTML, meaningful alt text on every photo, and accessible forms.
-- Keep SEO in mind (page titles, meta descriptions, Open Graph images) so hotels can find
-  and share the work.
+- Mobile-first and fully responsive. Respect `prefers-reduced-motion`.
+- Keep images light: 2000px max, ~72% JPEG quality; videos short (≤6s) and small.
+- Semantic HTML, alt text on every photo, accessible forms, page titles and descriptions.
 - Prefer simple, maintainable solutions. Add dependencies only when they clearly help.
-
-## Open questions
-
-- Business name is **Justin Close Media**. Still need: logo, and the domain name and where it's registered
-- Web3Forms key and Kit account to connect the forms
-- Which placeholder photos are Justin's own work (some look AI-edited)
-- Real drone footage (yes, drone includes video). The current clip is an interior restaurant video
-- Website copy is a draft written from Justin's notes and needs his review
+- Before calling something done, check it in the browser (desktop and phone width) and look
+  for console errors. The `qa-reviewer` helper can do a full review.
