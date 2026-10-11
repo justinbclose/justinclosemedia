@@ -97,8 +97,9 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
 - **Luxury, restrained look** (modeled on Four Seasons / Ritz-Carlton sites): warm cream `#F8F5EF`,
   near-black `#1B1A17`, one antique-brass accent `#9A7B4F`. Square corners, thin lines, small
   spaced-out uppercase labels.
-- **Typography:** Bodoni Moda (headlines, italic for quotes and buttons), Jost (body and labels),
-  Pinyon Script only for Justin's signature. Inter/Cormorant were dropped for feeling "AI".
+- **Typography:** Cormorant Garamond (headlines, italic for quotes and buttons), Inter (body and
+  labels), Pinyon Script only for Justin's signature. Bodoni Moda + Jost were tried and reverted:
+  the hero text was hard to read over photos.
 - **Buttons are editorial text links** (italic serif, hairline underline, sliding →), never filled
   boxes or pill buttons.
 - **Personality** (inspired by coastlinecollective.us): first-person voice, a "Hi, I'm Justin" note
