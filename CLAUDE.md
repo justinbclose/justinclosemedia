@@ -147,6 +147,19 @@ _Fill in once the project is set up._
 **To add a photo:** run `tools/optimize-photo.sh "<photo path>" <lowercase-name>`, then add one
 line to `site/js/photos.js`.
 
+## Publishing (Cloudflare Workers + GitHub)
+
+- Repo: `github.com/justinbclose/justinclosemedia` (private). Claude pushes over SSH with the
+  deploy key `~/.ssh/justinclosemedia_github` (set in this repo's `core.sshCommand`).
+- `wrangler.jsonc` makes Cloudflare publish only `site/`. Everything else stays private.
+- **`preview` branch** → https://preview-justinclosemedia.justinbclose.workers.dev
+  (anyone with the link can view it, but it isn't listed anywhere)
+- **`main` branch** → live site: https://justinclosemedia.justinbclose.workers.dev
+  (justinclosemedia.com once the domain is connected)
+- **Workflow (Justin's choice):** make changes on `preview`, push, send Justin the preview
+  link. Merge into `main` only after he approves. Builds take about 30 seconds.
+- Domain justinclosemedia.com is registered at WordPress.com.
+
 **Local preview:** run `python3 -m http.server 4322` from inside `site/`, then open
 http://127.0.0.1:4322.
 
