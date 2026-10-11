@@ -97,14 +97,14 @@ VIEWER = """<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria
 PAGES = [
   dict(file='index.html', page='home',
        title='Justin Close Media | Hotel Photography, Video and Drone',
-       desc='Hotel photos and video your marketing team will actually use. Interiors, lifestyle and drone, shot by someone who works in hotel marketing.',
+       desc='Hotel assets your marketing team will actually use. Interiors, lifestyle and drone, shot by someone who works in hotel marketing.',
        body="""    <section class="hero" id="hero">
       <div class="hero__media">
         <img src="images/portfolio/coastline-resort-aerial.jpg" srcset="images/portfolio/coastline-resort-aerial-sm.jpg 1000w, images/portfolio/coastline-resort-aerial.jpg 2000w" sizes="100vw" alt="Aerial view of a red-roofed beachfront resort along the coast at sunset" fetchpriority="high">
       </div>
       <div class="hero__content">
         <p class="meta">Hotel photography · Video · Drone</p>
-        <h1 class="display">Hotel photos and video your marketing team will actually use.</h1>
+        <h1 class="display">Hotel assets your marketing team will actually use.</h1>
         <a class="btn btn--light" href="photos.html">View the work</a>
       </div>
       <a class="hero__down" href="#work" aria-label="Scroll to the work">↓</a>
@@ -126,7 +126,7 @@ PAGES = [
           <p class="muted" style="color:var(--muted)">I work in hotel marketing, so I know which shots your team needs: images that work on Instagram, your website and booking sites.</p>
         </div>
         <ol class="steps">
-          <li><span class="meta num">01</span><b>Tell me about your property</b><p>What you need (photos, video, drone) and where you’ll use it: website, Instagram, ads.</p></li>
+          <li><span class="meta num">01</span><b>Tell me about your property</b><p>Tell me what you’d like photos of, and where you’ll use them: website, Instagram, ads.</p></li>
           <li><span class="meta num">02</span><b>Send a shot list or the vibe</b><p>If you have one, send a shot list or a few examples of the look you want. No list? We’ll plan it together.</p></li>
           <li><span class="meta num">03</span><b>Shoot day</b><p>Photos, video and drone in one visit, with little disruption to guests.</p></li>
           <li><span class="meta num">04</span><b>Delivery</b><p>Edited files sized for your website, social media and booking sites.</p></li>
@@ -200,7 +200,7 @@ PAGES = [
 
         <h2 class="h2">How booking works</h2>
         <ul class="list">
-          <li><b class="num">01</b>Tell me about your property and what you need</li>
+          <li><b class="num">01</b>Tell me about your property and what you’d like photos of</li>
           <li><b class="num">02</b>Send a shot list or the vibe you want, if you have one</li>
           <li><b class="num">03</b>Shoot day</li>
           <li><b class="num">04</b>Your edited photos and video are delivered</li>
