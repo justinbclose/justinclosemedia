@@ -123,7 +123,7 @@ PAGES = [
       <div class="note__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close" loading="lazy"></div>
       <div class="note__text">
         <p class="meta">Hi, I’m Justin</p>
-        <p class="note__quote">I’ve worked in hotel marketing, and I kept running into the same problem: never enough good photos. So I started taking them.</p>
+        <p class="note__quote">I’ve worked in hotel marketing, and I kept running into the same problems: never enough good photos, or the ones we had came with expired rights and usage restrictions. So I started taking them, and the hotels I shoot for own every one.</p>
         <p class="signature" aria-hidden="true">Justin Close</p>
         <a class="btn" href="about.html">More about me</a>
       </div>
