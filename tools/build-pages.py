@@ -170,6 +170,7 @@ PAGES = [
           <h1 class="display">Video</h1>
           <p class="lead">Short clips made for Reels, Stories and your website. Vertical and wide, ready to post. Hover or tap to play.</p>
         </div>
+        <nav class="filters" id="page-tabs" aria-label="Browse the work"></nav>
       </div>
       <div id="videos"></div>
     </section>
@@ -184,6 +185,7 @@ PAGES = [
           <h1 class="display">Drone</h1>
           <p class="lead">Your property from above, and everything around it. Guests don’t just book a room; they come for the beach, the views and the neighborhood too. Aerial photos and video show it all. Click any shot to see it full size.</p>
         </div>
+        <nav class="filters" id="page-tabs" aria-label="Browse the work"></nav>
       </div>
       <div class="grid grid--drone" id="drone-grid"></div>
     </section>

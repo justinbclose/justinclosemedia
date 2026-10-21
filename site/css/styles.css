@@ -182,6 +182,7 @@ main { padding-top: var(--bar); }
 .filter sup { font-size: 10px; margin-left: 3px; color: var(--muted); }
 .filter:hover { border-color: var(--ink); }
 .filter[aria-pressed="true"] { background: var(--ink); color: var(--bone); border-color: var(--ink); }
+a.filter { display: inline-block; }
 .filter[aria-pressed="true"] sup { color: var(--muted-dark); }
 
 /* ---------- Photos grid ---------- */

@@ -194,7 +194,9 @@
     const groups = GROUPS.filter((g) => count(g.id));
     filters.innerHTML =
       `<button class="filter" data-f="all">All<sup class="num">${PHOTOS.length}</sup></button>` +
-      groups.map((g) => `<button class="filter" data-f="${g.id}">${g.name}<sup class="num">${count(g.id)}</sup></button>`).join('');
+      groups.map((g) => `<button class="filter" data-f="${g.id}">${g.name}<sup class="num">${count(g.id)}</sup></button>`).join('') +
+      `<a class="filter" href="video.html">Video<sup class="num">${VIDEOS.length}</sup></a>` +
+      `<a class="filter" href="drone.html">Drone<sup class="num">${DRONE.length}</sup></a>`;
 
     let visible = PHOTOS;
     const render = (f) => {
@@ -222,6 +224,20 @@
       const t = e.target.closest('.photo');
       if (t) openViewer(visible.map((p) => ({ ...p, type: 'photo' })), +t.dataset.i, t);
     });
+  }
+
+  /* ---------------- Category tabs on the Video and Drone pages ---------------- */
+
+  const pageTabs = $('#page-tabs');
+  if (pageTabs) {
+    const count = (g) => PHOTOS.filter((p) => p.group === g).length;
+    const tab = (href, label, n, on) =>
+      `<a class="filter" href="${href}"${on ? ' aria-current="page" aria-pressed="true"' : ''}>${label}<sup class="num">${n}</sup></a>`;
+    pageTabs.innerHTML =
+      tab('photos.html', 'All', PHOTOS.length) +
+      GROUPS.filter((g) => count(g.id)).map((g) => tab(`photos.html?c=${g.id}`, g.name, count(g.id))).join('') +
+      tab('video.html', 'Video', VIDEOS.length, page === 'video') +
+      tab('drone.html', 'Drone', DRONE.length, page === 'drone');
   }
 
   /* ---------------- Video page ---------------- */
