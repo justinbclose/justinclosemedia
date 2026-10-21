@@ -219,6 +219,20 @@ PAGES = [
         <p style="margin-top:32px"><a class="btn" href="contact.html">Get in touch</a></p>
       </div>
     </section>
+
+    <section class="wrap gear">
+      <div class="gear__photo"><img src="images/about/camera-gear.jpg" alt="Justin's camera gear: Sony mirrorless camera and zoom lens, DJI Mini 4 Pro drone with controller and batteries, GoPro, 360 camera and lens filters" loading="lazy"></div>
+      <div class="gear__text">
+        <h2 class="h2">What I shoot with</h2>
+        <p style="color:var(--muted)">Professional gear that covers every part of a property, from the rooms to the view from above.</p>
+        <ul class="list">
+          <li><b>·</b>Sony full-frame mirrorless camera with a 20–70mm G lens, for interiors and lifestyle</li>
+          <li><b>·</b>DJI Mini 4 Pro drone, for aerial photos and video</li>
+          <li><b>·</b>GoPro and 360° camera, for immersive walkthroughs and social clips</li>
+          <li><b>·</b>Lens filters, for clean, natural light around windows and water</li>
+        </ul>
+      </div>
+    </section>
 """),
   dict(file='contact.html', page='contact', cta=False,
        title='Contact | Justin Close Media',
