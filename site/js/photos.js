@@ -144,7 +144,8 @@ window.HOME_TILES = [
   { label: 'Dining', href: 'photos.html?c=dining', file: 'beachside-brunch-pour', alt: 'Syrup poured over pancakes with a mimosa by the beach' },
   { label: 'Video', href: 'video.html', video: { file: 'oceanfront-dining-clip' } },
   { label: 'Drone', href: 'drone.html', file: 'coastline-resort-aerial', alt: 'Resort and coastline from above' },
-  { label: 'Lifestyle', href: 'photos.html?c=lifestyle', file: 'beach-chairs-umbrella', alt: 'Beach chairs under an umbrella' },
+  { label: 'Rooms', href: 'photos.html?c=rooms', file: 'room-balcony-view', alt: 'Guest room opening onto a balcony with an ocean view' },
+  { label: 'Property', href: 'photos.html?c=property', file: 'rooftops-palm-ocean', alt: 'Red tile rooftops and a palm tree with the ocean behind' },
 ];
 
 // Square-crop framing: which part of each photo/clip the square tiles show

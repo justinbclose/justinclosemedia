@@ -136,7 +136,7 @@ main { padding-top: var(--bar); }
 
 /* ---------- Home: work tiles ---------- */
 
-.tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
 .tile { position: relative; display: block; }
 .tile__media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--paper); border-radius: 0; }
 .tile__media img, .tile__media video { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
