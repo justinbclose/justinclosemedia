@@ -22,7 +22,8 @@
   const vid = (v) => `video/${v.file}.mp4`;
   const poster = (v) => `video/${v.file}.jpg`;
   const pad = (n) => String(n).padStart(2, '0');
-  const focus = (x) => (x.focus ? ` style="object-position:${x.focus}"` : '');
+  // Where each square crop centers (set in photos.js FOCUS, or on an item as `focus`)
+  const focus = (x) => { const f = x.focus || (window.FOCUS || {})[x.file]; return f ? ` style="object-position:${f}"` : ''; };
   const ratio = (p) => `width="1000" height="${Math.round((1000 * p.h) / p.w)}"`;
 
   $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
@@ -64,8 +65,8 @@
   if (tiles) {
     tiles.innerHTML = (window.HOME_TILES || []).map((t, i) => {
       const media = t.video
-        ? `<img src="${poster(t.video)}" alt="" loading="lazy"><video src="${vid(t.video)}" muted loop playsinline preload="none" aria-hidden="true"></video>`
-        : `<img src="${img(t.file, true)}" alt="${t.alt || ''}" loading="lazy">`;
+        ? `<img src="${poster(t.video)}" alt="" loading="lazy"${focus(t.video)}><video src="${vid(t.video)}" muted loop playsinline preload="none" aria-hidden="true"${focus(t.video)}></video>`
+        : `<img src="${img(t.file, true)}" alt="${t.alt || ''}" loading="lazy"${focus(t)}>`;
       return `<a class="tile rise${t.video ? ' tile--video' : ''}" href="${t.href}" style="--i:${i}">
         <div class="tile__media">${media}</div>
         <div class="tile__label"><span>${t.label}</span><span>→</span></div>
@@ -200,7 +201,7 @@
       visible = f === 'all' ? PHOTOS : PHOTOS.filter((p) => p.group === f);
       grid.innerHTML = visible.map((p, i) => `
         <button class="photo rise" style="--i:${Math.min(i, 16)}" data-i="${i}" aria-label="Open ${p.title}">
-          <div class="photo__img"><img src="${img(p.file, true)}" alt="${p.alt}" loading="lazy" ${ratio(p)}></div>
+          <div class="photo__img"><img src="${img(p.file, true)}" alt="${p.alt}" loading="lazy" ${ratio(p)}${focus(p)}></div>
           <div class="photo__cap"><span>${p.title}</span><span class="num">${pad(i + 1)}</span></div>
         </button>`).join('');
       $$('.filter', filters).forEach((b) => b.setAttribute('aria-pressed', b.dataset.f === f));
@@ -264,7 +265,7 @@
           <div class="photo__cap"><span>${d.title}</span><span>Video</span></div>
         </button>` : `
         <button class="photo rise" style="--i:${i}" data-i="${i}" aria-label="Open ${d.title}">
-          <div class="photo__img"><img src="${img(d.file, true)}" alt="${d.alt}" loading="lazy" ${ratio(d)}></div>
+          <div class="photo__img"><img src="${img(d.file, true)}" alt="${d.alt}" loading="lazy" ${ratio(d)}${focus(d)}></div>
           <div class="photo__cap"><span>${d.title}</span><span class="num">${pad(i + 1)}</span></div>
         </button>`).join('');
     $$('.clip', droneGrid).forEach(hoverPlay);

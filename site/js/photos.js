@@ -82,8 +82,6 @@ window.PHOTOS = [
     alt: 'Cedar sauna with a large window looking out at green hills' },
   { file: 'oceanfront-restaurant', title: 'Oceanfront dining room', group: 'dining', w: 9, h: 16,
     alt: 'Restaurant with tall windows looking out at crashing waves' },
-  { file: 'oceanfront-resort-aerial', title: 'Resort courtyard', group: 'property', w: 16, h: 9,
-    alt: 'Terracotta-roof resort with a pool, palm trees and the beach behind' },
   { file: 'event-tables-overhead', title: 'Garden dinner from above', group: 'events', w: 16, h: 9,
     alt: 'Overhead drone view of a hotel garden dinner with white umbrellas, set tables and palm trees' },
   { file: 'lawn-event-sunset', title: 'Lawn party at sunset', group: 'events', w: 16, h: 9,
@@ -139,5 +137,31 @@ window.HOME_TILES = [
   { label: 'Video', href: 'video.html', video: { file: 'oceanfront-dining-clip' } },
   { label: 'Drone', href: 'drone.html', file: 'coastline-resort-aerial', alt: 'Resort and coastline from above' },
   { label: 'Lifestyle', href: 'photos.html?c=lifestyle', file: 'beach-chairs-umbrella', alt: 'Beach chairs under an umbrella' },
-  { label: 'Spa', href: 'photos.html?c=spa', file: 'cedar-sauna', alt: 'Cedar sauna' },
 ];
+
+// Square-crop framing: which part of each photo/clip the square tiles show
+// ('50% 0%' = top, '50% 50%' = center, '50% 100%' = bottom). Unlisted = center.
+window.FOCUS = {
+  'poolside-tile-loungers': '50% 72%',
+  'pool-loungers-tile-roof': '50% 78%',
+  'hotel-pool-courtyard': '50% 55%',
+  'beachside-brunch-pour': '50% 62%',
+  'balcony-palm-view': '50% 85%',
+  'balcony-coffee-mugs': '50% 72%',
+  'bathroom-vanity': '50% 92%',
+  'room-balcony-view': '50% 62%',
+  'rooftops-palm-ocean': '50% 45%',
+  'la-jolla-cove-kayaks': '50% 72%',
+  'beach-up-the-coast': '50% 70%',
+  'tropical-cocktail': '50% 75%',
+  'golden-hour-margarita': '50% 62%',
+  'beachside-lunch': '50% 72%',
+  'brunch-by-the-sea': '50% 72%',
+  'marine-room-window': '50% 88%',
+  'oceanfront-restaurant': '50% 62%',
+  'beach-chairs-umbrella': '50% 55%',
+  'coastal-palms-dusk': '50% 45%',
+  'kayaks-sea-cliffs': '50% 30%',
+  'island-cliffs-clouds': '50% 40%',
+  'resort-grounds-aerial': '50% 40%',
+};
