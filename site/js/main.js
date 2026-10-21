@@ -185,6 +185,16 @@
     });
   }
 
+  // Tabs for every category plus Video and Drone, sorted from most content to least
+  function browseTabs() {
+    const n = (g) => PHOTOS.filter((p) => p.group === g).length;
+    return [
+      ...GROUPS.map((g) => ({ id: g.id, name: g.name, n: n(g.id) })),
+      { id: 'video', name: 'Video', n: VIDEOS.length, href: 'video.html' },
+      { id: 'drone', name: 'Drone', n: DRONE.length, href: 'drone.html' },
+    ].filter((x) => x.n).sort((a, b) => b.n - a.n || a.name.localeCompare(b.name));
+  }
+
   /* ---------------- Photos page ---------------- */
 
   const grid = $('#grid');
@@ -194,9 +204,9 @@
     const groups = GROUPS.filter((g) => count(g.id));
     filters.innerHTML =
       `<button class="filter" data-f="all">All<sup class="num">${PHOTOS.length}</sup></button>` +
-      groups.map((g) => `<button class="filter" data-f="${g.id}">${g.name}<sup class="num">${count(g.id)}</sup></button>`).join('') +
-      `<a class="filter" href="video.html">Video<sup class="num">${VIDEOS.length}</sup></a>` +
-      `<a class="filter" href="drone.html">Drone<sup class="num">${DRONE.length}</sup></a>`;
+      browseTabs().map((x) => x.href
+        ? `<a class="filter" href="${x.href}">${x.name}<sup class="num">${x.n}</sup></a>`
+        : `<button class="filter" data-f="${x.id}">${x.name}<sup class="num">${x.n}</sup></button>`).join('');
 
     let visible = PHOTOS;
     const render = (f) => {
@@ -235,9 +245,7 @@
       `<a class="filter" href="${href}"${on ? ' aria-current="page" aria-pressed="true"' : ''}>${label}<sup class="num">${n}</sup></a>`;
     pageTabs.innerHTML =
       tab('photos.html', 'All', PHOTOS.length) +
-      GROUPS.filter((g) => count(g.id)).map((g) => tab(`photos.html?c=${g.id}`, g.name, count(g.id))).join('') +
-      tab('video.html', 'Video', VIDEOS.length, page === 'video') +
-      tab('drone.html', 'Drone', DRONE.length, page === 'drone');
+      browseTabs().map((x) => tab(x.href || `photos.html?c=${x.id}`, x.name, x.n, x.id === page)).join('');
   }
 
   /* ---------------- Video page ---------------- */
