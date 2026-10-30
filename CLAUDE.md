@@ -119,11 +119,9 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
   uncropped photo in a viewer.
 - **Booking bar** at the bottom of every page has the form fields inline. Never use the words
   "Check availability". The nav says "Contact".
-- **About:** even 50/50 split, sticky portrait. Says "I've worked in hotel marketing" and that hotels
-  **own the rights to every photo** (website, Instagram, ads, "no ifs, ands or buts").
-
-## Photo rules
-
+- **About:** even 50/50 split, sticky portrait. Voice: "I've worked in hotel marketing and travel."
+  **Never mention usage rights, ownership, expired rights or restrictions anywhere on the site:**
+  Justin negotiates rights per contract. Keep the tone confident, not problem-focused.
 - Only real photos and video by Justin. **No AI-generated or AI-edited images.**
 - **No gray, overcast or dull shots.** Bright, warm, hotel-relevant images only.
 - **Food and drinks go under Dining**, not Lifestyle. Lifestyle = people/beach/leisure moments.

@@ -123,7 +123,7 @@ PAGES = [
       <div class="note__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close" loading="lazy"></div>
       <div class="note__text">
         <p class="meta">Hi, I’m Justin</p>
-        <p class="note__quote">I’ve worked in hotel marketing, and I kept running into the same problems: never enough good photos, or the ones we had came with expired rights and usage restrictions. So I started taking them, and the hotels I shoot for own every one.</p>
+        <p class="note__quote">I’ve worked in hotel marketing and travel, so I know what makes someone book: the view from the balcony, the first drink by the pool, the light at golden hour. That’s what I capture.</p>
         <p class="signature" aria-hidden="true">Justin Close</p>
         <a class="btn" href="about.html">More about me</a>
       </div>
@@ -134,7 +134,7 @@ PAGES = [
         <div>
           <p class="meta">How it works</p>
           <h2 class="h2" style="margin:10px 0 14px">Simple, start to finish.</h2>
-          <p style="color:var(--muted)">I’ve worked in hotel marketing, so I know the shots your team actually needs: images for your website, Instagram, booking sites and ads.</p>
+          <p style="color:var(--muted)">I’ve worked in hotel marketing and travel, so I know the shots your team actually needs: images for your website, Instagram, booking sites and ads.</p>
         </div>
         <ol class="steps">
           <li><span class="meta num">01</span><b>Tell me about your property</b><p>Tell me what you’d like photos of, and where you’ll use them: website, Instagram, ads.</p></li>
@@ -192,15 +192,14 @@ PAGES = [
 """),
   dict(file='about.html', page='about',
        title='About | Justin Close Media',
-       desc='Justin Close has worked in hotel marketing and started Justin Close Media to give hotels great photos and video, with full usage rights.',
+       desc='Justin Close has worked in hotel marketing and travel and creates photo, video and drone content for hotels and resorts.',
        body="""    <section class="wrap about">
       <div class="about__photo"><img src="images/about/justin-portrait.jpg" alt="Justin Close standing on a mountain trail"></div>
       <div class="about__text">
-        <h1 class="display">I’ve worked in hotel marketing.</h1>
-        <p class="lead">And I kept seeing the same gap: hotels never have enough good photos.</p>
-        <p>Hotels need fresh, high-quality images for their website, for Instagram and for ads. Most of the time the photos on hand are outdated, too few, or come with usage limits that make them hard to use. I started Justin Close Media to fix that.</p>
+        <h1 class="display">I’ve worked in hotel marketing and travel.</h1>
+        <p class="lead">I know what makes someone book a stay, and I shoot for it.</p>
+        <p>Hotels need fresh, high-quality images for their website, Instagram, booking sites and ads. I create them with a marketer’s eye, planning every shot around how your team will actually use it.</p>
         <p>I shoot interiors, lifestyle, property, drone and video, with a process that's easy for your team.</p>
-        <p><strong style="font-weight:400">You own the rights to every photo.</strong> Use them on your website, on Instagram, in ads, anywhere. No ifs, ands or buts.</p>
 
         <h2 class="h2">What hotels get</h2>
         <ul class="list">
@@ -208,7 +207,6 @@ PAGES = [
           <li><b>·</b>Short vertical video for Reels and Stories</li>
           <li><b>·</b>Drone photos and video of the property and the area around it, because guests come for that too</li>
           <li><b>·</b>Files sized for your website, social media and booking sites</li>
-          <li><b>·</b>Full rights to use every photo anywhere, including ads</li>
         </ul>
 
         <h2 class="h2">How booking works</h2>
