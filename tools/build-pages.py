@@ -134,7 +134,7 @@ PAGES = [
         <div>
           <p class="meta">How it works</p>
           <h2 class="h2" style="margin:10px 0 14px">Simple, start to finish.</h2>
-          <p style="color:var(--muted)">I’ve worked in hotel marketing and travel, so I know the shots your team actually needs: images for your website, Instagram, booking sites and ads.</p>
+          <p style="color:var(--muted)">I’ve worked in hotel marketing and travel, so I know the shots your team actually needs: images for your website, Instagram, booking sites and ads. I shoot on a Sony A7 IV and a DJI Mini 4 Pro drone.</p>
         </div>
         <ol class="steps">
           <li><span class="meta num">01</span><b>Tell me about your property</b><p>Tell me what you’d like photos of, and where you’ll use them: website, Instagram, ads.</p></li>
@@ -226,7 +226,7 @@ PAGES = [
         <h2 class="h2">What I shoot with</h2>
         <p style="color:var(--muted)">Professional gear that covers every part of a property, from the rooms to the view from above.</p>
         <ul class="list">
-          <li><b>·</b>Sony full-frame mirrorless camera with a 20–70mm G lens, for interiors and lifestyle</li>
+          <li><b>·</b>Sony A7 IV full-frame camera with a 20–70mm G lens, for interiors and lifestyle</li>
           <li><b>·</b>DJI Mini 4 Pro drone, for aerial photos and video</li>
           <li><b>·</b>GoPro and 360° camera, for immersive walkthroughs and social clips</li>
           <li><b>·</b>Lens filters, for clean, natural light around windows and water</li>
