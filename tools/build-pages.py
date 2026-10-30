@@ -32,6 +32,8 @@ HEAD = """<!doctype html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v={ver}">
+  <!-- HubSpot tracking code (visits, UTM campaigns) -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/247843142.js"></script>
 </head>
 <body data-page="{page}">
   <a class="skip" href="#main">Skip to content</a>
