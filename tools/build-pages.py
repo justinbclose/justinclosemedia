@@ -32,8 +32,9 @@ HEAD = """<!doctype html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v={ver}">
-  <!-- HubSpot tracking code (visits, UTM campaigns) -->
-  <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/247843142.js"></script>
+  <!-- HubSpot tracking code (visits, UTM campaigns). Visit any page with ?notrack=1 to stop
+       tracking your own visits in that browser; ?notrack=0 turns it back on. -->
+  <script>(function(){{try{{var q=location.search;if(/[?&]notrack=1/.test(q))localStorage.setItem('jcm-notrack','1');if(/[?&]notrack=0/.test(q))localStorage.removeItem('jcm-notrack');if(localStorage.getItem('jcm-notrack'))return;}}catch(e){{}}var s=document.createElement('script');s.id='hs-script-loader';s.async=true;s.defer=true;s.src='//js-na2.hs-scripts.com/247843142.js';document.head.appendChild(s);}})();</script>
 </head>
 <body data-page="{page}">
   <a class="skip" href="#main">Skip to content</a>

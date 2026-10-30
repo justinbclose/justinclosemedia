@@ -81,7 +81,7 @@ domain itself, by Justin's choice).
      Never invent these.
   4. Optional: a home page background video (set `HERO.video` in `site/js/photos.js`).
 - Newsletter signup is on the Contact page but not connected (no email tool chosen yet).
-- **HubSpot tracking code** is on every page (added in `tools/build-pages.py` head; portal 247843142, na2). It records visits and UTM campaigns (outreach links use `utm_campaign=sd-free-shoot`).
+- **HubSpot tracking code** is on every page (added in `tools/build-pages.py` head; portal 247843142, na2). It records visits and UTM campaigns (outreach links use `utm_campaign=sd-free-shoot`). Justin opts out of tracking his own visits per browser with `?notrack=1` (`?notrack=0` undoes it); HubSpot's IP-exclusion setting was not available on his account.
 - **Outreach (next phase):** plan in `outreach/hotel-outreach-plan.md`: 2 free day shoots, then
   2–3 overnight guest-journey shoots, then paid clients (hotel groups first). Max 4 free shoots.
   After the first shoots, add a "Worked with" section to the site (with each hotel's permission).
