@@ -31,6 +31,8 @@ window.PHOTOS = [
     alt: 'Gray pool loungers with striped towels, white umbrellas, a blue tile wall and two cocktails by the pool' },
   { file: 'beachside-brunch-pour', title: 'Brunch by the beach', group: 'dining', w: 3, h: 4,
     alt: 'Syrup poured over pancakes beside a mimosa and a fruit bowl, with the beach and ocean behind' },
+  { file: 'guest-tiki-adirondack', title: 'Afternoon on the lawn', group: 'lifestyle', w: 2, h: 3,
+    alt: 'Guest laughing in a white Adirondack chair holding a tiki cocktail, hedge and blue sky behind' },
   { file: 'room-balcony-view', title: 'Room with a view', group: 'rooms', w: 2, h: 3,
     alt: 'Guest room bed beside an open sliding door to a balcony with two mugs, palms and the coastline beyond' },
   { file: 'rooftops-palm-ocean', title: 'Rooftops to the ocean', group: 'property', w: 2, h: 3,
@@ -93,6 +95,8 @@ window.PHOTOS = [
     alt: 'Rows of white folding chairs on the sand facing a draped wedding arch and the ocean' },
   { file: 'firepit-sandwich-cocktail', title: 'Lunch by the fire pit', group: 'dining', w: 2, h: 3,
     alt: 'Sandwich and salad on a green plate with a pink orchid cocktail beside a glass fire pit' },
+  { file: 'guest-spritz-laugh', title: 'Spritz by the sea', group: 'lifestyle', w: 2, h: 3,
+    alt: 'Guest laughing with a spritz on a terrace above the beach and cliffs' },
   { file: 'balcony-coffee-mugs', title: 'Morning coffee', group: 'rooms', w: 2, h: 3,
     alt: 'Two white coffee mugs on a stone table on a terracotta-tiled balcony' },
   { file: 'lawn-event-sunset', title: 'Lawn party at sunset', group: 'events', w: 16, h: 9,
@@ -157,7 +161,7 @@ window.DRONE = [
 
 // Home page "See the work" tiles
 window.HOME_TILES = [
-  { label: 'Pools', href: 'photos.html?c=pools', file: 'poolside-tile-loungers', alt: 'Pool loungers with striped towels by a blue tile wall' },
+  { label: 'Lifestyle', href: 'photos.html?c=lifestyle', file: 'guest-tiki-adirondack', alt: 'Guest laughing in an Adirondack chair with a tiki cocktail by the beach' },
   { label: 'Dining', href: 'photos.html?c=dining', file: 'beachside-brunch-pour', alt: 'Syrup poured over pancakes with a mimosa by the beach' },
   { label: 'Video', href: 'video.html', video: { file: 'oceanfront-dining-clip' } },
   { label: 'Drone', href: 'drone.html', file: 'coastline-resort-aerial', alt: 'Resort and coastline from above' },
@@ -186,6 +190,8 @@ window.FOCUS = {
   'marine-room-window': '50% 88%',
   'oceanfront-restaurant': '50% 62%',
   'beach-chairs-umbrella': '50% 55%',
+  'guest-tiki-adirondack': '60% 62%',
+  'guest-spritz-laugh': '65% 55%',
   'coastal-palms-dusk': '50% 45%',
   'kayaks-sea-cliffs': '50% 30%',
   'island-cliffs-clouds': '50% 40%',
