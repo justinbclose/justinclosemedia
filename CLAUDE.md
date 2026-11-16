@@ -68,7 +68,19 @@ domain itself, by Justin's choice).
 
 ### Current status (keep this updated)
 
-- Live site and preview are in sync as of the last "publish".
+- Live site and preview are in sync as of the last "publish" (Nov 16, 2026).
+- **Nov 16, 2026 incident (fixed):** Cloudflare builds silently stopped for ~17 days because the
+  Cloudflare Workers and Pages GitHub App's repository list was changed to only `lj-marketing-hub`,
+  dropping this repo. Re-added at github.com/settings/installations. If builds ever stop again
+  (pushes don't appear in the worker's Deployments), check that list FIRST, and when connecting any
+  new repo to Cloudflare, ADD it to the selection instead of replacing it.
+- Justin now also works on this repo from chat sessions (repo attached via GitHub); his Mac is not
+  the only place changes come from. Photos arriving through chat are ~325px thumbnails: never add
+  those to the site; get the originals into `New Photos/` (he can drag-drop on github.com) first.
+- Removed at Justin's request (Nov 16): room-balcony-view, rooftops-palm-ocean, beach-up-the-coast
+  photos and the beachside-lunch-clip video (files deleted). Home tiles now: Rooms =
+  bedroom-shell-art, Property = coastal-palms-dusk. Added: beachfront-window-lunch (Dining).
+  Still in `New Photos/`: IMG_1186.jpeg (cabin/sauna window; was cut from Spa before, held back).
 - **Waiting on Justin:**
   1. **Instagram pool photo** (ljshoreshotel post, Aug 26: loungers with striped towels, blue tile
      wall, drinks). Not reachable logged out. Needs the post link (single posts load logged out),
