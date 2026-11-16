@@ -28,6 +28,19 @@
 
   $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
 
+  /* ---------------- Soft arrival: lazy images fade in once loaded ---------------- */
+
+  // 'load' doesn't bubble, but it does capture; this catches every image the
+  // pages render later, too (tiles, grids, filter re-renders).
+  const landed = (im) => im.classList.add('ld');
+  document.addEventListener('load', (e) => {
+    if (e.target.tagName === 'IMG' && e.target.loading === 'lazy') landed(e.target);
+  }, true);
+  // Back/forward cache restores skip load events: sweep anything already complete.
+  const sweep = () => $$('img[loading="lazy"]').forEach((im) => { if (im.complete && im.naturalWidth) landed(im); });
+  addEventListener('pageshow', sweep);
+  addEventListener('DOMContentLoaded', sweep);
+
   /* ---------------- Nav ---------------- */
 
   $$('[data-nav]').forEach((a) => { if (a.dataset.nav === page) a.setAttribute('aria-current', 'page'); });
@@ -115,6 +128,11 @@
     $$('#v-thumbs button').forEach((b, i) => b.setAttribute('aria-current', i === pos));
     const cur = $(`#v-thumbs button[data-i="${pos}"]`);
     if (cur) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
+    // Warm the neighbors so stepping/swiping never shows a loading pop
+    [pos + 1, pos - 1].forEach((i) => {
+      const n = items[(i + items.length) % items.length];
+      if (n && n.type !== 'video') new Image().src = img(n.file);
+    });
   }
 
   function openViewer(list, index, fromEl) {

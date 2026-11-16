@@ -147,6 +147,7 @@ main { padding-top: var(--bar); }
 .tile--video video { position: absolute; inset: 0; opacity: 0; transition: opacity 300ms; }
 .tile--video:hover video, .tile--video.playing video { opacity: 1; }
 @media (max-width: 1000px) { .tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 8px; } }
 
 /* ---------- Home: how it works ---------- */
 
@@ -203,6 +204,11 @@ a.filter { display: inline-block; }
 /* Gentle entrance for grids */
 .rise { animation: rise 700ms var(--ease) both; animation-delay: calc(var(--i, 0) * 40ms); }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+
+/* Soft arrival: lazy images fade in once loaded (opacity only, nothing else) */
+img[loading="lazy"] { opacity: 0; transition: opacity 600ms var(--ease); }
+img[loading="lazy"].ld { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { img[loading="lazy"] { opacity: 1; transition: none; } }
 
 /* ---------- Viewer (photos + video) ---------- */
 
