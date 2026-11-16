@@ -119,8 +119,13 @@ main { padding-top: var(--bar); }
 
 .hero { position: relative; height: calc(100vh - var(--bar)); height: calc(100svh - var(--bar)); min-height: 520px; overflow: hidden; background: var(--ink); color: #fff; }
 .hero__media, .hero__media img, .hero__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.hero__media img, .hero__media video { animation: hero-in 2.4s var(--ease) both; }
+.hero__media video { animation: hero-in 2.4s var(--ease) both; }
 @keyframes hero-in { from { transform: scale(1.06); opacity: 0.6; } }
+/* The hero photo fades in, then drifts in a slow, continuous zoom (Ken Burns) */
+.hero__media img { animation: hero-fade 2s var(--ease) both, hero-ken 44s ease-in-out infinite alternate; will-change: transform; }
+@keyframes hero-fade { from { opacity: 0.6; } }
+@keyframes hero-ken { from { transform: scale(1); } to { transform: scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .hero__media img { animation: none; } }
 .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 35%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.5) 100%); }
 .hero__content {
   position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;
