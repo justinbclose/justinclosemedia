@@ -94,6 +94,8 @@ window.PHOTOS = [
     alt: 'Arugula salad with berries and almonds beside a glass of white wine on a wooden table' },
   { file: 'room-number-door', title: 'Room details', group: 'rooms', w: 2, h: 3,
     alt: 'Green patina room numbers 129 on a white door frame next to a black iron handle' },
+  { file: 'beachfront-window-lunch', title: 'Lunch by the window', group: 'dining', w: 3, h: 4,
+    alt: 'Plated dish on an art-glass table beside a picture window looking straight down the beach to the ocean' },
   { file: 'beach-wedding-arch-detail', title: 'Ceremony details', group: 'events', w: 1440, h: 1780,
     alt: 'Close-up of a flower-covered wedding arch, a stained-glass window and lanterns on the sand by the ocean' },
   { file: 'spritz-in-hand', title: 'Spritz by the fire', group: 'dining', w: 2, h: 3,
