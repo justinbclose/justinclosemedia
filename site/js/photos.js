@@ -103,7 +103,6 @@ window.VIDEOS = [
   { file: 'dolphins-aerial', title: 'Dolphins off the coast', tag: 'Drone', w: 16, h: 9 },
   { file: 'oceanfront-dining-clip', title: 'Oceanfront dining room', tag: 'Interior', w: 9, h: 16 },
   { file: 'pool-clip', title: 'By the pool', tag: 'Amenity', w: 9, h: 16 },
-  { file: 'beachside-lunch-clip', title: 'Lunch with a view', tag: 'Dining', w: 9, h: 16 },
   { file: 'restaurant-ocean-view', title: 'Dining room walkthrough', tag: 'Interior', w: 9, h: 16 },
   { file: 'resort-grounds-aerial', title: 'Resort grounds', tag: 'Drone', w: 9, h: 16 },
   { file: 'surf-break-aerial', title: 'Surf break', tag: 'Drone', w: 9, h: 16, focus: '50% 12%' },
