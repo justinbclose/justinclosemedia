@@ -14,6 +14,7 @@
   --line: rgba(23, 22, 20, 0.12);
   --line-dark: rgba(239, 233, 223, 0.16);
   --mat: #FFFDF9;        /* the paper mat around each print */
+  --hand: 'La Belle Aurore', 'Segoe Script', 'Bradley Hand', cursive; /* handwriting: print captions only */
   --brass-text: #84673E; /* brass for small labels on the mat (5:1) */
   --error: #A23B2A;      /* form errors on light (6:1) */
   --error-dark: #E8A593; /* form errors on dark */
@@ -303,8 +304,9 @@ main { padding-top: var(--bar); }
 .photo { cursor: zoom-in; }
 .photo__img { position: relative; overflow: hidden; aspect-ratio: 1 / 1; background: var(--paper); }
 .photo__img img, .photo__img video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
-.photo__cap, .clip__cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 11px 1px 13px; }
-.photo__cap span:first-child, .clip__cap span:first-child { font: italic 400 17px/1.25 var(--serif); color: var(--ink); }
+.photo__cap, .clip__cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 2px 12px; }
+/* The title is written on the mat by hand, like a note on a print */
+.photo__cap span:first-child, .clip__cap span:first-child { font: 400 20px/1.2 var(--hand); color: #2B2925; }
 .photo__cap span:last-child, .clip__cap span:last-child { flex: none; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass-text); }
 .photo[hidden] { display: none; }
 /* With a mouse: the print straightens and lifts a little, and the photo grows gently */
@@ -322,7 +324,7 @@ main { padding-top: var(--bar); }
   .grid__col { gap: 16px; }
   .photo, .vgrid .clip { padding: 7px 7px 0; rotate: calc(var(--r, 0deg) * 0.6); }
   .photo__cap, .clip__cap { gap: 8px; padding: 8px 0 9px; }
-  .photo__cap span:first-child, .clip__cap span:first-child { font-size: 14.5px; }
+  .photo__cap span:first-child, .clip__cap span:first-child { font-size: 16.5px; }
   .photo__cap span:last-child, .clip__cap span:last-child { font-size: 9px; letter-spacing: 0.14em; }
 }
 

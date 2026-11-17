@@ -124,8 +124,9 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
   near-black `#1B1A17`, one antique-brass accent `#9A7B4F`. Square corners, thin lines, small
   spaced-out uppercase labels.
 - **Typography:** Cormorant Garamond (headlines, italic for quotes and buttons), Inter (body and
-  labels), Pinyon Script only for Justin's signature. Bodoni Moda + Jost were tried and reverted:
-  the hero text was hard to read over photos.
+  labels), Pinyon Script only for Justin's signature. La Belle Aurore (handwriting, `--hand`) only
+  for the titles written on the gallery prints. Bodoni Moda + Jost were tried and reverted: the
+  hero text was hard to read over photos.
 - **Buttons are editorial text links** (italic serif, hairline underline, sliding arrow), never filled
   boxes or pill buttons. Details (Nov 16 polish pass): the arrow is a drawn hairline (`--arrow` in
   `styles.css`, reused in tiles, phone menu and viewer), every button is at least 44px tall, on
@@ -151,7 +152,9 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
 - **Galleries: mounted prints** (Nov 17, 2026; replaced the square tiles). Justin liked how
   marko-everyday.com/hospitality frames its photos and its warm, personal feel. His version: each
   photo sits on a paper mat (`--mat`) in its own shape, never cropped, with a soft shadow, a slight
-  tilt that straightens on hover, the title in italic serif and the category in small brass caps
+  tilt that straightens on hover, the title in handwriting (Justin asked for a handwritten look;
+  La Belle Aurore was picked over Caveat and four others for looking like a pen note while
+  staying readable on phones) and the category in small brass caps
   (`--brass-text`) on the mat. Photos and Drone pages deal the prints into columns in `main.js`
   (`deal()`: 3 columns, 2 on phones, always into the shortest column so the first photos stay on
   top). Video page clips use the same frame. Click still opens the full photo in the viewer.

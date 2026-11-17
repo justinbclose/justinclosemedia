@@ -30,7 +30,7 @@ HEAD = """<!doctype html>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Pinyon+Script&family=La+Belle+Aurore&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css?v={ver}">
   <!-- HubSpot tracking code (visits, UTM campaigns). Visit any page with ?notrack=1 to stop
        tracking your own visits in that browser; ?notrack=0 turns it back on. -->
