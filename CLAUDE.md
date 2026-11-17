@@ -68,10 +68,10 @@ domain itself, by Justin's choice).
 
 ### Current status (keep this updated)
 
-- **Preview is ahead of live (Nov 17):** the mounted-print galleries (see Design decisions) are
-  on `preview` only, waiting for Justin to say "publish". Live is at the Nov 16 polish pass.
-  Open question to Justin: how far to take the reference site's warm, personal feel beyond the
-  galleries (home page tiles, colors and copy are unchanged so far).
+- Live site and preview are in sync as of the last "publish" (Nov 17, 2026: the mounted-print
+  galleries with handwritten titles, see Design decisions).
+  Open question to Justin: whether to frame the six home page tiles the same way and make the
+  short intro lines more personal (home tiles, colors and copy are unchanged so far).
 - **Nov 16 polish pass** (same layout, colors and fonts): new button details, full-screen phone
   menu, swipeable filter row, even photo grids, larger photos in the phone viewer, form error and
   sending states, Contact page shows the inquiry form before "Email updates" on phones, fixes for
