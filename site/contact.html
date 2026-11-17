@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=32e6e938">
+  <link rel="stylesheet" href="css/styles.css?v=e2d518f7">
   <!-- HubSpot tracking code (visits, UTM campaigns). Visit any page with ?notrack=1 to stop
        tracking your own visits in that browser; ?notrack=0 turns it back on. -->
   <script>(function(){try{var q=location.search;if(/[?&]notrack=1/.test(q))localStorage.setItem('jcm-notrack','1');if(/[?&]notrack=0/.test(q))localStorage.removeItem('jcm-notrack');if(localStorage.getItem('jcm-notrack'))return;}catch(e){}var s=document.createElement('script');s.id='hs-script-loader';s.async=true;s.defer=true;s.src='//js-na2.hs-scripts.com/247843142.js';document.head.appendChild(s);})();</script>
@@ -25,24 +25,29 @@
   <header class="bar">
     <div class="wrap">
       <a class="logo" href="index.html">Justin Close Media</a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav"><span class="menu-btn__label">Menu</span><span class="menu-btn__icon" aria-hidden="true"></span></button>
       <nav class="nav" id="nav" aria-label="Main">
         <a href="photos.html" data-nav="photos">Photos</a>
         <a href="video.html" data-nav="video">Video</a>
         <a href="drone.html" data-nav="drone">Drone</a>
         <a href="about.html" data-nav="about">About</a>
         <a href="contact.html" data-nav="contact">Contact</a>
+        <div class="nav__foot">
+          <p class="meta">Book a shoot</p>
+          <a href="mailto:justinclosemedia@gmail.com">justinclosemedia@gmail.com</a>
+        </div>
       </nav>
     </div>
   </header>
   <main id="main">
     <section class="wrap contact">
-      <div>
+      <div class="contact__intro">
         <h1 class="display">Let’s talk about your property</h1>
         <p class="lead">Tell me about your property and what you need. I'll reply with ideas, timing and pricing.</p>
         <a class="contact__email" href="mailto:justinclosemedia@gmail.com">justinclosemedia@gmail.com</a>
+      </div>
 
-        <div style="margin-top:56px">
+      <div class="contact__news">
           <p class="meta">Email updates</p>
           <p class="muted" style="color:var(--muted);margin:6px 0 0">New work and hotel marketing ideas, now and then. No spam.</p>
           <form id="newsletter-form" novalidate>
@@ -53,7 +58,6 @@
             </div>
             <p class="status" role="status"></p>
           </form>
-        </div>
       </div>
 
       <form class="form" id="contact-form" data-inquiry novalidate>
@@ -79,7 +83,7 @@
           </div>
         </fieldset>
         <div class="field field--full"><label for="f-message">Message (optional)</label><textarea id="f-message" name="message" rows="3"></textarea></div>
-        <div class="field--full"><button class="btn" type="submit">Send inquiry</button></div>
+        <div class="field--full"><button class="btn btn--lg" type="submit">Send inquiry</button></div>
         <p class="status" role="status"></p>
       </form>
     </section>
@@ -93,8 +97,8 @@
     </footer>
   </section>
   
-  <script src="js/config.js?v=32e6e938"></script>
-  <script src="js/photos.js?v=32e6e938"></script>
-  <script src="js/main.js?v=32e6e938"></script>
+  <script src="js/config.js?v=e2d518f7"></script>
+  <script src="js/photos.js?v=e2d518f7"></script>
+  <script src="js/main.js?v=e2d518f7"></script>
 </body>
 </html>

@@ -46,11 +46,20 @@
   $$('[data-nav]').forEach((a) => { if (a.dataset.nav === page) a.setAttribute('aria-current', 'page'); });
   const bar = $('.bar');
   const menuBtn = $('.menu-btn');
-  menuBtn.addEventListener('click', () => {
-    const open = bar.classList.toggle('open');
+  const menuLabel = $('.menu-btn__label', menuBtn);
+  const setMenu = (open) => {
+    bar.classList.toggle('open', open);
+    document.documentElement.classList.toggle('menu-open', open); // stops the page scrolling behind the menu
     menuBtn.setAttribute('aria-expanded', open);
-    menuBtn.textContent = open ? 'Close' : 'Menu';
+    menuLabel.textContent = open ? 'Close' : 'Menu';
+  };
+  menuBtn.addEventListener('click', () => setMenu(!bar.classList.contains('open')));
+  $('#nav').addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+  addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && bar.classList.contains('open')) { setMenu(false); menuBtn.focus(); }
   });
+  matchMedia('(min-width: 821px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  addEventListener('pageshow', () => setMenu(false)); // coming back with the Back button
 
   /* ---------------- Shared: hover-to-play video ---------------- */
 
@@ -82,7 +91,7 @@
         : `<img src="${img(t.file, true)}" alt="${t.alt || ''}" loading="lazy"${focus(t)}>`;
       return `<a class="tile rise${t.video ? ' tile--video' : ''}" href="${t.href}" style="--i:${i}">
         <div class="tile__media">${media}</div>
-        <div class="tile__label"><span>${t.label}</span><span>→</span></div>
+        <div class="tile__label"><span>${t.label}</span><span class="arr" aria-hidden="true"></span></div>
       </a>`;
     }).join('');
     $$('.tile--video', tiles).forEach(hoverPlay);
@@ -213,6 +222,14 @@
     ].filter((x) => x.n).sort((a, b) => b.n - a.n || a.name.localeCompare(b.name));
   }
 
+  // Phones show the filters as one sideways-scrolling row: bring the active one into view
+  function showChip(rail) {
+    const on = $('[aria-pressed="true"]', rail);
+    if (on && rail.scrollWidth > rail.clientWidth) {
+      rail.scrollTo({ left: on.offsetLeft - (rail.clientWidth - on.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+    }
+  }
+
   /* ---------------- Photos page ---------------- */
 
   const grid = $('#grid');
@@ -235,6 +252,7 @@
           <div class="photo__cap"><span>${p.title}</span><span class="num">${pad(i + 1)}</span></div>
         </button>`).join('');
       $$('.filter', filters).forEach((b) => b.setAttribute('aria-pressed', b.dataset.f === f));
+      showChip(filters);
     };
     const start = new URLSearchParams(location.search).get('c');
     render(groups.some((g) => g.id === start) ? start : 'all');
@@ -264,6 +282,7 @@
     pageTabs.innerHTML =
       tab('photos.html', 'All', PHOTOS.length) +
       browseTabs().map((x) => tab(x.href || `photos.html?c=${x.id}`, x.name, x.n, x.id === page)).join('');
+    showChip(pageTabs);
   }
 
   /* ---------------- Video page ---------------- */
@@ -324,19 +343,31 @@
   const cfg = window.SITE_CONFIG || {};
   $$('form[data-inquiry]').forEach((form) => {
     const status = $('.status', form);
+    const send = $('button[type="submit"]', form);
+    const say = (text, state = '') => { status.textContent = text; status.dataset.state = state; };
+    // A field stops showing as wrong as soon as it's edited
+    form.addEventListener('input', (e) => e.target.removeAttribute('aria-invalid'));
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (send.getAttribute('aria-busy') === 'true') return;
       const fd = new FormData(form);
+      const name = $('input[name="name"]', form);
       const email = $('input[type="email"]', form);
-      if (!fd.get('name') || !fd.get('email') || !email.checkValidity()) {
-        status.textContent = 'Please add your name and a valid email.';
+      const bad = [];
+      if (!name.value.trim()) bad.push(name);
+      if (!email.value.trim() || !email.checkValidity()) bad.push(email);
+      [name, email].forEach((f) => (bad.includes(f) ? f.setAttribute('aria-invalid', 'true') : f.removeAttribute('aria-invalid')));
+      if (bad.length) {
+        say('Please add your name and a valid email.', 'error');
+        bad[0].focus();
         return;
       }
       if (!cfg.web3formsKey) {
-        status.textContent = 'The form isn’t connected yet. Please email justinclosemedia@gmail.com.';
+        say('The form isn’t connected yet. Please email justinclosemedia@gmail.com.', 'error');
         return;
       }
-      status.textContent = 'Sending…';
+      say('Sending…');
+      send.setAttribute('aria-busy', 'true');
       try {
         const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
@@ -354,9 +385,11 @@
         });
         if (!(await res.json()).success) throw new Error();
         form.reset();
-        status.textContent = 'Thanks! I’ll reply soon with next steps.';
+        say('Thanks! I’ll reply soon with next steps.', 'ok');
       } catch (err) {
-        status.textContent = 'Something went wrong. Please email justinclosemedia@gmail.com.';
+        say('Something went wrong. Please email justinclosemedia@gmail.com.', 'error');
+      } finally {
+        send.removeAttribute('aria-busy');
       }
     });
   });

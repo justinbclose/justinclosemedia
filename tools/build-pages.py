@@ -41,13 +41,17 @@ HEAD = """<!doctype html>
   <header class="bar">
     <div class="wrap">
       <a class="logo" href="index.html">Justin Close Media</a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav"><span class="menu-btn__label">Menu</span><span class="menu-btn__icon" aria-hidden="true"></span></button>
       <nav class="nav" id="nav" aria-label="Main">
         <a href="photos.html" data-nav="photos">Photos</a>
         <a href="video.html" data-nav="video">Video</a>
         <a href="drone.html" data-nav="drone">Drone</a>
         <a href="about.html" data-nav="about">About</a>
         <a href="contact.html" data-nav="contact">Contact</a>
+        <div class="nav__foot">
+          <p class="meta">Book a shoot</p>
+          <a href="mailto:{email}">{email}</a>
+        </div>
       </nav>
     </div>
   </header>
@@ -67,7 +71,7 @@ CTA = """  <section class="dark">
         <div class="field"><label for="q-email">Email</label><input id="q-email" name="email" type="email" autocomplete="email" required></div>
         <div class="field"><label for="q-property">Hotel or property</label><input id="q-property" name="property" autocomplete="organization"></div>
         <div class="field"><label for="q-message">What do you need?</label><input id="q-message" name="message" placeholder="Photos, video, drone…"></div>
-        <button class="btn" type="submit">Send inquiry</button>
+        <button class="btn btn--lg" type="submit">Send inquiry</button>
         <p class="status" role="status"></p>
       </form>
     </div>
@@ -94,7 +98,7 @@ VIEWER = """<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria
     <div class="viewer__bottom">
       <span id="v-title"></span>
       <div class="thumbs" id="v-thumbs"></div>
-      <span><button id="v-prev">← Prev</button>&nbsp;&nbsp;&nbsp;<button id="v-next">Next →</button></span>
+      <span class="viewer__nav"><button id="v-prev" aria-label="Previous">Prev</button><button id="v-next" aria-label="Next">Next</button></span>
     </div>
   </div>"""
 
@@ -109,9 +113,9 @@ PAGES = [
       <div class="hero__content">
         <p class="meta">Hotel photography · Video · Drone</p>
         <h1 class="display">Hotel assets your marketing team will actually use.</h1>
-        <a class="btn btn--light" href="photos.html">View the work</a>
+        <a class="btn btn--lg btn--light" href="photos.html">View the work</a>
       </div>
-      <a class="hero__down" href="#work" aria-label="Scroll to the work">↓</a>
+      <a class="hero__down" href="#work" aria-label="Scroll to the work"></a>
     </section>
 
     <section class="wrap section" id="work">
@@ -241,12 +245,13 @@ PAGES = [
        title='Contact | Justin Close Media',
        desc='Book a hotel photo, video or drone shoot with Justin Close Media.',
        body="""    <section class="wrap contact">
-      <div>
+      <div class="contact__intro">
         <h1 class="display">Let’s talk about your property</h1>
         <p class="lead">Tell me about your property and what you need. I'll reply with ideas, timing and pricing.</p>
         <a class="contact__email" href="mailto:{email}">{email}</a>
+      </div>
 
-        <div style="margin-top:56px">
+      <div class="contact__news">
           <p class="meta">Email updates</p>
           <p class="muted" style="color:var(--muted);margin:6px 0 0">New work and hotel marketing ideas, now and then. No spam.</p>
           <form id="newsletter-form" novalidate>
@@ -257,7 +262,6 @@ PAGES = [
             </div>
             <p class="status" role="status"></p>
           </form>
-        </div>
       </div>
 
       <form class="form" id="contact-form" data-inquiry novalidate>
@@ -283,7 +287,7 @@ PAGES = [
           </div>
         </fieldset>
         <div class="field field--full"><label for="f-message">Message (optional)</label><textarea id="f-message" name="message" rows="3"></textarea></div>
-        <div class="field--full"><button class="btn" type="submit">Send inquiry</button></div>
+        <div class="field--full"><button class="btn btn--lg" type="submit">Send inquiry</button></div>
         <p class="status" role="status"></p>
       </form>
     </section>
@@ -291,7 +295,7 @@ PAGES = [
 ]
 
 for p in PAGES:
-    html = HEAD.format(site_url=SITE_URL, ver=VER, **p)
+    html = HEAD.format(site_url=SITE_URL, ver=VER, email=EMAIL, **p)
     html += p['body'].replace('{email}', EMAIL)
     html += '  </main>\n'
     if p.get('cta', True):
