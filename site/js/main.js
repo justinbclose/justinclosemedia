@@ -52,6 +52,8 @@
     document.documentElement.classList.toggle('menu-open', open); // stops the page scrolling behind the menu
     menuBtn.setAttribute('aria-expanded', open);
     menuLabel.textContent = open ? 'Close' : 'Menu';
+    // The page behind can't be reached with Tab while the menu is open (the viewer manages this itself)
+    if (!$('#viewer.open')) ['main', 'body > .dark', '.skip'].forEach((sel) => { const el = $(sel); if (el) el.inert = open; });
   };
   menuBtn.addEventListener('click', () => setMenu(!bar.classList.contains('open')));
   $('#nav').addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
@@ -131,7 +133,7 @@
     const stage = $('#v-stage');
     stage.innerHTML = it.type === 'video'
       ? `<video src="${vid(it)}" poster="${poster(it)}" controls autoplay muted loop playsinline></video>`
-      : `<img src="${img(it.file)}" srcset="${img(it.file, true)} 1000w, ${img(it.file)} 2000w" sizes="80vw" alt="${it.alt}">`;
+      : `<img src="${img(it.file)}" srcset="${img(it.file, true)} 1000w, ${img(it.file)} 2000w" sizes="(max-width: 700px) 100vw, 80vw" alt="${it.alt}"${it.w && it.h ? ` style="--ar:${(it.w / it.h).toFixed(4)}"` : ''}>`;
     $('#v-title').textContent = it.title;
     $('#v-count').textContent = `${pad(pos + 1)} / ${pad(items.length)}`;
     $$('#v-thumbs button').forEach((b, i) => b.setAttribute('aria-current', i === pos));
@@ -160,14 +162,16 @@
     const it = items[index];
     const r = thumb.getBoundingClientRect();
     const s = Math.min((innerWidth * 0.8) / it.w, (innerHeight - 190) / it.h);
-    const w = it.w * s, h = it.h * s;
+    const to = $('#v-stage img').getBoundingClientRect(); // where the full photo will sit
+    const w = to.width || it.w * s, h = to.height || it.h * s;
+    const left = to.width ? to.left : (innerWidth - w) / 2, top = to.width ? to.top : (innerHeight - h) / 2;
     const fly = new Image();
     fly.src = thumb.currentSrc || thumb.src;
     fly.className = 'fly';
     document.body.appendChild(fly);
     fly.animate([
       { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' },
-      { left: (innerWidth - w) / 2 + 'px', top: (innerHeight - h) / 2 + 'px', width: w + 'px', height: h + 'px' },
+      { left: left + 'px', top: top + 'px', width: w + 'px', height: h + 'px' },
     ], { duration: 600, easing: 'cubic-bezier(0.22,1,0.36,1)', fill: 'forwards' }).onfinish = () => {
       show();
       setTimeout(() => fly.remove(), 250);
@@ -175,7 +179,7 @@
   }
 
   // While the viewer is open, the page behind it can't be reached with Tab
-  function setInert(on) { ['main', '.bar', 'body > .dark'].forEach((s) => { const el = $(s); if (el) el.inert = on; }); }
+  function setInert(on) { ['main', '.bar', 'body > .dark', '.skip'].forEach((s) => { const el = $(s); if (el) el.inert = on; }); }
 
   function closeViewer() {
     setInert(false);

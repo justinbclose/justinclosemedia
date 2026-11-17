@@ -40,3 +40,25 @@ Motion only via opacity/transform, all off under `prefers-reduced-motion` (alrea
 Hero video plays muted/looped on desktop + phone width, poster shows first; images fade in on
 photos page including after filter changes; tiles 2-across at 375px with labels legible; viewer
 swipe shows next image instantly; no console errors; reduced-motion shows static hero photo.
+
+## Polish pass (Nov 16, 2026, evening)
+
+Justin asked for better buttons and UX inside the same framework. Nothing about layout, colors or
+fonts changed. What changed, and why:
+
+- **Buttons:** still italic serif text links. Larger (21px, 25px for the main actions), a drawn
+  hairline arrow instead of a font glyph, a 44px tap height, an underline that redraws once on
+  hover, and pressed / sending states.
+- **Phone menu:** full-screen, large serif links, email at the bottom, closes with Escape or a tap.
+- **Hero:** a soft shade behind the headline only, so it reads over any part of the photo.
+- **Filters:** one swipeable row on phones; the active filter scrolls into view.
+- **Photo grids:** even gaps; the title sits on the photo on hover (mouse) or below it (touch).
+- **Viewer:** photos now fill the phone screen width (they showed at about half width before),
+  44px Close / Prev / Next, the title never wraps, keyboard focus lands on Close.
+- **Forms:** brass focus line, clear error marking, button locked while sending, the Contact page
+  puts the inquiry form before "Email updates" on phones.
+
+An independent review (run for the CEO sign-off) found: Tab could reach the page behind the open
+menu, sideways scroll and a clipped menu button under about 350px, misaligned grid rows on phones,
+a wrapping viewer title on tablets, and motion that bent the "keep it simple" rule (a looping
+scroll cue and one-by-one menu links). All were fixed; the looping cue and the stagger were removed.

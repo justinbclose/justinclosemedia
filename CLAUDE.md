@@ -68,7 +68,13 @@ domain itself, by Justin's choice).
 
 ### Current status (keep this updated)
 
-- Live site and preview are in sync as of the last "publish" (Nov 16, 2026).
+- Live site and preview are in sync as of the last "publish" (Nov 16, 2026, evening: the polish
+  pass below).
+- **Nov 16 polish pass** (same layout, colors and fonts): new button details, full-screen phone
+  menu, swipeable filter row, even photo grids, larger photos in the phone viewer, form error and
+  sending states, Contact page shows the inquiry form before "Email updates" on phones, fixes for
+  320–360px phones. Notes in `research/ux_spec.md`. It was tested with Playwright at 320–1440px
+  (fonts supplied locally, the form service mocked so no real inquiry is sent).
 - **Nov 16, 2026 incident (fixed):** Cloudflare builds silently stopped for ~17 days because the
   Cloudflare Workers and Pages GitHub App's repository list was changed to only `lj-marketing-hub`,
   dropping this repo. Re-added at github.com/settings/installations. If builds ever stop again
@@ -118,8 +124,20 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
 - **Typography:** Cormorant Garamond (headlines, italic for quotes and buttons), Inter (body and
   labels), Pinyon Script only for Justin's signature. Bodoni Moda + Jost were tried and reverted:
   the hero text was hard to read over photos.
-- **Buttons are editorial text links** (italic serif, hairline underline, sliding →), never filled
-  boxes or pill buttons.
+- **Buttons are editorial text links** (italic serif, hairline underline, sliding arrow), never filled
+  boxes or pill buttons. Details (Nov 16 polish pass): the arrow is a drawn hairline (`--arrow` in
+  `styles.css`, reused in tiles, phone menu and viewer), every button is at least 44px tall, on
+  hover the underline wipes out and redraws once, `.btn--lg` is the larger size for the hero and
+  the "Send inquiry" buttons. No looping animations anywhere (a looping hero scroll cue was tried
+  in review and removed; the cue is a still arrow).
+- **Phone menu:** full-screen list of large serif links with the email at the bottom. Links appear
+  together, not one by one. The page behind is locked and can't be reached with Tab.
+- **Filters:** one swipeable row on phones (not stacked rows), taller chips on touch screens.
+- **Photo grids:** with a mouse the title shows on the photo on hover, so spacing is even; on touch
+  screens captions sit under each photo. The viewer sizes each photo from its shape (`--ar`), so
+  photos fill the screen width on phones.
+- **Forms:** brass line under the field in focus; fields that need fixing turn the error color
+  (`--error`); the button locks while sending.
 - **Personality** (inspired by coastlinecollective.us): first-person voice, a "Hi, I'm Justin" note
   with his photo and script signature on the home page, signature in the booking bar.
 - **Home:** full-screen cover photo (currently `coastline-resort-aerial`) with a centered headline,
