@@ -226,6 +226,25 @@
     ].filter((x) => x.n).sort((a, b) => b.n - a.n || a.name.localeCompare(b.name));
   }
 
+  /* ---------------- Mounted prints (Photos and Drone grids) ---------------- */
+
+  // Each photo keeps its own shape, so the grid is columns of different heights.
+  // Deal the prints into columns one by one, always into the shortest column, so the
+  // first photos stay at the top (2 columns on phones, 3 on larger screens).
+  const narrow = matchMedia('(max-width: 620px)');
+  const tilt = (i) => [-0.9, 0.6, -0.4, 1][i % 4]; // degrees: a slight, uneven lean
+  const shape = (x) => `aspect-ratio:${x.w}/${x.h}`;
+  function deal(el, list, card) {
+    const n = narrow.matches ? 2 : 3;
+    const cols = Array.from({ length: n }, () => ({ h: 0, html: '' }));
+    list.forEach((x, i) => {
+      const col = cols.reduce((a, b) => (b.h < a.h ? b : a));
+      col.html += card(x, i);
+      col.h += x.h / x.w + (narrow.matches ? 0.3 : 0.2); // photo height + caption and gap, in column widths
+    });
+    el.innerHTML = cols.map((c) => `<div class="grid__col">${c.html}</div>`).join('');
+  }
+
   // Phones show the filters as one sideways-scrolling row: bring the active one into view
   function showChip(rail) {
     const on = $('[aria-pressed="true"]', rail);
@@ -248,13 +267,16 @@
         : `<button class="filter" data-f="${x.id}">${x.name}<sup class="num">${x.n}</sup></button>`).join('');
 
     let visible = PHOTOS;
+    let shown = 'all';
+    const groupName = Object.fromEntries(GROUPS.map((g) => [g.id, g.name]));
     const render = (f) => {
+      shown = f;
       visible = f === 'all' ? PHOTOS : PHOTOS.filter((p) => p.group === f);
-      grid.innerHTML = visible.map((p, i) => `
-        <button class="photo rise" style="--i:${Math.min(i, 16)}" data-i="${i}" aria-label="Open ${p.title}">
-          <div class="photo__img"><img src="${img(p.file, true)}" alt="${p.alt}" loading="lazy" ${ratio(p)}${focus(p)}></div>
-          <div class="photo__cap"><span>${p.title}</span><span class="num">${pad(i + 1)}</span></div>
-        </button>`).join('');
+      deal(grid, visible, (p, i) => `
+        <button class="photo rise" style="--i:${Math.min(i, 16)};--r:${tilt(i)}deg" data-i="${i}" aria-label="Open ${p.title}">
+          <div class="photo__img" style="${shape(p)}"><img src="${img(p.file, true)}" alt="${p.alt}" loading="lazy" ${ratio(p)}></div>
+          <div class="photo__cap"><span>${p.title}</span><span>${groupName[p.group] || ''}</span></div>
+        </button>`);
       $$('.filter', filters).forEach((b) => b.setAttribute('aria-pressed', b.dataset.f === f));
       showChip(filters);
     };
@@ -274,6 +296,7 @@
       const t = e.target.closest('.photo');
       if (t) openViewer(visible.map((p) => ({ ...p, type: 'photo' })), +t.dataset.i, t);
     });
+    narrow.addEventListener('change', () => render(shown)); // phone <-> wide: deal the columns again
   }
 
   /* ---------------- Category tabs on the Video and Drone pages ---------------- */
@@ -320,20 +343,23 @@
   const droneGrid = $('#drone-grid');
   if (droneGrid) {
     const list = DRONE.map((d) => ({ ...d, alt: d.alt || d.title }));
-    droneGrid.innerHTML = list.map((d, i) => d.type === 'video' ? `
-        <button class="photo clip rise" style="--i:${i}" data-i="${i}" aria-label="Play ${d.title}">
-          <div class="photo__img clip__media">
+    const dealDrone = () => { deal(droneGrid, list, (d, i) => d.type === 'video' ? `
+        <button class="photo clip rise" style="--i:${i};--r:${tilt(i)}deg" data-i="${i}" aria-label="Play ${d.title}">
+          <div class="photo__img clip__media" style="${shape(d)}">
             <img src="${poster(d)}" alt="" loading="lazy"${focus(d)}>
             <video src="${vid(d)}" muted loop playsinline preload="none" aria-hidden="true"${focus(d)}></video>
             <span class="clip__play" aria-hidden="true">▶</span><span class="clip__bar"></span>
           </div>
           <div class="photo__cap"><span>${d.title}</span><span>Video</span></div>
         </button>` : `
-        <button class="photo rise" style="--i:${i}" data-i="${i}" aria-label="Open ${d.title}">
-          <div class="photo__img"><img src="${img(d.file, true)}" alt="${d.alt}" loading="lazy" ${ratio(d)}${focus(d)}></div>
-          <div class="photo__cap"><span>${d.title}</span><span class="num">${pad(i + 1)}</span></div>
-        </button>`).join('');
-    $$('.clip', droneGrid).forEach(hoverPlay);
+        <button class="photo rise" style="--i:${i};--r:${tilt(i)}deg" data-i="${i}" aria-label="Open ${d.title}">
+          <div class="photo__img" style="${shape(d)}"><img src="${img(d.file, true)}" alt="${d.alt}" loading="lazy" ${ratio(d)}></div>
+          <div class="photo__cap"><span>${d.title}</span><span>Photo</span></div>
+        </button>`);
+      $$('.clip', droneGrid).forEach(hoverPlay);
+    };
+    dealDrone();
+    narrow.addEventListener('change', dealDrone);
     droneGrid.addEventListener('click', (e) => {
       const t = e.target.closest('.photo');
       if (!t) return;

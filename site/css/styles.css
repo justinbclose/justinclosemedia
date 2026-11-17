@@ -13,6 +13,8 @@
   --champagne: #9A7B4F;  /* antique brass: the one accent (dots, lines) */
   --line: rgba(23, 22, 20, 0.12);
   --line-dark: rgba(239, 233, 223, 0.16);
+  --mat: #FFFDF9;        /* the paper mat around each print */
+  --brass-text: #84673E; /* brass for small labels on the mat (5:1) */
   --error: #A23B2A;      /* form errors on light (6:1) */
   --error-dark: #E8A593; /* form errors on dark */
   /* One hairline arrow, drawn once and reused (buttons, tiles, menu, viewer) */
@@ -286,27 +288,42 @@ main { padding-top: var(--bar); }
 
 /* ---------- Photos grid ---------- */
 
-.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; align-items: start; padding-bottom: 96px; transition: opacity 200ms; }
+/* Photos are shown as mounted prints: each one sits on a paper mat in its own shape (never
+   cropped), with a soft shadow, a slight tilt and its title on the mat. main.js deals the
+   prints into columns (.grid__col) so the first photos stay at the top. */
+.grid { display: flex; align-items: flex-start; gap: 32px; padding: 8px 0 96px; transition: opacity 200ms; }
 .grid.fading { opacity: 0; }
-.photo { display: block; width: 100%; cursor: zoom-in; text-align: left; }
+.grid__col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 36px; }
+.photo, .vgrid .clip {
+  position: relative; display: block; width: 100%; padding: 12px 12px 0; text-align: left;
+  background: var(--mat); rotate: var(--r, 0deg);
+  box-shadow: 0 1px 1px rgba(27, 26, 23, 0.07), 0 8px 14px -8px rgba(27, 26, 23, 0.22), 0 26px 38px -24px rgba(27, 26, 23, 0.34);
+  transition: rotate 500ms var(--ease), translate 500ms var(--ease), box-shadow 500ms var(--ease);
+}
+.photo { cursor: zoom-in; }
 .photo__img { position: relative; overflow: hidden; aspect-ratio: 1 / 1; background: var(--paper); }
 .photo__img img, .photo__img video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 900ms var(--ease); }
-.photo:hover .photo__img img, .photo:hover .photo__img video { transform: scale(1.06); }
-.photo__cap { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; font-weight: 400; color: var(--muted); padding-top: 6px; opacity: 0; transition: opacity 300ms var(--ease); }
-.photo:hover .photo__cap, .photo:focus-visible .photo__cap { opacity: 1; }
-@media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 620px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; } }
+.photo__cap, .clip__cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 11px 1px 13px; }
+.photo__cap span:first-child, .clip__cap span:first-child { font: italic 400 17px/1.25 var(--serif); color: var(--ink); }
+.photo__cap span:last-child, .clip__cap span:last-child { flex: none; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brass-text); }
 .photo[hidden] { display: none; }
-@media (hover: none) { .photo__cap { opacity: 1; padding-bottom: 6px; } }
-/* With a mouse: the title sits on the photo itself, so rows and columns are spaced evenly */
+/* With a mouse: the print straightens and lifts a little, and the photo grows gently */
 @media (hover: hover) {
-  .photo { position: relative; }
-  .photo__cap {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 40px 12px 10px; color: #fff; pointer-events: none;
-    background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.5));
+  .photo:hover, .vgrid .clip:hover {
+    rotate: 0deg; translate: 0 -4px;
+    box-shadow: 0 1px 1px rgba(27, 26, 23, 0.07), 0 12px 18px -10px rgba(27, 26, 23, 0.24), 0 34px 44px -24px rgba(27, 26, 23, 0.38);
   }
-  .photo__cap span:last-child { opacity: 0.8; }
-  .photo.clip:hover .clip__play { opacity: 0; }
+  .photo:hover .photo__img img, .photo:hover .photo__img video { transform: scale(1.05); }
+}
+.photo:focus-visible, .vgrid .clip:focus-visible { rotate: 0deg; }
+@media (max-width: 1000px) { .grid { gap: 24px; } .grid__col { gap: 28px; } }
+@media (max-width: 620px) {
+  .grid { gap: 12px; padding-top: 4px; }
+  .grid__col { gap: 16px; }
+  .photo, .vgrid .clip { padding: 7px 7px 0; rotate: calc(var(--r, 0deg) * 0.6); }
+  .photo__cap, .clip__cap { gap: 8px; padding: 8px 0 9px; }
+  .photo__cap span:first-child, .clip__cap span:first-child { font-size: 14.5px; }
+  .photo__cap span:last-child, .clip__cap span:last-child { font-size: 9px; letter-spacing: 0.14em; }
 }
 
 /* Gentle entrance for grids */
@@ -362,7 +379,11 @@ img[loading="lazy"].ld { opacity: 1; }
 
 /* ---------- Video grid ---------- */
 
-.vgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding-bottom: 96px; }
+.vgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 32px 24px; align-items: start; padding: 8px 0 96px; }
+.vgrid .clip:nth-child(4n+1) { --r: -0.7deg; }
+.vgrid .clip:nth-child(4n+2) { --r: 0.5deg; }
+.vgrid .clip:nth-child(4n+3) { --r: -0.4deg; }
+.vgrid .clip:nth-child(4n+4) { --r: 0.8deg; }
 .vgrid .clip--wide { grid-column: span 2; }
 .vgrid .clip--wide .clip__media { aspect-ratio: 9 / 8; }
 @media (max-width: 1100px) { .vgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
@@ -377,14 +398,12 @@ img[loading="lazy"].ld { opacity: 1; }
 .clip__bar { position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--champagne); z-index: 2; }
 .clip__play { position: absolute; left: 12px; bottom: 12px; z-index: 2; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: rgba(0,0,0,0.35); color: #fff; font-size: 11px; transition: opacity 200ms; }
 .clip.playing .clip__play { opacity: 0; }
-.clip__cap { display: flex; justify-content: space-between; font-size: 13px; margin-top: 8px; }
-.clip__cap span:last-child { color: var(--muted); }
 .feature { margin-bottom: 24px; max-width: 620px; }
-@media (max-width: 620px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .clip__cap { font-size: 12px; } }
+@media (max-width: 620px) { .vgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; } }
 
 /* ---------- Drone ---------- */
 
-.grid .clip__media { aspect-ratio: 1 / 1; }
+/* Drone clips sit in the same prints as the photos; their shape is set inline in main.js */
 
 /* ---------- About ---------- */
 

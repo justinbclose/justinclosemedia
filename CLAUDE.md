@@ -68,8 +68,10 @@ domain itself, by Justin's choice).
 
 ### Current status (keep this updated)
 
-- Live site and preview are in sync as of the last "publish" (Nov 16, 2026, evening: the polish
-  pass below).
+- **Preview is ahead of live (Nov 17):** the mounted-print galleries (see Design decisions) are
+  on `preview` only, waiting for Justin to say "publish". Live is at the Nov 16 polish pass.
+  Open question to Justin: how far to take the reference site's warm, personal feel beyond the
+  galleries (home page tiles, colors and copy are unchanged so far).
 - **Nov 16 polish pass** (same layout, colors and fonts): new button details, full-screen phone
   menu, swipeable filter row, even photo grids, larger photos in the phone viewer, form error and
   sending states, Contact page shows the inquiry form before "Email updates" on phones, fixes for
@@ -146,8 +148,14 @@ site (justinclosemedia-pbefw) is unused; don't delete the domain registration th
 - **Keep the current home layout.** Justin tried a version with the headline bottom-left, one large
   lead tile, no small labels and list-style steps, and preferred this one (it was reverted).
 - **Hover:** every image grows gently (scale ~1.05–1.06, 0.9s). No glow/ripple/WebGL effects.
-- **Galleries:** square tiles (like coastlinecollective.us/photography). Click opens the full,
-  uncropped photo in a viewer.
+- **Galleries: mounted prints** (Nov 17, 2026; replaced the square tiles). Justin liked how
+  marko-everyday.com/hospitality frames its photos and its warm, personal feel. His version: each
+  photo sits on a paper mat (`--mat`) in its own shape, never cropped, with a soft shadow, a slight
+  tilt that straightens on hover, the title in italic serif and the category in small brass caps
+  (`--brass-text`) on the mat. Photos and Drone pages deal the prints into columns in `main.js`
+  (`deal()`: 3 columns, 2 on phones, always into the shortest column so the first photos stay on
+  top). Video page clips use the same frame. Click still opens the full photo in the viewer.
+  Don't copy the reference's polaroid look, handwriting font or colors.
 - **Booking bar** at the bottom of every page has the form fields inline. Never use the words
   "Check availability". The nav says "Contact".
 - **About:** even 50/50 split, sticky portrait. Voice: "I've worked in hotel marketing and travel."
